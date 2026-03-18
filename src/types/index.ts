@@ -25,6 +25,11 @@ export interface StageTransition {
   exitedAt: string | null;
 }
 
+export interface DirectionScore {
+  date: string;
+  score: number;
+}
+
 export interface Initiative {
   id: string;
   title: string;

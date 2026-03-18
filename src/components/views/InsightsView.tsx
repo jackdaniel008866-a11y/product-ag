@@ -1,14 +1,37 @@
-import type { Initiative, Stage } from '../../types';
-import { differenceInDays } from 'date-fns';
-import { Activity, AlertTriangle, CheckCircle, TrendingUp, TrendingDown, Lightbulb } from 'lucide-react';
+import type { Initiative, Stage, DirectionScore } from '../../types';
+import { differenceInDays, parseISO } from 'date-fns';
+import { Activity, AlertTriangle, CheckCircle, TrendingUp, TrendingDown, Lightbulb, LineChart } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 
 interface InsightsViewProps {
   initiatives: Initiative[];
 }
 
 export default function InsightsView({ initiatives }: InsightsViewProps) {
+  const [historicalScores, setHistoricalScores] = useState<DirectionScore[]>([]);
+  const [startDate, setStartDate] = useState(() => {
+    const d = new Date(); d.setDate(d.getDate() - 30); return d.toISOString().split('T')[0];
+  });
+  const [endDate, setEndDate] = useState(() => {
+    return new Date().toISOString().split('T')[0];
+  });
+  const [dateError, setDateError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (differenceInDays(parseISO(endDate), parseISO(startDate)) < 7) {
+      setDateError("Minimum date range required is 7 days to evaluate trends.");
+      setHistoricalScores([]);
+      return;
+    }
+    setDateError(null);
+    supabase.from('direction_scores').select('*').gte('date', startDate).lte('date', endDate).order('date', { ascending: true })
+      .then(({data, error}) => {
+         if (data && !error) setHistoricalScores(data);
+      });
+  }, [startDate, endDate]);
+
   const activeStages = ['Roadmap', 'Planning', 'Execution', 'Testing', 'Deployed'];
-  
   const positiveSignals: string[] = [];
   const riskSignals: string[] = [];
   const suggestedActions: string[] = [];
@@ -250,6 +273,14 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
     icon = <Activity className="w-8 h-8 text-amber-500" />;
   }
 
+  // Auto-record today's score
+  useEffect(() => {
+    if (totalActive > 0) {
+      const today = new Date().toISOString().split('T')[0];
+      supabase.from('direction_scores').upsert({ date: today, score: finalScore }).then();
+    }
+  }, [finalScore, totalActive]);
+
   if (totalActive === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] text-center max-w-5xl mx-auto py-4">
@@ -342,6 +373,86 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
               <p className="text-slate-400 text-sm italic py-4">Pipeline operating optimally.</p>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Historical Trend Section */}
+      <div className="mt-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div className="bg-slate-50 border-b border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <LineChart className="text-indigo-600 w-5 h-5" />
+            <h3 className="font-bold text-slate-800">Historical Trend</h3>
+          </div>
+          <div className="flex items-center gap-3">
+            <input 
+              type="date" 
+              value={startDate} 
+              onChange={(e) => setStartDate(e.target.value)} 
+              className="px-3 py-1.5 border border-slate-300 rounded text-sm text-slate-700 bg-white shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+            <span className="text-slate-400 font-medium">to</span>
+            <input 
+              type="date" 
+              value={endDate} 
+              onChange={(e) => setEndDate(e.target.value)} 
+              className="px-3 py-1.5 border border-slate-300 rounded text-sm text-slate-700 bg-white shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+            />
+          </div>
+        </div>
+        
+        {dateError && (
+          <div className="bg-amber-50 px-4 py-3 border-b border-amber-100 flex items-center gap-2 text-amber-800 text-sm font-medium">
+            <AlertTriangle className="w-4 h-4 text-amber-500" />
+            {dateError}
+          </div>
+        )}
+
+        <div className="p-6">
+          {historicalScores.length < 2 && !dateError ? (
+            <div className="flex flex-col items-center justify-center py-10 text-slate-400 italic text-sm">
+               <LineChart className="w-8 h-8 opacity-20 mb-2" />
+               Not enough saved data points within this time window yet.
+            </div>
+          ) : !dateError && (
+             <div className="w-full overflow-x-auto hide-scrollbar">
+                <svg viewBox="0 0 800 240" className="w-full min-w-[600px] h-[240px]">
+                  {/* Grid Lines */}
+                  {[0, 25, 50, 75, 100].map(s => {
+                    const py = 240 - 30 - (s / 100) * 180;
+                    return (
+                      <g key={s}>
+                        <line x1="40" y1={py} x2="760" y2={py} stroke={s === 0 ? "#cbd5e1" : "#f1f5f9"} strokeWidth={s === 0 ? "2" : "1"} strokeDasharray={s > 0 ? "4 4" : "none"} />
+                        <text x="30" y={py + 3} fontSize="10" fill="#94a3b8" textAnchor="end">{s}</text>
+                      </g>
+                    );
+                  })}
+                  
+                  {/* Polyline */}
+                  <polyline 
+                    points={historicalScores.map((ds, i) => `${40 + (i * (720 / (historicalScores.length - 1)))},${240 - 30 - (ds.score / 100) * 180}`).join(' ')} 
+                    fill="none" stroke="#6366f1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" 
+                  />
+                  
+                  {/* Nodes & Labels */}
+                  {historicalScores.map((ds, i) => {
+                     const x = 40 + (i * (720 / (historicalScores.length - 1)));
+                     const y = 240 - 30 - (ds.score / 100) * 180;
+                     const showLabel = historicalScores.length <= 8 || i % Math.ceil(historicalScores.length / 8) === 0 || i === historicalScores.length - 1;
+                     
+                     return (
+                       <g key={ds.date}>
+                         <circle cx={x} cy={y} r="4" fill="white" stroke="#6366f1" strokeWidth="2" className="transition-all hover:r-6 hover:stroke-[3px] cursor-pointer" />
+                         {showLabel && (
+                           <text x={x} y={240 - 10} fontSize="10" fill="#64748b" textAnchor="middle" className="font-medium whitespace-nowrap">
+                             {ds.date.substring(5).replace('-', '/')}
+                           </text>
+                         )}
+                       </g>
+                     );
+                  })}
+                </svg>
+             </div>
+          )}
         </div>
       </div>
     </div>
