@@ -33,7 +33,7 @@ export default function KanbanColumn({ stage, initiatives, onInitiativeClick, on
 
   return (
     <div 
-      className={`flex-shrink-0 w-[300px] flex flex-col h-full rounded-xl overflow-hidden border transition-colors ${
+      className={`flex-shrink-0 w-[280px] md:w-[300px] flex flex-col h-full rounded-xl overflow-hidden border transition-colors ${
         isDragOver ? 'bg-teal-50/50 border-teal-300 shadow-md' : 'bg-slate-100/50 border-slate-200/60'
       }`}
       onDragOver={handleDragOver}

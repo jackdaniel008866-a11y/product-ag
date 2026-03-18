@@ -73,7 +73,7 @@ export default function RoadmapView({ initiatives, onInitiativeClick }: RoadmapV
                           </span>
                           <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded shadow-sm border ${
                             initiative.status === 'Blocked' ? 'bg-red-50 text-red-700 border-red-200' :
-                            initiative.status === 'Done' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                            initiative.status === 'Deployed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                             initiative.status === 'Parked' ? 'bg-slate-100 text-slate-600 border-slate-200' :
                             'bg-teal-50 text-teal-700 border-teal-200'
                           }`}>

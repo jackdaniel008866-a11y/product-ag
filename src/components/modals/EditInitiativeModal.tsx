@@ -21,7 +21,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
   const [type, setType] = useState<InitiativeType>('Feature');
   const [priority, setPriority] = useState<Priority>('Medium');
   const [ownerId, setOwnerId] = useState('u1');
-  const [stage, setStage] = useState<Stage>('Discussion');
+  const [stage, setStage] = useState<Stage>('Planning');
   const [status, setStatus] = useState<Status>('Active');
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
   
@@ -88,9 +88,9 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-        <div className="flex justify-between items-center p-5 border-b border-slate-100 bg-slate-50/50">
+    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-0 sm:p-4">
+      <div className="bg-white w-full h-full sm:h-auto sm:max-w-2xl sm:max-h-[90vh] sm:rounded-2xl shadow-xl flex flex-col animate-in zoom-in-95 duration-200 overflow-hidden relative">
+        <div className="flex justify-between items-center p-4 md:p-6 border-b border-slate-100 bg-slate-50/50 shrink-0">
           <div className="flex items-center space-x-3">
             <span className="text-[10px] font-medium text-slate-500 bg-slate-200 px-2 py-1 rounded truncate max-w-[120px]">
               {initiative.id}
@@ -103,7 +103,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
         </div>
         
         <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
-          <div className="p-6 overflow-y-auto space-y-6">
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 relative">
             
             {/* Title & Description */}
             <div className="space-y-4">
@@ -130,7 +130,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 border-t border-slate-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-4 border-t border-slate-100 mt-6">
               {/* Product */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Product</label>
@@ -147,17 +147,19 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1 animate-pulse">Status</label>
                 <select 
-                  value={status} onChange={e => setStatus(e.target.value as Status)}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 font-medium ${
-                    status === 'Blocked' ? 'border-red-300 bg-red-50 text-red-700' : 
-                    status === 'Done' ? 'border-emerald-300 bg-emerald-50 text-emerald-700' :
-                    'border-slate-300 bg-slate-50 text-slate-700'
+                  value={status} 
+                  onChange={e => setStatus(e.target.value as Status)}
+                  className={`w-full px-3 py-2 border-2 rounded-lg font-bold focus:outline-none transition-colors appearance-none cursor-pointer ${
+                    status === 'Active' ? 'border-teal-300 bg-teal-50 text-teal-700' :
+                    status === 'Blocked' ? 'border-red-300 bg-red-50 text-red-700' :
+                    status === 'Deployed' ? 'border-emerald-300 bg-emerald-50 text-emerald-700' :
+                    'border-slate-300 bg-slate-100 text-slate-700'
                   }`}
                 >
                   <option value="Active">🟢 Active</option>
                   <option value="Blocked">🔴 Blocked</option>
-                  <option value="Parked">⚪ Parked</option>
-                  <option value="Done">✅ Done</option>
+                  <option value="Deployed">✅ Deployed</option>
+                  <option value="Parked">⏸️ Parked</option>
                 </select>
               </div>
 
@@ -215,7 +217,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
               </div>
 
               {/* Team Members */}
-              <div className="col-span-2 mt-2">
+              <div className="col-span-full mt-2">
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Team Members</label>
                 <div className="flex flex-wrap gap-2">
                   {Object.values(users).map(user => {

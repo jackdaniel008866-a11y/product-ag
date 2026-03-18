@@ -1,8 +1,8 @@
 export type Product = 'Surbo' | 'Surbo Chat';
 export type InitiativeType = 'Feature' | 'Enhancement' | 'Client Ask' | 'Bug Theme' | 'Experiment' | 'Internal Improvement';
 export type Priority = 'High' | 'Medium' | 'Low';
-export type Stage = 'Discussion' | 'Roadmap' | 'Planning' | 'Execution' | 'Testing' | 'Release' | 'Optimization' | 'Done' | 'Parked';
-export type Status = 'Active' | 'Blocked' | 'Parked' | 'Done';
+export type Stage = 'Roadmap' | 'Planning' | 'Execution' | 'Testing' | 'Deployed' | 'Parked';
+export type Status = 'Active' | 'Blocked' | 'Parked' | 'Deployed';
 
 export interface User {
   id: string;

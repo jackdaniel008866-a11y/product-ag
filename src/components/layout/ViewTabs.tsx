@@ -22,8 +22,8 @@ const TABS: Array<{id: string, label: string, icon: LucideIcon}> = [
 
 export default function ViewTabs({ currentView, onViewChange, stuckCount }: ViewTabsProps) {
   return (
-    <div className="bg-white border-b border-slate-200 px-6 pt-2">
-      <div className="flex space-x-8">
+    <div className="bg-white border-b border-slate-200 px-4 md:px-6 pt-2">
+      <div className="flex space-x-4 md:space-x-8 overflow-x-auto custom-scrollbar-x hide-scrollbar whitespace-nowrap">
         {TABS.map((tab) => {
           const isActive = currentView === tab.id;
           const Icon = tab.icon;

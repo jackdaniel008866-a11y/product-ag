@@ -7,7 +7,7 @@ interface HeaderProps {
 
 export default function Header({ onQuickAdd }: HeaderProps) {
   return (
-    <header className="flex items-center justify-between px-6 py-3 border-b border-slate-200 bg-white">
+    <header className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-slate-200 bg-white">
       {/* Logo & Branding */}
       <div className="flex items-center space-x-3">
         <div className="flex items-center justify-center h-8 px-2 bg-slate-50 rounded border border-slate-100">

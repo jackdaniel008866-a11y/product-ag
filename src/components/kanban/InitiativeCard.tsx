@@ -12,7 +12,7 @@ interface InitiativeCardProps {
 export default function InitiativeCard({ initiative, onClick }: InitiativeCardProps) {
   const { users } = useUsers();
   const daysInStage = differenceInDays(new Date(), new Date(initiative.stageUpdatedAt));
-  const isStuck = daysInStage >= 7 && initiative.status !== 'Blocked' && initiative.status !== 'Done';
+  const isStuck = daysInStage >= 7 && initiative.status !== 'Blocked' && initiative.status !== 'Deployed';
   const owner = users[initiative.ownerId];
 
   const handleDragStart = (e: React.DragEvent) => {

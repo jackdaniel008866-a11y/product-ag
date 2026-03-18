@@ -19,7 +19,7 @@ export default function AppLayout({ children, currentView, onViewChange, onQuick
       <ViewTabs currentView={currentView} onViewChange={onViewChange} stuckCount={stuckCount} />
       
       {/* Main Content Area */}
-      <main className="flex-1 overflow-auto p-6 scroll-smooth">
+      <main className="flex-1 overflow-auto p-3 md:p-6 scroll-smooth">
         <div className="max-w-7xl mx-auto h-full">
           {children}
         </div>

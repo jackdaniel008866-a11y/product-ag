@@ -46,7 +46,7 @@ export const INITIAL_INITIATIVES: Initiative[] = [
     type: 'Internal Improvement',
     priority: 'Low',
     ownerId: 'u3',
-    stage: 'Discussion',
+    stage: 'Planning',
     status: 'Active',
     stageUpdatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
@@ -69,5 +69,5 @@ export const INITIAL_INITIATIVES: Initiative[] = [
 ];
 
 export const STAGES = [
-  'Discussion', 'Roadmap', 'Planning', 'Execution', 'Testing', 'Release', 'Optimization', 'Done', 'Parked'
+  'Roadmap', 'Planning', 'Execution', 'Testing', 'Deployed', 'Parked'
 ] as const;

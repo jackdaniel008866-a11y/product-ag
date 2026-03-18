@@ -12,7 +12,7 @@ export default function ProductView({ initiatives }: ProductViewProps) {
   const renderStats = (title: string, data: Initiative[], badgeColor: string) => {
     const active = data.filter(i => i.status === 'Active').length;
     const blocked = data.filter(i => i.status === 'Blocked').length;
-    const done = data.filter(i => i.status === 'Done').length;
+    const done = data.filter(i => i.status === 'Deployed').length;
 
     return (
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full">
@@ -42,7 +42,7 @@ export default function ProductView({ initiatives }: ProductViewProps) {
             </div>
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-slate-500 font-medium">Done</span>
+                <span className="text-slate-500 font-medium">Deployed</span>
                 <span className="font-bold text-slate-700">{done}</span>
               </div>
               <div className="w-full bg-slate-100 rounded-full h-2">
@@ -62,7 +62,7 @@ export default function ProductView({ initiatives }: ProductViewProps) {
         <p className="text-slate-500 text-sm mt-1">High-level distribution of initiatives across our core products.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {renderStats('Surbo', surbo, 'bg-teal-50 text-teal-800 border-teal-100')}
         {renderStats('Surbo Chat', surboChat, 'bg-blue-50 text-blue-800 border-blue-100')}
       </div>

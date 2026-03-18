@@ -65,7 +65,7 @@ export default function OwnerView({ initiatives, onInitiativeClick }: OwnerViewP
 
       <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Active Work</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {myInitiatives.filter(i => i.status !== 'Done' && i.status !== 'Parked').map(init => (
+        {myInitiatives.filter(i => i.status !== 'Deployed' && i.status !== 'Parked').map(init => (
           <InitiativeCard key={init.id} initiative={init} onClick={() => onInitiativeClick(init.id)} />
         ))}
       </div>

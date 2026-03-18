@@ -12,7 +12,7 @@ export default function StuckView({ initiatives, onInitiativeClick }: StuckViewP
   // Only items stuck > 7 days or blocked
   const stuckItems = initiatives.filter(init => {
     const isStuckTimer = differenceInDays(new Date(), new Date(init.stageUpdatedAt)) >= 7;
-    return init.status === 'Blocked' || (isStuckTimer && init.status !== 'Done' && init.status !== 'Parked');
+    return init.status === 'Blocked' || (isStuckTimer && init.status !== 'Deployed' && init.status !== 'Parked');
   });
 
   return (

@@ -41,7 +41,7 @@ function App() {
 
   const stuckCount = initiatives.filter(init => {
     const daysInStage = differenceInDays(new Date(), new Date(init.stageUpdatedAt));
-    return daysInStage >= 7 && init.status !== 'Blocked' && init.status !== 'Done';
+    return daysInStage >= 7 && init.status !== 'Blocked' && init.status !== 'Deployed';
   }).length;
 
   const handleQuickAdd = () => {
