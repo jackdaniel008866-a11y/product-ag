@@ -166,7 +166,7 @@ function App() {
           />
         )}
         {currentView === 'product' && (
-          <ProductView initiatives={initiatives} />
+          <ProductView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
         )}
         {currentView === 'team' && (
           <TeamView users={usersList} onAddUser={addUser} onRemoveUser={removeUser} />
