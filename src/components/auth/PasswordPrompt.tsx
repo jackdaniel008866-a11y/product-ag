@@ -26,10 +26,8 @@ export default function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-200 mb-6 text-slate-800">
-            <Lock size={32} strokeWidth={1.5} />
-          </div>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <img src="/valuefirst-logo.png" alt="Valuefirst Logo" className="h-16 object-contain mb-8" />
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Product OS</h1>
           <p className="text-slate-500 font-medium">Please enter the passcode to access the workspace.</p>
         </div>
