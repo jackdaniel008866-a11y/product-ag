@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { Initiative } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
-import { formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
 import { STAGES } from '../../data/mockData';
 import { clsx } from 'clsx';
 import { Filter } from 'lucide-react';
@@ -99,7 +99,7 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
               <th className="px-5 py-3 font-semibold">Priority</th>
               <th className="px-5 py-3 font-semibold">Owner</th>
               <th className="px-5 py-3 font-semibold">Status</th>
-              <th className="px-5 py-3 font-semibold">Last Updated</th>
+              <th className="px-5 py-3 font-semibold">Target Date</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -155,8 +155,8 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
                       <span className="text-slate-700 text-xs font-bold uppercase tracking-wider">{init.status}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-slate-500 text-xs font-medium whitespace-nowrap">
-                    {formatDistanceToNow(new Date(init.updatedAt), { addSuffix: true })}
+                  <td className="px-5 py-3.5 text-slate-700 text-sm font-medium whitespace-nowrap">
+                    {init.targetDate ? format(new Date(init.targetDate), 'MMM d, yyyy') : <span className="text-slate-300">-</span>}
                   </td>
                 </tr>
               ))

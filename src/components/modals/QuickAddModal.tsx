@@ -20,6 +20,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
   const [priority, setPriority] = useState<Priority>('Medium');
   const [ownerId, setOwnerId] = useState('u1'); // Default to Nitin
   const [stage, setStage] = useState<Stage>('Planning');
+  const [targetDate, setTargetDate] = useState('');
 
   if (!isOpen) return null;
 
@@ -36,6 +37,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
       ownerId,
       stage,
       status: 'Active',
+      targetDate: targetDate ? targetDate : undefined,
       tags: [],
     });
 
@@ -47,6 +49,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
     setPriority('Medium');
     setOwnerId('u1');
     setStage('Planning');
+    setTargetDate('');
     onClose();
   };
 
@@ -144,7 +147,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
                   </select>
                 </div>
 
-                <div className="col-span-1 sm:col-span-2">
+                <div className="col-span-1 sm:col-span-1">
                   <label className="block text-sm font-semibold text-teal-700 mb-1">Phase</label>
                   <select 
                     value={stage} 
@@ -153,6 +156,16 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
                   >
                     {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
+                </div>
+                
+                <div className="col-span-1 sm:col-span-1">
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">Target Date</label>
+                  <input 
+                    type="date"
+                    value={targetDate}
+                    onChange={e => setTargetDate(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-700 bg-slate-50 focus:bg-white"
+                  />
                 </div>
               </div>
             </div>

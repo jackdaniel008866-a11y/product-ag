@@ -1,7 +1,7 @@
 import type { Initiative } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
-import { differenceInDays } from 'date-fns';
-import { AlertCircle, Clock, Zap } from 'lucide-react';
+import { differenceInDays, format } from 'date-fns';
+import { AlertCircle, Clock, Zap, Calendar } from 'lucide-react';
 import { clsx } from 'clsx';
 
 interface InitiativeCardProps {
@@ -88,6 +88,13 @@ export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold
             <Clock size={12} className="mr-0.5" />
             <span>{daysInStage}d</span>
           </div>
+
+          {initiative.targetDate && (
+            <div className="flex items-center text-[11px] text-indigo-500 font-bold ml-1.5 bg-indigo-50 px-1.5 rounded border border-indigo-100/50">
+              <Calendar size={10} className="mr-1" />
+              <span>{format(new Date(initiative.targetDate), 'MMM d')}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

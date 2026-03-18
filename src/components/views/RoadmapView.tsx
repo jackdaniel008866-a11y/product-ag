@@ -1,7 +1,7 @@
 import type { Initiative } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
 import { format } from 'date-fns';
-import { Clock, AlertCircle, Zap } from 'lucide-react';
+import { Clock, AlertCircle, Zap, Calendar } from 'lucide-react';
 
 interface RoadmapViewProps {
   initiatives: Initiative[];
@@ -108,6 +108,13 @@ export default function RoadmapView({ initiatives, onInitiativeClick }: RoadmapV
                           <Clock size={12} className="mr-1.5 shrink-0" />
                           <span>Added {format(new Date(initiative.stageUpdatedAt), 'MMM d, yyyy')}</span>
                         </div>
+                        
+                        {initiative.targetDate && (
+                          <div className="flex items-center text-xs text-indigo-600 font-bold bg-indigo-50 px-2 py-1.5 rounded-lg border border-indigo-100">
+                            <Calendar size={12} className="mr-1.5 shrink-0" />
+                            <span>Target: {format(new Date(initiative.targetDate), 'MMM d, yyyy')}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

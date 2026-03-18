@@ -24,6 +24,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
   const [stage, setStage] = useState<Stage>('Planning');
   const [status, setStatus] = useState<Status>('Active');
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
+  const [targetDate, setTargetDate] = useState('');
   
   // Comment Thread State
   const [newCommentText, setNewCommentText] = useState('');
@@ -41,6 +42,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
       setStage(initiative.stage);
       setStatus(initiative.status);
       setTeamMembers(initiative.teamMembers || []);
+      setTargetDate(initiative.targetDate || '');
       setNewCommentText(''); // Clear draft on open
     }
   }, [initiative]);
@@ -61,6 +63,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
       ownerId,
       stage,
       status,
+      targetDate: targetDate ? targetDate : undefined,
       teamMembers,
       updatedAt: new Date().toISOString(),
     };
@@ -172,6 +175,17 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
                 >
                   {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
+              </div>
+
+              {/* Target Date */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">Target Date</label>
+                <input 
+                  type="date"
+                  value={targetDate}
+                  onChange={e => setTargetDate(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-700 bg-slate-50 focus:bg-white"
+                />
               </div>
 
               {/* Type */}

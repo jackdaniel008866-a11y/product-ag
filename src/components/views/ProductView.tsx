@@ -1,13 +1,21 @@
-
+import { useState } from 'react';
 import type { Initiative } from '../../types';
+import { differenceInDays } from 'date-fns';
 
 interface ProductViewProps {
   initiatives: Initiative[];
 }
 
 export default function ProductView({ initiatives }: ProductViewProps) {
-  const surbo = initiatives.filter(i => i.product === 'Surbo');
-  const surboChat = initiatives.filter(i => i.product === 'Surbo Chat');
+  const [timeFilterDays, setTimeFilterDays] = useState<number>(30);
+
+  // Filter initiatives by updatedAt being within the selected timeframe (or all if 0)
+  const filteredInitiatives = timeFilterDays === 0 
+    ? initiatives 
+    : initiatives.filter(i => differenceInDays(new Date(), new Date(i.updatedAt)) <= timeFilterDays);
+
+  const surbo = filteredInitiatives.filter(i => i.product === 'Surbo');
+  const surboChat = filteredInitiatives.filter(i => i.product === 'Surbo Chat');
 
   const renderStats = (title: string, data: Initiative[], badgeColor: string) => {
     const active = data.filter(i => i.status === 'Active').length;
@@ -57,9 +65,27 @@ export default function ProductView({ initiatives }: ProductViewProps) {
 
   return (
     <div className="max-w-5xl mx-auto py-4">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-800">Product Focus Breakdown</h2>
-        <p className="text-slate-500 text-sm mt-1">High-level distribution of initiatives across our core products.</p>
+      <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800">Product Focus Breakdown</h2>
+          <p className="text-slate-500 text-sm mt-1">High-level distribution of initiatives actively moved within this timeframe.</p>
+        </div>
+        
+        <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 self-start md:self-auto overflow-x-auto hide-scrollbar">
+          {[1, 7, 15, 30, 45, 60, 90, 0].map(days => (
+            <button
+              key={days}
+              onClick={() => setTimeFilterDays(days)}
+              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all whitespace-nowrap ${
+                timeFilterDays === days 
+                  ? 'bg-white text-teal-700 shadow-sm border border-slate-200' 
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+              }`}
+            >
+              {days === 0 ? 'All Time' : `${days} Days`}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
