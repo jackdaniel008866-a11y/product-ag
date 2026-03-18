@@ -22,6 +22,7 @@ function App() {
     return localStorage.getItem('product-os-auth') === 'true';
   });
   const [currentView, setCurrentView] = useState<ViewType>('kanban');
+  const [stuckDaysThreshold, setStuckDaysThreshold] = useState<number>(7);
   const [initiatives, setInitiatives] = useState<Initiative[]>([]);
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [editingInitiativeId, setEditingInitiativeId] = useState<string | null>(null);
@@ -41,7 +42,7 @@ function App() {
 
   const stuckCount = initiatives.filter(init => {
     const daysInStage = differenceInDays(new Date(), new Date(init.stageUpdatedAt));
-    return daysInStage >= 7 && init.status !== 'Blocked' && init.status !== 'Deployed';
+    return daysInStage >= stuckDaysThreshold && init.status !== 'Blocked' && init.status !== 'Deployed';
   }).length;
 
   const handleQuickAdd = () => {
@@ -148,6 +149,7 @@ function App() {
             initiatives={initiatives} 
             onInitiativeClick={setEditingInitiativeId} 
             onMoveInitiative={handleMoveInitiative} 
+            stuckDaysThreshold={stuckDaysThreshold}
           />
         )}
         {currentView === 'roadmap' && (
@@ -157,10 +159,15 @@ function App() {
           <ListView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
         )}
         {currentView === 'stuck' && (
-          <StuckView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
+          <StuckView 
+            initiatives={initiatives} 
+            onInitiativeClick={setEditingInitiativeId} 
+            stuckDaysThreshold={stuckDaysThreshold}
+            onThresholdChange={setStuckDaysThreshold}
+          />
         )}
         {currentView === 'owner' && (
-          <OwnerView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
+          <OwnerView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} stuckDaysThreshold={stuckDaysThreshold} />
         )}
         {currentView === 'product' && (
           <ProductView initiatives={initiatives} />

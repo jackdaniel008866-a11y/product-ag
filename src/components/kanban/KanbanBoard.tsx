@@ -7,9 +7,10 @@ interface KanbanBoardProps {
   initiatives: Initiative[];
   onInitiativeClick: (id: string) => void;
   onMoveInitiative: (id: string, newStage: Stage) => void;
+  stuckDaysThreshold: number;
 }
 
-export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInitiative }: KanbanBoardProps) {
+export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInitiative, stuckDaysThreshold }: KanbanBoardProps) {
   return (
     <div className="h-full w-full flex space-x-4 overflow-x-auto pb-4 custom-scrollbar-x pr-8">
       {STAGES.filter(stage => stage !== 'Roadmap').map((stage) => {
@@ -21,6 +22,7 @@ export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInit
             initiatives={columnInitiatives} 
             onInitiativeClick={onInitiativeClick}
             onMoveInitiative={onMoveInitiative}
+            stuckDaysThreshold={stuckDaysThreshold}
           />
         );
       })}

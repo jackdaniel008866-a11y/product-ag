@@ -6,35 +6,54 @@ import InitiativeCard from '../kanban/InitiativeCard';
 interface StuckViewProps {
   initiatives: Initiative[];
   onInitiativeClick: (id: string) => void;
+  stuckDaysThreshold: number;
+  onThresholdChange: (days: number) => void;
 }
 
-export default function StuckView({ initiatives, onInitiativeClick }: StuckViewProps) {
-  // Only items stuck > 7 days or blocked
+export default function StuckView({ initiatives, onInitiativeClick, stuckDaysThreshold, onThresholdChange }: StuckViewProps) {
+  // Only items stuck > threshold days or blocked
   const stuckItems = initiatives.filter(init => {
-    const isStuckTimer = differenceInDays(new Date(), new Date(init.stageUpdatedAt)) >= 7;
+    const isStuckTimer = differenceInDays(new Date(), new Date(init.stageUpdatedAt)) >= stuckDaysThreshold;
     return init.status === 'Blocked' || (isStuckTimer && init.status !== 'Deployed' && init.status !== 'Parked');
   });
 
   return (
     <div className="max-w-4xl mx-auto py-4">
-      <div className="mb-6 flex items-start justify-between">
+      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-lg font-bold text-slate-800 flex items-center">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500 mr-2 shadow-[0_0_6px_rgba(239,68,68,0.5)]"></span>
             Attention Required
           </h2>
           <p className="text-sm text-slate-500 mt-1">
-            Initiatives that are officially blocked or haven't moved stages in over 7 days.
+            Initiatives that are officially blocked or haven't moved stages in over {stuckDaysThreshold} days.
           </p>
         </div>
-        <div className="bg-red-50 text-red-600 px-3 py-1.5 rounded-lg border border-red-100 font-semibold text-sm">
-          {stuckItems.length} Stuck Items
+        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+          <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+            {[3, 7, 14, 30].map(days => (
+              <button
+                key={days}
+                onClick={() => onThresholdChange(days)}
+                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+                  stuckDaysThreshold === days 
+                    ? 'bg-white text-teal-700 shadow-sm border border-slate-200' 
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                }`}
+              >
+                {days}d
+              </button>
+            ))}
+          </div>
+          <div className="bg-red-50 text-red-600 px-3 py-1.5 rounded-lg border border-red-100 font-semibold text-sm whitespace-nowrap">
+            {stuckItems.length} Stuck Items
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {stuckItems.map(init => (
-          <InitiativeCard key={init.id} initiative={init} onClick={() => onInitiativeClick(init.id)} />
+          <InitiativeCard key={init.id} initiative={init} onClick={() => onInitiativeClick(init.id)} stuckDaysThreshold={stuckDaysThreshold} />
         ))}
       </div>
       

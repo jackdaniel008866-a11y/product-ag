@@ -8,9 +8,10 @@ interface KanbanColumnProps {
   initiatives: Initiative[];
   onInitiativeClick: (id: string) => void;
   onMoveInitiative: (id: string, newStage: Stage) => void;
+  stuckDaysThreshold: number;
 }
 
-export default function KanbanColumn({ stage, initiatives, onInitiativeClick, onMoveInitiative }: KanbanColumnProps) {
+export default function KanbanColumn({ stage, initiatives, onInitiativeClick, onMoveInitiative, stuckDaysThreshold }: KanbanColumnProps) {
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -51,7 +52,7 @@ export default function KanbanColumn({ stage, initiatives, onInitiativeClick, on
       
       <div className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
         {initiatives.map((initiative) => (
-          <InitiativeCard key={initiative.id} initiative={initiative} onClick={() => onInitiativeClick(initiative.id)} />
+          <InitiativeCard key={initiative.id} initiative={initiative} onClick={() => onInitiativeClick(initiative.id)} stuckDaysThreshold={stuckDaysThreshold} />
         ))}
         {initiatives.length === 0 && (
           <div className="h-24 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center text-sm text-slate-400">

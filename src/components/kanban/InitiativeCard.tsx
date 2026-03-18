@@ -7,12 +7,13 @@ import { clsx } from 'clsx';
 interface InitiativeCardProps {
   initiative: Initiative;
   onClick?: () => void;
+  stuckDaysThreshold: number;
 }
 
-export default function InitiativeCard({ initiative, onClick }: InitiativeCardProps) {
+export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold }: InitiativeCardProps) {
   const { users } = useUsers();
   const daysInStage = differenceInDays(new Date(), new Date(initiative.stageUpdatedAt));
-  const isStuck = daysInStage >= 7 && initiative.status !== 'Blocked' && initiative.status !== 'Deployed';
+  const isStuck = daysInStage >= stuckDaysThreshold && initiative.status !== 'Blocked' && initiative.status !== 'Deployed';
   const owner = users[initiative.ownerId];
 
   const handleDragStart = (e: React.DragEvent) => {
