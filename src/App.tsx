@@ -5,7 +5,6 @@ import type { Initiative, Stage, Comment } from './types';
 import KanbanBoard from './components/kanban/KanbanBoard';
 import ListView from './components/views/ListView';
 import StuckView from './components/views/StuckView';
-import OwnerView from './components/views/OwnerView';
 import ProductView from './components/views/ProductView';
 import TeamView from './components/views/TeamView';
 import RoadmapView from './components/views/RoadmapView';
@@ -15,7 +14,7 @@ import PasswordPrompt from './components/auth/PasswordPrompt';
 import { useUsers } from './contexts/UserContext';
 import { supabase } from './lib/supabase';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'owner' | 'product' | 'team';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team';
 
 function App() {
   const [isAuthorized, setIsAuthorized] = useState(() => {
@@ -165,9 +164,6 @@ function App() {
             stuckDaysThreshold={stuckDaysThreshold}
             onThresholdChange={setStuckDaysThreshold}
           />
-        )}
-        {currentView === 'owner' && (
-          <OwnerView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} stuckDaysThreshold={stuckDaysThreshold} />
         )}
         {currentView === 'product' && (
           <ProductView initiatives={initiatives} />
