@@ -19,6 +19,12 @@ export interface Comment {
   isSystem?: boolean;
 }
 
+export interface StageTransition {
+  stage: Stage;
+  enteredAt: string;
+  exitedAt: string | null;
+}
+
 export interface Initiative {
   id: string;
   title: string;
@@ -38,4 +44,5 @@ export interface Initiative {
   stageUpdatedAt: string; // ISO date string
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
+  stageHistory?: StageTransition[];
 }

@@ -1,8 +1,8 @@
 
-import { LayoutDashboard, List, AlertOctagon, Layers, Users, Map, type LucideIcon } from 'lucide-react';
+import { LayoutDashboard, List, AlertOctagon, Layers, Users, Map, LineChart, type LucideIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights';
 
 interface ViewTabsProps {
   currentView: ViewType;
@@ -16,6 +16,7 @@ const TABS: Array<{id: string, label: string, icon: LucideIcon}> = [
   { id: 'list', label: 'List View', icon: List },
   { id: 'stuck', label: "What's Stuck", icon: AlertOctagon },
   { id: 'product', label: 'Product Focus', icon: Layers },
+  { id: 'insights', label: 'Direction Insights', icon: LineChart },
   { id: 'team', label: 'Manage Team', icon: Users },
 ];
 

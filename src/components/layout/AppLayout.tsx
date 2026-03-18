@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './Header';
 import ViewTabs from './ViewTabs';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights';
 
 interface AppLayoutProps {
   children: React.ReactNode;

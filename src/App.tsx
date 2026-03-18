@@ -6,6 +6,7 @@ import KanbanBoard from './components/kanban/KanbanBoard';
 import ListView from './components/views/ListView';
 import StuckView from './components/views/StuckView';
 import ProductView from './components/views/ProductView';
+import InsightsView from './components/views/InsightsView';
 import TeamView from './components/views/TeamView';
 import RoadmapView from './components/views/RoadmapView';
 import QuickAddModal from './components/modals/QuickAddModal';
@@ -14,7 +15,7 @@ import PasswordPrompt from './components/auth/PasswordPrompt';
 import { useUsers } from './contexts/UserContext';
 import { supabase } from './lib/supabase';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights';
 
 function App() {
   const [isAuthorized, setIsAuthorized] = useState(() => {
@@ -57,6 +58,7 @@ function App() {
       stageUpdatedAt: new Date().toISOString(),
       tags: newItem.tags || [],
       teamMembers: newItem.teamMembers || [],
+      stageHistory: [{ stage: newItem.stage, enteredAt: new Date().toISOString(), exitedAt: null }]
     };
     
     const { error } = await supabase.from('initiatives').insert([freshInitiative]);
@@ -68,7 +70,23 @@ function App() {
   };
 
   const handleUpdateInitiative = async (id: string, updates: Partial<Initiative>) => {
-    const payload = { ...updates, updatedAt: new Date().toISOString() };
+    const init = initiatives.find(i => i.id === id);
+    let updatedHistory = init?.stageHistory;
+    
+    if (init && updates.stage && updates.stage !== init.stage) {
+      updatedHistory = [
+        ...(init.stageHistory || [{ stage: init.stage, enteredAt: init.createdAt, exitedAt: null }]).map(h => h.exitedAt ? h : { ...h, exitedAt: new Date().toISOString() }),
+        { stage: updates.stage, enteredAt: new Date().toISOString(), exitedAt: null }
+      ];
+    }
+    
+    const payload = { 
+      // Ensure we don't accidentally overwrite if it wasn't modified
+      ...updates, 
+      updatedAt: new Date().toISOString(),
+      ...(updatedHistory && updates.stage !== init?.stage ? { stageHistory: updatedHistory } : {})
+    };
+    
     const { error } = await supabase.from('initiatives').update(payload).eq('id', id);
     if (!error) {
       setInitiatives(prev => prev.map(init => 
@@ -83,10 +101,16 @@ function App() {
     const currentInit = initiatives.find(i => i.id === id);
     if (!currentInit || currentInit.stage === newStage) return; // No change
 
+    const newHistory = [
+      ...(currentInit.stageHistory || [{ stage: currentInit.stage, enteredAt: currentInit.createdAt, exitedAt: null }]).map(h => h.exitedAt ? h : { ...h, exitedAt: new Date().toISOString() }),
+      { stage: newStage, enteredAt: new Date().toISOString(), exitedAt: null }
+    ];
+
     const payload = { 
       stage: newStage, 
       stageUpdatedAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString() 
+      updatedAt: new Date().toISOString(),
+      stageHistory: newHistory
     };
 
     // Optimistic UI update for instant feedback
@@ -167,6 +191,9 @@ function App() {
         )}
         {currentView === 'product' && (
           <ProductView initiatives={initiatives} />
+        )}
+        {currentView === 'insights' && (
+          <InsightsView initiatives={initiatives} />
         )}
         {currentView === 'team' && (
           <TeamView users={usersList} onAddUser={addUser} onRemoveUser={removeUser} />
