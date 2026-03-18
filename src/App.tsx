@@ -10,12 +10,16 @@ import ProductView from './components/views/ProductView';
 import TeamView from './components/views/TeamView';
 import QuickAddModal from './components/modals/QuickAddModal';
 import EditInitiativeModal from './components/modals/EditInitiativeModal';
+import PasswordPrompt from './components/auth/PasswordPrompt';
 import { useUsers } from './contexts/UserContext';
 import { supabase } from './lib/supabase';
 
 type ViewType = 'kanban' | 'list' | 'stuck' | 'owner' | 'product' | 'team';
 
 function App() {
+  const [isAuthorized, setIsAuthorized] = useState(() => {
+    return localStorage.getItem('product-os-auth') === 'true';
+  });
   const [currentView, setCurrentView] = useState<ViewType>('kanban');
   const [initiatives, setInitiatives] = useState<Initiative[]>([]);
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
@@ -82,6 +86,15 @@ function App() {
       console.error('Error deleting initiative:', error);
     }
   };
+
+  const handleAuthSuccess = () => {
+    localStorage.setItem('product-os-auth', 'true');
+    setIsAuthorized(true);
+  };
+
+  if (!isAuthorized) {
+    return <PasswordPrompt onSuccess={handleAuthSuccess} />;
+  }
 
   return (
     <AppLayout 
