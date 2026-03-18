@@ -1,18 +1,19 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, type FormEvent } from 'react';
-import type { Initiative, Product, InitiativeType, Priority, Stage, Status } from '../../types';
+import type { Initiative, Product, InitiativeType, Priority, Stage, Status, Comment } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
 import { STAGES } from '../../data/mockData';
-import { X, Save, MessageSquare } from 'lucide-react';
+import { X, Save, MessageSquare, Send } from 'lucide-react';
+import { format } from 'date-fns';
 
 interface EditInitiativeModalProps {
   initiative: Initiative | null;
   onClose: () => void;
   onUpdate: (id: string, updates: Partial<Initiative>) => void;
   onDelete: (id: string) => void;
+  onAddComment: (initiativeId: string, comment: Comment) => void;
 }
 
-export default function EditInitiativeModal({ initiative, onClose, onUpdate, onDelete }: EditInitiativeModalProps) {
+export default function EditInitiativeModal({ initiative, onClose, onUpdate, onDelete, onAddComment }: EditInitiativeModalProps) {
   const { users } = useUsers();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -22,8 +23,11 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
   const [ownerId, setOwnerId] = useState('u1');
   const [stage, setStage] = useState<Stage>('Discussion');
   const [status, setStatus] = useState<Status>('Active');
-  const [notes, setNotes] = useState('');
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
+  
+  // Comment Thread State
+  const [newCommentText, setNewCommentText] = useState('');
+  const [commentAuthorId, setCommentAuthorId] = useState('u1');
 
   // Sync state when initiative changes
   useEffect(() => {
@@ -36,8 +40,8 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
       setOwnerId(initiative.ownerId);
       setStage(initiative.stage);
       setStatus(initiative.status);
-      setNotes(initiative.notes || '');
       setTeamMembers(initiative.teamMembers || []);
+      setNewCommentText(''); // Clear draft on open
     }
   }, [initiative]);
 
@@ -57,7 +61,6 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
       ownerId,
       stage,
       status,
-      notes: notes.trim(),
       teamMembers,
       updatedAt: new Date().toISOString(),
     };
@@ -68,6 +71,20 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
 
     onUpdate(initiative.id, updates);
     onClose();
+  };
+
+  const handlePostComment = () => {
+    if (!newCommentText.trim() || !initiative) return;
+    
+    const comment: Comment = {
+      id: `comment-${Math.random().toString(36).substring(2, 9)}`,
+      authorId: commentAuthorId,
+      text: newCommentText.trim(),
+      createdAt: new Date().toISOString()
+    };
+    
+    onAddComment(initiative.id, comment);
+    setNewCommentText('');
   };
 
   return (
@@ -232,21 +249,74 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
 
             </div>
             
-            {/* Updates / Comments */}
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl mt-4">
-              <label className="flex items-center text-sm font-semibold text-slate-700 mb-2">
+            {/* Activity Log & Comments */}
+            <div className="mt-6 pt-6 border-t border-slate-100">
+              <h3 className="flex items-center text-sm font-bold text-slate-800 mb-4">
                 <MessageSquare size={16} className="mr-2 text-teal-600" />
-                Latest Update / Comments
-              </label>
-              <textarea 
-                rows={3}
-                value={notes}
-                onChange={e => setNotes(e.target.value)}
-                placeholder="What is the latest status here? Provide an update..."
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 text-slate-700 bg-white resize-y"
-              />
+                Activity Log
+              </h3>
+              
+              {/* Historical Comments */}
+              <div className="space-y-4 mb-6 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                {(!initiative.comments || initiative.comments.length === 0) ? (
+                  <p className="text-sm text-slate-400 italic text-center py-4 bg-slate-50 rounded-lg border border-slate-100 border-dashed">No comments yet. Start the conversation!</p>
+                ) : (
+                  initiative.comments.map(comment => {
+                    const author = Object.values(users).find(u => u.id === comment.authorId);
+                    return (
+                      <div key={comment.id} className="flex space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600 shrink-0 border border-white shadow-sm">
+                          {author?.initials || '??'}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline justify-between mb-1">
+                            <span className="font-semibold text-sm text-slate-800">{author?.name || 'Unknown'}</span>
+                            <span className="text-[10px] text-slate-400 font-medium">{format(new Date(comment.createdAt), 'MMM d, h:mm a')}</span>
+                          </div>
+                          <p className="text-sm text-slate-600 whitespace-pre-wrap leading-relaxed">{comment.text}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Add New Comment Form */}
+              <div className="bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:border-teal-400 focus-within:ring-1 focus-within:ring-teal-400 transition-all shadow-sm">
+                <div className="px-3 py-2 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs font-semibold text-slate-500">Posting as:</span>
+                    <select 
+                      value={commentAuthorId}
+                      onChange={e => setCommentAuthorId(e.target.value)}
+                      className="text-xs font-semibold text-slate-700 bg-transparent border-none focus:ring-0 cursor-pointer hover:text-teal-600 py-0 pl-0 pr-6"
+                    >
+                      {Object.values(users).map(user => (
+                        <option key={user.id} value={user.id}>{user.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <textarea 
+                  rows={2}
+                  value={newCommentText}
+                  onChange={e => setNewCommentText(e.target.value)}
+                  placeholder="Add a comment or update..."
+                  className="w-full px-3 py-3 border-none focus:outline-none focus:ring-0 text-sm text-slate-700 bg-white resize-y"
+                />
+                <div className="px-3 py-2 bg-slate-50 border-t border-slate-100 flex justify-end">
+                  <button 
+                    type="button" 
+                    onClick={handlePostComment}
+                    disabled={!newCommentText.trim()}
+                    className="flex items-center px-4 py-1.5 bg-slate-900 hover:bg-teal-600 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Send size={12} className="mr-1.5" />
+                    Post Comment
+                  </button>
+                </div>
+              </div>
             </div>
-            
           </div>
           
           <div className="p-5 border-t border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">

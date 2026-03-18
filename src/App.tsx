@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
 import { differenceInDays } from 'date-fns';
 import AppLayout from './components/layout/AppLayout';
-import type { Initiative, Stage } from './types';
+import type { Initiative, Stage, Comment } from './types';
 import KanbanBoard from './components/kanban/KanbanBoard';
 import ListView from './components/views/ListView';
 import StuckView from './components/views/StuckView';
 import OwnerView from './components/views/OwnerView';
 import ProductView from './components/views/ProductView';
 import TeamView from './components/views/TeamView';
+import RoadmapView from './components/views/RoadmapView';
 import QuickAddModal from './components/modals/QuickAddModal';
 import EditInitiativeModal from './components/modals/EditInitiativeModal';
 import PasswordPrompt from './components/auth/PasswordPrompt';
 import { useUsers } from './contexts/UserContext';
 import { supabase } from './lib/supabase';
 
-type ViewType = 'kanban' | 'list' | 'stuck' | 'owner' | 'product' | 'team';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'owner' | 'product' | 'team';
 
 function App() {
   const [isAuthorized, setIsAuthorized] = useState(() => {
@@ -108,6 +109,23 @@ function App() {
     }
   };
 
+  const handleAddComment = async (initiativeId: string, comment: Comment) => {
+    const currentInit = initiatives.find(i => i.id === initiativeId);
+    if (!currentInit) return;
+    
+    const newComments = [...(currentInit.comments || []), comment];
+
+    // Optimistic UI update
+    setInitiatives(prev => prev.map(init => 
+      init.id === initiativeId ? { ...init, comments: newComments } : init
+    ));
+
+    const { error } = await supabase.from('initiatives').update({ comments: newComments }).eq('id', initiativeId);
+    if (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
   const handleAuthSuccess = () => {
     localStorage.setItem('product-os-auth', 'true');
     setIsAuthorized(true);
@@ -131,6 +149,9 @@ function App() {
             onInitiativeClick={setEditingInitiativeId} 
             onMoveInitiative={handleMoveInitiative} 
           />
+        )}
+        {currentView === 'roadmap' && (
+          <RoadmapView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
         )}
         {currentView === 'list' && (
           <ListView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
@@ -160,6 +181,7 @@ function App() {
         onClose={() => setEditingInitiativeId(null)}
         onUpdate={handleUpdateInitiative}
         onDelete={handleDeleteInitiative}
+        onAddComment={handleAddComment}
       />
     </AppLayout>
   );

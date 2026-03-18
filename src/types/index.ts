@@ -11,6 +11,13 @@ export interface User {
   initials: string;
 }
 
+export interface Comment {
+  id: string;
+  authorId: string;
+  text: string;
+  createdAt: string; // ISO string
+}
+
 export interface Initiative {
   id: string;
   title: string;
@@ -23,6 +30,7 @@ export interface Initiative {
   status: Status;
   blockerReason?: string;
   notes?: string;
+  comments?: Comment[];
   tags?: string[];
   teamMembers?: string[];
   stageUpdatedAt: string; // ISO date string

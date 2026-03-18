@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import type { Initiative, Product, InitiativeType, Priority } from '../../types';
+import type { Initiative, Product, InitiativeType, Priority, Stage } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
+import { STAGES } from '../../data/mockData';
 import { X } from 'lucide-react';
 
 interface QuickAddModalProps {
@@ -18,6 +19,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
   const [type, setType] = useState<InitiativeType>('Feature');
   const [priority, setPriority] = useState<Priority>('Medium');
   const [ownerId, setOwnerId] = useState('u1'); // Default to Nitin
+  const [stage, setStage] = useState<Stage>('Discussion');
 
   if (!isOpen) return null;
 
@@ -32,7 +34,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
       type,
       priority,
       ownerId,
-      stage: 'Discussion',
+      stage,
       status: 'Active',
       tags: [],
     });
@@ -44,6 +46,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
     setType('Feature');
     setPriority('Medium');
     setOwnerId('u1');
+    setStage('Discussion');
     onClose();
   };
 
@@ -137,6 +140,17 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
                   <option value="High">High</option>
                   <option value="Medium">Medium</option>
                   <option value="Low">Low</option>
+                </select>
+              </div>
+
+              <div className="col-span-2">
+                <label className="block text-sm font-semibold text-teal-700 mb-1">Phase</label>
+                <select 
+                  value={stage} 
+                  onChange={e => setStage(e.target.value as Stage)}
+                  className="w-full px-3 py-2 border-2 border-teal-200 rounded-lg focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-500/50 text-teal-800 bg-teal-50 font-medium"
+                >
+                  {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
             </div>
