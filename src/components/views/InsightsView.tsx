@@ -58,6 +58,11 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
   if (flowScore === 100) positiveSignals.push('Healthy forward progression pipeline');
   else if (flowScore === 0 && totalMoves > 0) riskSignals.push('High volume of backward or parked transitions');
 
+  if (totalMoves > 0 && flowScoreRatio < 0.3) {
+    riskSignals.push('High pipeline churn (Initiatives bouncing backwards or stalling)');
+    suggestedActions.push('Improve requirement clarity before pushing to Execution to reduce churn');
+  }
+
   // 2. STAGE BALANCE LOGIC
   let balanceScore = 100;
   if (totalActive > 0) {
@@ -84,6 +89,11 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
       riskSignals.push('Testing / QA visibility issue (No active testing items)');
       suggestedActions.push('Validate missing Testing stage workflow');
     }
+    if (executionCount > Math.max(3, totalActive * 0.4)) {
+      balanceScore -= 20;
+      riskSignals.push('Execution overload (Too much work in progress actively building)');
+      suggestedActions.push('Enforce strict WIP limits to unblock overloaded engineering stages');
+    }
     
     if (executionCount >= 1 && testingCount >= 1 && deployedCount >= 1) {
       positiveSignals.push('Balanced pipeline across delivery stages');
@@ -100,6 +110,7 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
   };
   
   let stuckCount = 0;
+  let criticalAgingCount = 0;
   let stuckInPlanning = 0;
   let stuckInExecution = 0;
   let stuckInTesting = 0;
@@ -107,11 +118,17 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
   initiatives.forEach(init => {
     if (init.stage === 'Parked') return;
     const days = differenceInDays(new Date(), new Date(init.stageUpdatedAt));
-    if (days > thresholds[init.stage]) {
+    const threshold = thresholds[init.stage];
+    
+    if (days > threshold) {
       stuckCount++;
       if (init.stage === 'Planning') stuckInPlanning++;
       if (init.stage === 'Execution') stuckInExecution++;
       if (init.stage === 'Testing') stuckInTesting++;
+    }
+    
+    if (days > threshold * 2) {
+      criticalAgingCount++;
     }
   });
 
@@ -136,6 +153,11 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
     suggestedActions.push('Address Execution blockers with engineering team');
   } else if (stuckInTesting > Math.max(stuckInExecution, stuckInPlanning) && stuckInTesting > 0) {
     riskSignals.push('Release delay (Most stuck in Testing)');
+  }
+  
+  if (criticalAgingCount > 0) {
+    riskSignals.push(`Critical aging (${criticalAgingCount} initiatives severely neglected)`);
+    suggestedActions.push('Kill, park, or escalate severely aging initiatives immediately');
   }
 
   if (stuckScore === 100 && totalActive > 0) positiveSignals.push('Fast movement (Low stuck ratio)');
@@ -163,7 +185,8 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
   
   if (deployedInTimeframe === 0 && enteredExecutionInTimeframe > 0) {
     deliveryScore = 0;
-    riskSignals.push('No delivery signal (0 deployments recently)');
+    riskSignals.push('No delivery signal (Critical issue: 0 deployments recently)');
+    suggestedActions.push('Investigate final-mile deployment blockers holding back releases');
   } else if (execToDepRatio >= 0.4) {
     deliveryScore = 100;
     positiveSignals.push('Strong conversion from Execution to Deployed');
@@ -199,10 +222,10 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
   if (parkedFromPlanning > 0) riskSignals.push('Unclear requirements (Items parked directly from Planning)');
   if (parkedFromExecution > 0) riskSignals.push('Wasted effort (Items parked out of active Execution)');
 
-  // Truncate signals to max 3
-  const topPositive = positiveSignals.slice(0, 3);
-  const topRisk = riskSignals.slice(0, 3);
-  const topActions = suggestedActions.slice(0, 3);
+  // Truncate signals to max 5
+  const topPositive = positiveSignals.slice(0, 5);
+  const topRisk = riskSignals.slice(0, 5);
+  const topActions = suggestedActions.slice(0, 5);
 
   // FINAL SCORING MODEL
   const finalScore = Math.round(
