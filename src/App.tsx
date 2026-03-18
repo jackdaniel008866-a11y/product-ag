@@ -25,8 +25,12 @@ function App() {
   useEffect(() => {
     supabase.from('initiatives').select('*').order('createdAt', { ascending: false })
       .then(({ data, error }) => {
-        if (error) console.error('Error fetching initiatives', error);
-        else setInitiatives(data || []);
+        if (error) {
+          console.error('CRITICAL: Error fetching initiatives from Supabase:', error);
+          alert(`Database Error: ${error.message}. Check browser console for details.`);
+        } else {
+          setInitiatives(data || []);
+        }
       });
   }, []);
 
