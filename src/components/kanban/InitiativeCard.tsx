@@ -15,11 +15,18 @@ export default function InitiativeCard({ initiative, onClick }: InitiativeCardPr
   const isStuck = daysInStage >= 7 && initiative.status !== 'Blocked' && initiative.status !== 'Done';
   const owner = users[initiative.ownerId];
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.dataTransfer.setData('initiativeId', initiative.id);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
   return (
     <div 
       onClick={onClick}
+      draggable={true}
+      onDragStart={handleDragStart}
       className={clsx(
-        "bg-white rounded-xl p-3 border shadow-sm cursor-grab hover:shadow-md transition-all",
+        "bg-white rounded-xl p-3 border shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-all group",
         initiative.status === 'Blocked' ? 'border-red-300' : 'border-slate-200'
       )}
     >

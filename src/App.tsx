@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { differenceInDays } from 'date-fns';
 import AppLayout from './components/layout/AppLayout';
-import type { Initiative } from './types';
+import type { Initiative, Stage } from './types';
 import KanbanBoard from './components/kanban/KanbanBoard';
 import ListView from './components/views/ListView';
 import StuckView from './components/views/StuckView';
@@ -78,6 +78,27 @@ function App() {
     }
   };
 
+  const handleMoveInitiative = async (id: string, newStage: Stage) => {
+    const currentInit = initiatives.find(i => i.id === id);
+    if (!currentInit || currentInit.stage === newStage) return; // No change
+
+    const payload = { 
+      stage: newStage, 
+      stageUpdatedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString() 
+    };
+
+    // Optimistic UI update for instant feedback
+    setInitiatives(prev => prev.map(init => 
+      init.id === id ? { ...init, ...payload } : init
+    ));
+
+    const { error } = await supabase.from('initiatives').update(payload).eq('id', id);
+    if (error) {
+      console.error('Error moving initiative:', error);
+    }
+  };
+
   const handleDeleteInitiative = async (id: string) => {
     const { error } = await supabase.from('initiatives').delete().eq('id', id);
     if (!error) {
@@ -105,7 +126,11 @@ function App() {
     >
       <div className="h-full">
         {currentView === 'kanban' && (
-          <KanbanBoard initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
+          <KanbanBoard 
+            initiatives={initiatives} 
+            onInitiativeClick={setEditingInitiativeId} 
+            onMoveInitiative={handleMoveInitiative} 
+          />
         )}
         {currentView === 'list' && (
           <ListView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
