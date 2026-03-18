@@ -79,6 +79,12 @@ export default function RoadmapView({ initiatives, onInitiativeClick }: RoadmapV
                           }`}>
                             {initiative.status}
                           </span>
+                          {initiative.targetDate && (
+                            <span className="flex items-center text-[10px] uppercase font-bold tracking-wider text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded shadow-sm border border-indigo-200">
+                              <Calendar size={10} className="mr-1 shrink-0" />
+                              Target: {format(new Date(initiative.targetDate), 'MMM d, yyyy')}
+                            </span>
+                          )}
                         </div>
                         <h4 className="text-base font-semibold text-slate-900 mb-1.5 group-hover:text-teal-600 transition-colors line-clamp-2 md:line-clamp-1">
                           {initiative.title}
@@ -108,13 +114,6 @@ export default function RoadmapView({ initiatives, onInitiativeClick }: RoadmapV
                           <Clock size={12} className="mr-1.5 shrink-0" />
                           <span>Added {format(new Date(initiative.stageUpdatedAt), 'MMM d, yyyy')}</span>
                         </div>
-                        
-                        {initiative.targetDate && (
-                          <div className="flex items-center text-xs text-indigo-600 font-bold bg-indigo-50 px-2 py-1.5 rounded-lg border border-indigo-100">
-                            <Calendar size={12} className="mr-1.5 shrink-0" />
-                            <span>Target: {format(new Date(initiative.targetDate), 'MMM d, yyyy')}</span>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>

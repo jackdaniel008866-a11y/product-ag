@@ -16,6 +16,7 @@ export interface Comment {
   authorId: string;
   text: string;
   createdAt: string; // ISO string
+  isSystem?: boolean;
 }
 
 export interface Initiative {

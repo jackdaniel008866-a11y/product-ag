@@ -2,7 +2,7 @@ import { useState, useEffect, type FormEvent } from 'react';
 import type { Initiative, Product, InitiativeType, Priority, Stage, Status, Comment } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
 import { STAGES } from '../../data/mockData';
-import { X, Save, MessageSquare, Send } from 'lucide-react';
+import { X, Save, MessageSquare, Send, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface EditInitiativeModalProps {
@@ -53,6 +53,32 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
     e.preventDefault();
     if (!title.trim()) return;
 
+    const finalTargetDate = targetDate ? targetDate : undefined;
+    const existingDate = initiative.targetDate || undefined;
+    
+    let updatedComments = initiative.comments || [];
+    
+    if (finalTargetDate !== existingDate) {
+      let sysMsg = '';
+      if (!existingDate && finalTargetDate) {
+        sysMsg = `🎯 Target date was set to ${format(new Date(finalTargetDate), 'MMM d, yyyy')}`;
+      } else if (existingDate && !finalTargetDate) {
+        sysMsg = `🎯 Target date was removed (previously ${format(new Date(existingDate), 'MMM d, yyyy')})`;
+      } else if (existingDate && finalTargetDate) {
+        sysMsg = `🎯 Target date changed from ${format(new Date(existingDate), 'MMM d, yyyy')} to ${format(new Date(finalTargetDate), 'MMM d, yyyy')}`;
+      }
+      
+      const sysComment: Comment = {
+        id: `sys-${Math.random().toString(36).substring(2, 9)}`,
+        authorId: 'system',
+        text: sysMsg,
+        createdAt: new Date().toISOString(),
+        isSystem: true
+      };
+      
+      updatedComments = [...updatedComments, sysComment];
+    }
+
     // Check if stage changed to update the timer
     const updates: Partial<Initiative> = {
       title: title.trim(),
@@ -63,10 +89,14 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
       ownerId,
       stage,
       status,
-      targetDate: targetDate ? targetDate : undefined,
+      targetDate: finalTargetDate,
       teamMembers,
       updatedAt: new Date().toISOString(),
     };
+
+    if (updatedComments !== initiative.comments) {
+      updates.comments = updatedComments;
+    }
 
     if (stage !== initiative.stage) {
       updates.stageUpdatedAt = new Date().toISOString();
@@ -278,6 +308,23 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
                   <p className="text-sm text-slate-400 italic text-center py-4 bg-slate-50 rounded-lg border border-slate-100 border-dashed">No comments yet. Start the conversation!</p>
                 ) : (
                   initiative.comments.map(comment => {
+                    if (comment.isSystem) {
+                      return (
+                        <div key={comment.id} className="flex space-x-3 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100/50">
+                          <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-500 shrink-0 border border-white shadow-sm">
+                            <Calendar size={14} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-baseline justify-between mb-1">
+                              <span className="font-semibold text-sm text-indigo-900">System Activity</span>
+                              <span className="text-[10px] text-indigo-400 font-medium">{format(new Date(comment.createdAt), 'MMM d, h:mm a')}</span>
+                            </div>
+                            <p className="text-sm text-indigo-700 whitespace-pre-wrap leading-relaxed font-medium">{comment.text}</p>
+                          </div>
+                        </div>
+                      );
+                    }
+
                     const author = Object.values(users).find(u => u.id === comment.authorId);
                     return (
                       <div key={comment.id} className="flex space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
