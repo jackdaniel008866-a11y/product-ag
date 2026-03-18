@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  /* Utilizing the requested theme colors in a light UI */
+  --color-slate-50: #f4f7ff;     /* Light shade of bright blue for app backgrounds */
+  --color-slate-100: #eef2ff;    /* Slightly darker for hover states */
+  --color-slate-200: #e2e8f0;    /* Default borders */
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;    /* Secondary text */
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #222229;    /* Requested dark hex for primary text */
+  
+  --color-white: #ffffff;        /* Cards and surfaces remain properly visible in white */
+  
+  --color-teal-500: #1967ff;     /* Requested bright blue for primary brand elements */
+  --color-teal-600: #1052db;     /* Primary hover */
+  
+  --color-red-500: #ef4444;
+  --color-amber-500: #f59e0b;
+  --color-emerald-500: #10b981;
+  --color-blue-500: #3b82f6;
+  
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+body {
+  background-color: var(--color-slate-50);
+  color: var(--color-slate-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.custom-scrollbar-x::-webkit-scrollbar {
+  height: 8px;
+}
+.custom-scrollbar-x::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar-x::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.custom-scrollbar-x::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
