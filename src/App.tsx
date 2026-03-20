@@ -210,7 +210,18 @@ function App() {
     await supabase.from('notifications').update({ is_read: true }).eq('id', id);
   };
 
-  const handleNotificationClick = (initiativeId: string) => {
+  const handleNotificationClick = async (initiativeId: string) => {
+    const exists = initiatives.some(i => i.id === initiativeId);
+    if (!exists) {
+      alert("This initiative has been safely deleted by a team member.");
+      const notifsToRemove = notifications.filter(n => n.initiative_id === initiativeId);
+      if (notifsToRemove.length > 0) {
+        const ids = notifsToRemove.map(n => n.id);
+        setNotifications(prev => prev.filter(n => !ids.includes(n.id)));
+        await supabase.from('notifications').delete().in('id', ids);
+      }
+      return;
+    }
     setEditingInitiativeId(initiativeId);
   };
 
