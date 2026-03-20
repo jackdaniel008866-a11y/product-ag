@@ -27,7 +27,30 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
     setDateError(null);
     supabase.from('direction_scores').select('*').gte('date', startDate).lte('date', endDate).order('date', { ascending: true })
       .then(({data, error}) => {
-         if (data && !error) setHistoricalScores(data);
+         if (data && !error && data.length > 0) {
+           const parsedScores: DirectionScore[] = [];
+           const scoreMap = new Map();
+           data.forEach(d => scoreMap.set(d.date, d.score));
+           
+           const startObj = parseISO(startDate);
+           const endObj = parseISO(endDate);
+           const daysDiff = differenceInDays(endObj, startObj);
+           
+           let lastKnownScore = data[0].score;
+           for (let i = 0; i <= daysDiff; i++) {
+               const currentDateObj = new Date(startObj);
+               currentDateObj.setDate(startObj.getDate() + i);
+               const currentDateStr = currentDateObj.toISOString().split('T')[0];
+               
+               if (scoreMap.has(currentDateStr)) {
+                   lastKnownScore = scoreMap.get(currentDateStr);
+               }
+               parsedScores.push({ date: currentDateStr, score: lastKnownScore });
+           }
+           setHistoricalScores(parsedScores);
+         } else {
+           setHistoricalScores([]);
+         }
       });
   }, [startDate, endDate]);
 

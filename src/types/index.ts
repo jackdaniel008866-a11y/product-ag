@@ -51,7 +51,7 @@ export interface Initiative {
   status: Status;
   blockerReason?: string;
   notes?: string;
-  targetDate?: string; // ISO date string or yyyy-mm-dd format
+  targetDate?: string | null; // ISO date string or yyyy-mm-dd format
   comments?: Comment[];
   tags?: string[];
   teamMembers?: string[];

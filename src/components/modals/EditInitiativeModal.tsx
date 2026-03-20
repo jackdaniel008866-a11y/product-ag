@@ -19,6 +19,7 @@ interface EditInitiativeModalProps {
 export default function EditInitiativeModal({ initiative, currentUserId, currentUserMetadata, onClose, onUpdate, onDelete, onAddComment }: EditInitiativeModalProps) {
   const { users } = useUsers();
   const [title, setTitle] = useState('');
+  const [titleError, setTitleError] = useState(false);
   const [description, setDescription] = useState('');
   const [product, setProduct] = useState<Product>('Surbo');
   const [type, setType] = useState<InitiativeType>('Feature');
@@ -57,9 +58,13 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim()) {
+      setTitleError(true);
+      return;
+    }
+    setTitleError(false);
 
-    const finalTargetDate = targetDate ? targetDate : undefined;
+    const finalTargetDate = targetDate ? targetDate : null;
     const existingDate = initiative.targetDate || undefined;
     
     let updatedComments = initiative.comments || [];
@@ -125,7 +130,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     onAddComment(initiative.id, comment);
     
     // Process tags
-    const taggedUsers = Object.values(users).filter(u => newCommentText.includes(`@${u.name}`));
+    const taggedUsers = Object.values(users).filter(u => new RegExp(`@${u.name}(\\b|\\s|$)`, 'i').test(newCommentText));
     if (taggedUsers.length > 0) {
       const payloads = taggedUsers.map(u => ({
         user_id: u.id,
@@ -146,10 +151,10 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
 
     const cursorPosition = e.target.selectionStart;
     const textBeforeCursor = text.slice(0, cursorPosition);
-    // Match @ followed by letters, up to the cursor
-    const match = textBeforeCursor.match(/@([a-zA-Z\s]*)$/);
+    // Match @ followed by letters, up to the cursor (Must be empty space before it)
+    const match = textBeforeCursor.match(/(?:^|\s)@([a-zA-Z\s]*)$/);
     
-    if (match && !match[0].includes(' ')) {
+    if (match && !match[1].includes('  ')) {
       setShowTagMenu(true);
       setTagSearchText(match[1].toLowerCase());
     } else {
@@ -163,9 +168,9 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     const textBeforeCursor = newCommentText.slice(0, cursorPosition);
     const textAfterCursor = newCommentText.slice(cursorPosition);
     
-    const match = textBeforeCursor.match(/@([a-zA-Z\s]*)$/);
-    if (match && !match[0].includes(' ')) {
-      const replaceStart = cursorPosition - match[0].length;
+    const match = textBeforeCursor.match(/(?:^|\s)@([a-zA-Z\s]*)$/);
+    if (match) {
+      const replaceStart = cursorPosition - match[1].length - 1; // -1 for the @ symbol
       const mappedText = newCommentText.slice(0, replaceStart) + `@${userName} ` + textAfterCursor;
       setNewCommentText(mappedText);
     }
@@ -199,10 +204,13 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Title *</label>
                 <input 
                   type="text" 
-                  required
                   value={title}
-                  onChange={e => setTitle(e.target.value)}
-                  className="w-full px-3 py-2 font-medium text-lg border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 text-slate-800 bg-white"
+                  onChange={e => {
+                    setTitle(e.target.value);
+                    if (e.target.value.trim()) setTitleError(false);
+                  }}
+                  placeholder="Provide a clear, descriptive title"
+                  className={`w-full px-3 py-2 font-medium text-lg border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 transition-colors ${titleError ? 'border-red-500 text-red-900 bg-red-50' : 'border-slate-300 text-slate-800 bg-white'}`}
                 />
               </div>
               
