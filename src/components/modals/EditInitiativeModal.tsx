@@ -8,13 +8,14 @@ import { format } from 'date-fns';
 interface EditInitiativeModalProps {
   initiative: Initiative | null;
   currentUserId: string;
+  currentUserMetadata: Record<string, any>;
   onClose: () => void;
   onUpdate: (id: string, updates: Partial<Initiative>) => void;
   onDelete: (id: string) => void;
   onAddComment: (initiativeId: string, comment: Comment) => void;
 }
 
-export default function EditInitiativeModal({ initiative, currentUserId, onClose, onUpdate, onDelete, onAddComment }: EditInitiativeModalProps) {
+export default function EditInitiativeModal({ initiative, currentUserId, currentUserMetadata, onClose, onUpdate, onDelete, onAddComment }: EditInitiativeModalProps) {
   const { users } = useUsers();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -326,14 +327,20 @@ export default function EditInitiativeModal({ initiative, currentUserId, onClose
                     }
 
                     const author = Object.values(users).find(u => u.id === comment.authorId);
+                    
+                    // Fallback to active session metadata if they are the author but aren't cached locally yet
+                    const isMe = comment.authorId === currentUserId;
+                    const displayName = author?.name || (isMe ? currentUserMetadata.full_name : 'Unknown');
+                    const displayInitials = author?.initials || (isMe ? `${currentUserMetadata.first_name?.[0] || ''}${currentUserMetadata.last_name?.[0] || ''}`.toUpperCase() || '?' : '??');
+
                     return (
                       <div key={comment.id} className="flex space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600 shrink-0 border border-white shadow-sm">
-                          {author?.initials || '??'}
+                          {displayInitials}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-baseline justify-between mb-1">
-                            <span className="font-semibold text-sm text-slate-800">{author?.name || 'Unknown'}</span>
+                            <span className="font-semibold text-sm text-slate-800">{displayName}</span>
                             <span className="text-[10px] text-slate-400 font-medium">{format(new Date(comment.createdAt), 'MMM d, h:mm a')}</span>
                           </div>
                           <p className="text-sm text-slate-600 whitespace-pre-wrap leading-relaxed">{comment.text}</p>
@@ -351,9 +358,11 @@ export default function EditInitiativeModal({ initiative, currentUserId, onClose
                     <span className="text-xs font-semibold text-slate-500">Posting as:</span>
                     <div className="flex items-center space-x-1.5 bg-white border border-slate-200 px-2 py-0.5 rounded shadow-sm">
                       <div className="w-4 h-4 rounded-full bg-teal-100 flex items-center justify-center text-[8px] font-bold text-teal-700 border border-teal-200">
-                        {users[currentUserId]?.initials || '?'}
+                        {users[currentUserId]?.initials || `${currentUserMetadata.first_name?.[0] || ''}${currentUserMetadata.last_name?.[0] || ''}`.toUpperCase() || '?'}
                       </div>
-                      <span className="text-xs font-bold text-teal-700">{users[currentUserId]?.name || 'You'}</span>
+                      <span className="text-xs font-bold text-teal-700">
+                        {users[currentUserId]?.name || currentUserMetadata.full_name || 'You'}
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -41,9 +41,24 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Fetch Initiatives
+  // Fetch Initiatives & Sync User
   useEffect(() => {
     if (!session) return;
+
+    // Graceful Profile Auto-sync
+    const syncProfile = async () => {
+      const { user } = session;
+      if (user && user.user_metadata?.full_name) {
+        // Attempt to seamlessly insert/update them into the team dictionary now that they are verified and authorized
+        await supabase.from('users').upsert({
+          id: user.id,
+          name: user.user_metadata.full_name,
+          initials: `${user.user_metadata.first_name?.[0] || ''}${user.user_metadata.last_name?.[0] || ''}`.toUpperCase()
+        }, { onConflict: 'id' });
+      }
+    };
+    syncProfile();
+
     supabase.from('initiatives').select('*').order('createdAt', { ascending: false })
       .then(({ data, error }) => {
         if (error) {
@@ -225,6 +240,7 @@ function App() {
 
       <EditInitiativeModal
         initiative={initiatives.find(i => i.id === editingInitiativeId) || null}
+        currentUserMetadata={session.user.user_metadata || {}}
         currentUserId={session.user.id}
         onClose={() => setEditingInitiativeId(null)}
         onUpdate={handleUpdateInitiative}
