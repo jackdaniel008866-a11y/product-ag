@@ -32,7 +32,7 @@ export default function RoadmapView({ initiatives, onInitiativeClick }: RoadmapV
   }
 
   return (
-    <div className="h-full flex flex-col space-y-8 overflow-y-auto pb-8 pr-4 custom-scrollbar lg:pr-8 animate-in fade-in duration-300">
+    <div className="flex flex-col space-y-8 pb-8 pr-2 lg:pr-4 animate-in fade-in duration-300">
       {products.map(product => {
         const items = roadmapItems.filter(i => i.product === product);
         
