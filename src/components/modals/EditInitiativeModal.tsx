@@ -308,7 +308,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
                 {(!initiative.comments || initiative.comments.length === 0) ? (
                   <p className="text-sm text-slate-400 italic text-center py-4 bg-slate-50 rounded-lg border border-slate-100 border-dashed">No comments yet. Start the conversation!</p>
                 ) : (
-                  initiative.comments.map(comment => {
+                  [...initiative.comments].reverse().map(comment => {
                     if (comment.isSystem) {
                       return (
                         <div key={comment.id} className="flex space-x-3 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100/50">
