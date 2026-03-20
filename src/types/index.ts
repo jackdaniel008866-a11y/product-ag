@@ -30,6 +30,15 @@ export interface DirectionScore {
   score: number;
 }
 
+export interface AppNotification {
+  id: string;
+  user_id: string;
+  message: string;
+  initiative_id: string;
+  is_read: boolean;
+  created_at: string;
+}
+
 export interface Initiative {
   id: string;
   title: string;

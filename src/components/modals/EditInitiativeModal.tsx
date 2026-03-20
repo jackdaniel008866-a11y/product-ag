@@ -1,8 +1,9 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import type { Initiative, Product, InitiativeType, Priority, Stage, Status, Comment } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
 import { STAGES } from '../../data/mockData';
-import { X, Save, MessageSquare, Send, Calendar } from 'lucide-react';
+import { X, Save, MessageSquare, Send, Calendar, AtSign } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 import { format } from 'date-fns';
 
 interface EditInitiativeModalProps {
@@ -30,6 +31,10 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
   
   // Comment Thread State
   const [newCommentText, setNewCommentText] = useState('');
+  // Tagging State
+  const [showTagMenu, setShowTagMenu] = useState(false);
+  const [tagSearchText, setTagSearchText] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Sync state when initiative changes
   useEffect(() => {
@@ -107,7 +112,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     onClose();
   };
 
-  const handlePostComment = () => {
+  const handlePostComment = async () => {
     if (!newCommentText.trim() || !initiative) return;
     
     const comment: Comment = {
@@ -118,8 +123,57 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     };
     
     onAddComment(initiative.id, comment);
+    
+    // Process tags
+    const taggedUsers = Object.values(users).filter(u => newCommentText.includes(`@${u.name}`));
+    if (taggedUsers.length > 0) {
+      const payloads = taggedUsers.map(u => ({
+        user_id: u.id,
+        initiative_id: initiative.id,
+        message: `${currentUserMetadata.full_name || users[currentUserId]?.name || 'Someone'} tagged you in a comment on "${initiative.title}"`
+      }));
+      const { error } = await supabase.from('notifications').insert(payloads);
+      if (error) console.error('Error dispatching notifications:', error);
+    }
+
     setNewCommentText('');
+    setShowTagMenu(false);
   };
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    setNewCommentText(text);
+
+    const cursorPosition = e.target.selectionStart;
+    const textBeforeCursor = text.slice(0, cursorPosition);
+    // Match @ followed by letters, up to the cursor
+    const match = textBeforeCursor.match(/@([a-zA-Z\s]*)$/);
+    
+    if (match && !match[0].includes(' ')) {
+      setShowTagMenu(true);
+      setTagSearchText(match[1].toLowerCase());
+    } else {
+      setShowTagMenu(false);
+    }
+  };
+
+  const insertTag = (userName: string) => {
+    if (!textareaRef.current) return;
+    const cursorPosition = textareaRef.current.selectionStart;
+    const textBeforeCursor = newCommentText.slice(0, cursorPosition);
+    const textAfterCursor = newCommentText.slice(cursorPosition);
+    
+    const match = textBeforeCursor.match(/@([a-zA-Z\s]*)$/);
+    if (match && !match[0].includes(' ')) {
+      const replaceStart = cursorPosition - match[0].length;
+      const mappedText = newCommentText.slice(0, replaceStart) + `@${userName} ` + textAfterCursor;
+      setNewCommentText(mappedText);
+    }
+    setShowTagMenu(false);
+    textareaRef.current.focus();
+  };
+
+  const filteredUsers = Object.values(users).filter(u => u.name.toLowerCase().includes(tagSearchText));
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-0 sm:p-4">
@@ -366,13 +420,41 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
                     </div>
                   </div>
                 </div>
-                <textarea 
-                  rows={2}
-                  value={newCommentText}
-                  onChange={e => setNewCommentText(e.target.value)}
-                  placeholder="Add a comment or update..."
-                  className="w-full px-3 py-3 border-none focus:outline-none focus:ring-0 text-sm text-slate-700 bg-white resize-y"
-                />
+                <div className="relative">
+                  {/* Tagging Dropdown */}
+                  {showTagMenu && filteredUsers.length > 0 && (
+                    <div className="absolute bottom-full mb-1 left-2 w-48 bg-white border border-slate-200 shadow-xl rounded-lg overflow-hidden z-20 animate-in slide-in-from-bottom-2 duration-150">
+                      <div className="bg-slate-50 px-3 py-1.5 border-b border-slate-100 flex items-center space-x-1.5 break-words">
+                        <AtSign size={12} className="text-teal-600 shrink-0" />
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Tag Team Member</span>
+                      </div>
+                      <div className="max-h-40 overflow-y-auto custom-scrollbar">
+                        {filteredUsers.map(u => (
+                          <button
+                            key={u.id}
+                            type="button"
+                            onClick={() => insertTag(u.name)}
+                            className="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center space-x-2 transition-colors border-b border-slate-50 last:border-0"
+                          >
+                            <div className="w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center text-[8px] font-bold text-slate-600 shrink-0">
+                              {u.initials}
+                            </div>
+                            <span className="text-sm font-medium text-slate-700 truncate">{u.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <textarea 
+                    ref={textareaRef}
+                    rows={2}
+                    value={newCommentText}
+                    onChange={handleCommentChange}
+                    placeholder="Add a comment... Type @ to tag someone"
+                    className="w-full px-3 py-3 border-none focus:outline-none focus:ring-0 text-sm text-slate-700 bg-white resize-y"
+                  />
+                </div>
                 <div className="px-3 py-2 bg-slate-50 border-t border-slate-100 flex justify-end">
                   <button 
                     type="button" 

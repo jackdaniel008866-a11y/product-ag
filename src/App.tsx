@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { differenceInDays } from 'date-fns';
 import AppLayout from './components/layout/AppLayout';
-import type { Initiative, Stage, Comment } from './types';
+import type { Initiative, Stage, Comment, AppNotification } from './types';
 import KanbanBoard from './components/kanban/KanbanBoard';
 import ListView from './components/views/ListView';
 import StuckView from './components/views/StuckView';
@@ -26,6 +26,7 @@ function App() {
   const [initiatives, setInitiatives] = useState<Initiative[]>([]);
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [editingInitiativeId, setEditingInitiativeId] = useState<string | null>(null);
+  const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const { usersList, removeUser } = useUsers();
 
   useEffect(() => {
@@ -67,6 +68,30 @@ function App() {
           setInitiatives(data || []);
         }
       });
+      
+    // Fetch Notifications
+    supabase.from('notifications').select('*').eq('user_id', session.user.id).order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching notifications:', error);
+        } else {
+          setNotifications(data || []);
+        }
+      });
+
+    // Subscribe to new notifications natively
+    const notificationSubscription = supabase.channel('realtime:notifications')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${session.user.id}` }, payload => {
+        setNotifications(prev => [payload.new as AppNotification, ...prev]);
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'notifications', filter: `user_id=eq.${session.user.id}` }, payload => {
+        setNotifications(prev => prev.map(n => n.id === payload.new.id ? payload.new as AppNotification : n));
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(notificationSubscription);
+    };
   }, [session]);
 
   const stuckCount = initiatives.filter(init => {
@@ -179,6 +204,16 @@ function App() {
     }
   };
 
+  const handleMarkNotificationRead = async (id: string) => {
+    // Optimistic
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
+    await supabase.from('notifications').update({ is_read: true }).eq('id', id);
+  };
+
+  const handleNotificationClick = (initiativeId: string) => {
+    setEditingInitiativeId(initiativeId);
+  };
+
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -197,6 +232,9 @@ function App() {
       onViewChange={setCurrentView}
       onQuickAdd={handleQuickAdd}
       stuckCount={stuckCount}
+      notifications={notifications}
+      onMarkNotificationRead={handleMarkNotificationRead}
+      onNotificationClick={handleNotificationClick}
     >
       <div className="h-full">
         {currentView === 'kanban' && (
