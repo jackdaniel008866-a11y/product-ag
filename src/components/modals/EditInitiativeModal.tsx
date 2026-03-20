@@ -7,13 +7,14 @@ import { format } from 'date-fns';
 
 interface EditInitiativeModalProps {
   initiative: Initiative | null;
+  currentUserId: string;
   onClose: () => void;
   onUpdate: (id: string, updates: Partial<Initiative>) => void;
   onDelete: (id: string) => void;
   onAddComment: (initiativeId: string, comment: Comment) => void;
 }
 
-export default function EditInitiativeModal({ initiative, onClose, onUpdate, onDelete, onAddComment }: EditInitiativeModalProps) {
+export default function EditInitiativeModal({ initiative, currentUserId, onClose, onUpdate, onDelete, onAddComment }: EditInitiativeModalProps) {
   const { users } = useUsers();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -28,7 +29,6 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
   
   // Comment Thread State
   const [newCommentText, setNewCommentText] = useState('');
-  const [commentAuthorId, setCommentAuthorId] = useState('u1');
 
   // Sync state when initiative changes
   useEffect(() => {
@@ -111,7 +111,7 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
     
     const comment: Comment = {
       id: `comment-${Math.random().toString(36).substring(2, 9)}`,
-      authorId: commentAuthorId,
+      authorId: currentUserId,
       text: newCommentText.trim(),
       createdAt: new Date().toISOString()
     };
@@ -349,15 +349,12 @@ export default function EditInitiativeModal({ initiative, onClose, onUpdate, onD
                 <div className="px-3 py-2 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <span className="text-xs font-semibold text-slate-500">Posting as:</span>
-                    <select 
-                      value={commentAuthorId}
-                      onChange={e => setCommentAuthorId(e.target.value)}
-                      className="text-xs font-semibold text-slate-700 bg-transparent border-none focus:ring-0 cursor-pointer hover:text-teal-600 py-0 pl-0 pr-6"
-                    >
-                      {Object.values(users).map(user => (
-                        <option key={user.id} value={user.id}>{user.name}</option>
-                      ))}
-                    </select>
+                    <div className="flex items-center space-x-1.5 bg-white border border-slate-200 px-2 py-0.5 rounded shadow-sm">
+                      <div className="w-4 h-4 rounded-full bg-teal-100 flex items-center justify-center text-[8px] font-bold text-teal-700 border border-teal-200">
+                        {users[currentUserId]?.initials || '?'}
+                      </div>
+                      <span className="text-xs font-bold text-teal-700">{users[currentUserId]?.name || 'You'}</span>
+                    </div>
                   </div>
                 </div>
                 <textarea 

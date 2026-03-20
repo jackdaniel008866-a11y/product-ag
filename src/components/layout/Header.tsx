@@ -1,5 +1,5 @@
-
-import { Search, Plus, Bell } from 'lucide-react';
+import { Search, Plus, Bell, LogOut } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 interface HeaderProps {
   onQuickAdd: () => void;
@@ -37,7 +37,14 @@ export default function Header({ onQuickAdd }: HeaderProps) {
 
       {/* Actions */}
       <div className="flex items-center space-x-4">
-        <button className="text-slate-500 hover:text-slate-800 transition-colors p-1.5 rounded-full hover:bg-slate-100 relative">
+        <button 
+          onClick={() => supabase.auth.signOut()}
+          className="flex items-center space-x-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm border border-transparent hover:border-red-100"
+        >
+          <LogOut size={16} strokeWidth={2.5} />
+          <span>Sign Out</span>
+        </button>
+        <button className="text-slate-500 hover:text-slate-800 transition-colors p-1.5 rounded-full hover:bg-slate-100 relative hidden md:block">
           <Bell size={18} />
           <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full border border-white"></span>
         </button>

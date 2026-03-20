@@ -1,63 +1,15 @@
-import { useState } from 'react';
 import type { User } from '../../types';
-import { Trash2, UserPlus } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 interface TeamViewProps {
   users: User[];
-  onAddUser: (name: string, initials: string) => void;
   onRemoveUser: (id: string) => void;
 }
 
-export default function TeamView({ users, onAddUser, onRemoveUser }: TeamViewProps) {
-  const [name, setName] = useState('');
-  const [initials, setInitials] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !initials.trim()) return;
-    onAddUser(name.trim(), initials.trim().toUpperCase().slice(0, 2));
-    setName('');
-    setInitials('');
-  };
+export default function TeamView({ users, onRemoveUser }: TeamViewProps) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm animate-in fade-in slide-in-from-bottom-2">
-        <h2 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-4">Add Team Member</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 items-end">
-          <div className="flex-1 w-full">
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
-            <input 
-              type="text" 
-              required
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="e.g. Jane Doe"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50"
-            />
-          </div>
-          <div className="w-full md:w-32 hidden md:block">
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Initials</label>
-            <input 
-              type="text" 
-              required
-              maxLength={2}
-              value={initials}
-              onChange={e => setInitials(e.target.value.toUpperCase())}
-              placeholder="e.g. JD"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 uppercase"
-            />
-          </div>
-          <button 
-            type="submit"
-            className="w-full md:w-auto px-6 py-2 h-[42px] bg-teal-500 hover:bg-teal-600 text-white font-medium rounded-lg shadow-sm transition-all flex items-center justify-center shrink-0"
-          >
-            <UserPlus size={16} className="mr-2" />
-            Add Member
-          </button>
-        </form>
-      </div>
-
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-500">
         <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
           <h2 className="text-lg font-bold text-slate-800">Current Team</h2>

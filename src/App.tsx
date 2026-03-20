@@ -11,34 +11,48 @@ import TeamView from './components/views/TeamView';
 import RoadmapView from './components/views/RoadmapView';
 import QuickAddModal from './components/modals/QuickAddModal';
 import EditInitiativeModal from './components/modals/EditInitiativeModal';
-import PasswordPrompt from './components/auth/PasswordPrompt';
+import AuthModal from './components/auth/AuthModal';
 import { useUsers } from './contexts/UserContext';
 import { supabase } from './lib/supabase';
+import type { Session } from '@supabase/supabase-js';
 
 type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights';
 
 function App() {
-  const [isAuthorized, setIsAuthorized] = useState(() => {
-    return localStorage.getItem('product-os-auth') === 'true';
-  });
+  const [session, setSession] = useState<Session | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [currentView, setCurrentView] = useState<ViewType>('kanban');
   const [stuckDaysThreshold, setStuckDaysThreshold] = useState<number>(7);
   const [initiatives, setInitiatives] = useState<Initiative[]>([]);
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [editingInitiativeId, setEditingInitiativeId] = useState<string | null>(null);
-  const { usersList, addUser, removeUser } = useUsers();
+  const { usersList, removeUser } = useUsers();
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsInitializing(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Fetch Initiatives
+  useEffect(() => {
+    if (!session) return;
     supabase.from('initiatives').select('*').order('createdAt', { ascending: false })
       .then(({ data, error }) => {
         if (error) {
           console.error('CRITICAL: Error fetching initiatives from Supabase:', error);
-          alert(`Database Error: ${error.message}. Check browser console for details.`);
         } else {
           setInitiatives(data || []);
         }
       });
-  }, []);
+  }, [session]);
 
   const stuckCount = initiatives.filter(init => {
     const daysInStage = differenceInDays(new Date(), new Date(init.stageUpdatedAt));
@@ -150,13 +164,16 @@ function App() {
     }
   };
 
-  const handleAuthSuccess = () => {
-    localStorage.setItem('product-os-auth', 'true');
-    setIsAuthorized(true);
-  };
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-4 border-slate-200 border-t-slate-800 animate-spin"></div>
+      </div>
+    );
+  }
 
-  if (!isAuthorized) {
-    return <PasswordPrompt onSuccess={handleAuthSuccess} />;
+  if (!session) {
+    return <AuthModal />;
   }
 
   return (
@@ -196,7 +213,7 @@ function App() {
           <InsightsView initiatives={initiatives} />
         )}
         {currentView === 'team' && (
-          <TeamView users={usersList} onAddUser={addUser} onRemoveUser={removeUser} />
+          <TeamView users={usersList} onRemoveUser={removeUser} />
         )}
       </div>
 
@@ -208,6 +225,7 @@ function App() {
 
       <EditInitiativeModal
         initiative={initiatives.find(i => i.id === editingInitiativeId) || null}
+        currentUserId={session.user.id}
         onClose={() => setEditingInitiativeId(null)}
         onUpdate={handleUpdateInitiative}
         onDelete={handleDeleteInitiative}
