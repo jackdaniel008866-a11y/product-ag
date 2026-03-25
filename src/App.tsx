@@ -236,11 +236,50 @@ function App() {
     return <AuthModal />;
   }
 
+  const handleExportCSV = () => {
+    if (initiatives.length === 0) {
+      alert("No initiatives to export.");
+      return;
+    }
+
+    const headers = ['ID', 'Title', 'Description', 'Product', 'Type', 'Priority', 'Owner', 'Stage', 'Status', 'Target Date', 'Tags', 'Created At'];
+    const csvContent = [
+      headers.join(','),
+      ...initiatives.map(init => {
+        const ownerName = usersList.find(u => u.id === init.ownerId)?.name || 'Unknown';
+        return [
+          `"${init.id}"`,
+          `"${(init.title || '').replace(/"/g, '""')}"`,
+          `"${(init.description || '').replace(/"/g, '""')}"`,
+          `"${init.product}"`,
+          `"${init.type}"`,
+          `"${init.priority}"`,
+          `"${ownerName}"`,
+          `"${init.stage}"`,
+          `"${init.status}"`,
+          `"${init.targetDate || ''}"`,
+          `"${(init.tags || []).join(' | ')}"`,
+          `"${init.createdAt}"`
+        ].join(',');
+      })
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `product_os_export_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <AppLayout 
       currentView={currentView} 
       onViewChange={setCurrentView}
       onQuickAdd={handleQuickAdd}
+      onExportData={handleExportCSV}
       stuckCount={stuckCount}
       notifications={notifications}
       onMarkNotificationRead={handleMarkNotificationRead}

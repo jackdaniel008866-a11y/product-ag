@@ -134,8 +134,11 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
         initiative_id: initiative.id,
         message: `${currentUserMetadata.full_name || users[currentUserId]?.name || 'Someone'} tagged you in a comment on "${initiative.title}"`
       }));
+      
       const { error } = await supabase.from('notifications').insert(payloads);
       if (error) console.error('Error dispatching notifications:', error);
+    } else {
+
     }
 
     setNewCommentText('');

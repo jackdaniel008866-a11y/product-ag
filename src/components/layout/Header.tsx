@@ -1,17 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, Plus, Bell, LogOut, CheckCircle2 } from 'lucide-react';
+import { Search, Plus, Bell, LogOut, CheckCircle2, Download } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { formatDistanceToNow } from 'date-fns';
 import type { AppNotification } from '../../types';
 
 interface HeaderProps {
   onQuickAdd: () => void;
+  onExportData: () => void;
   notifications: AppNotification[];
   onMarkRead: (id: string) => void;
   onNotificationClick: (initiativeId: string) => void;
 }
 
-export default function Header({ onQuickAdd, notifications = [], onMarkRead, onNotificationClick }: HeaderProps) {
+export default function Header({ onQuickAdd, onExportData, notifications = [], onMarkRead, onNotificationClick }: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -134,6 +135,13 @@ export default function Header({ onQuickAdd, notifications = [], onMarkRead, onN
             </div>
           )}
         </div>
+        <button 
+          onClick={onExportData}
+          className="flex items-center space-x-1.5 bg-white border border-slate-200 text-slate-600 hover:text-slate-800 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-all shadow-sm active:scale-95"
+        >
+          <Download size={16} strokeWidth={2.5} />
+          <span className="hidden sm:inline">Export</span>
+        </button>
         <button 
           onClick={onQuickAdd}
           className="flex items-center space-x-1.5 bg-teal-500 hover:bg-teal-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all shadow-sm active:scale-95"
