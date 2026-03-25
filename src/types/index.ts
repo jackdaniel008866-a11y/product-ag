@@ -54,7 +54,6 @@ export interface Initiative {
   targetDate?: string | null; // ISO date string or yyyy-mm-dd format
   comments?: Comment[];
   tags?: string[];
-  teamMembers?: string[];
   stageUpdatedAt: string; // ISO date string
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string

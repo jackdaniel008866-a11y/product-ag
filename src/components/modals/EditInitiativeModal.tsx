@@ -27,7 +27,6 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
   const [ownerId, setOwnerId] = useState('u1');
   const [stage, setStage] = useState<Stage>('Planning');
   const [status, setStatus] = useState<Status>('Active');
-  const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [targetDate, setTargetDate] = useState('');
   
   // Comment Thread State
@@ -48,7 +47,6 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
       setOwnerId(initiative.ownerId);
       setStage(initiative.stage);
       setStatus(initiative.status);
-      setTeamMembers(initiative.teamMembers || []);
       setTargetDate(initiative.targetDate || '');
       setNewCommentText(''); // Clear draft on open
     }
@@ -101,7 +99,6 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
       stage,
       status,
       targetDate: finalTargetDate,
-      teamMembers,
       updatedAt: new Date().toISOString(),
     };
 
@@ -321,39 +318,6 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
                     <option key={user.id} value={user.id}>{user.name}</option>
                   ))}
                 </select>
-              </div>
-
-              {/* Team Members */}
-              <div className="col-span-full mt-2">
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Team Members</label>
-                <div className="flex flex-wrap gap-2">
-                  {Object.values(users).map(user => {
-                    const isSelected = teamMembers.includes(user.id);
-                    return (
-                      <button
-                        key={user.id}
-                        type="button"
-                        onClick={() => {
-                          if (isSelected) {
-                            setTeamMembers(prev => prev.filter(id => id !== user.id));
-                          } else {
-                            setTeamMembers(prev => [...prev, user.id]);
-                          }
-                        }}
-                        className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border text-sm transition-colors ${
-                          isSelected 
-                            ? 'bg-teal-50 border-teal-200 text-teal-700' 
-                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                        }`}
-                      >
-                        <div className="w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold">
-                          {user.initials}
-                        </div>
-                        <span>{user.name}</span>
-                      </button>
-                    );
-                  })}
-                </div>
               </div>
 
             </div>

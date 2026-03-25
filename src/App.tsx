@@ -111,7 +111,6 @@ function App() {
       updatedAt: new Date().toISOString(),
       stageUpdatedAt: new Date().toISOString(),
       tags: newItem.tags || [],
-      teamMembers: newItem.teamMembers || [],
       stageHistory: [{ stage: newItem.stage, enteredAt: new Date().toISOString(), exitedAt: null }]
     };
     
