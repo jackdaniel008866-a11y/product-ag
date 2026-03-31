@@ -1,18 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, Plus, Bell, LogOut, CheckCircle2, Download } from 'lucide-react';
+import { Plus, Bell, LogOut, CheckCircle2, Download } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { formatDistanceToNow } from 'date-fns';
-import type { AppNotification } from '../../types';
+import type { AppNotification, Initiative } from '../../types';
+import GlobalSearch from '../search/GlobalSearch';
 
 interface HeaderProps {
   onQuickAdd: () => void;
   onExportData: () => void;
+  initiatives: Initiative[];
   notifications: AppNotification[];
   onMarkRead: (id: string) => void;
   onNotificationClick: (initiativeId: string) => void;
 }
 
-export default function Header({ onQuickAdd, onExportData, notifications = [], onMarkRead, onNotificationClick }: HeaderProps) {
+export default function Header({ onQuickAdd, onExportData, initiatives = [], notifications = [], onMarkRead, onNotificationClick }: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -43,20 +45,10 @@ export default function Header({ onQuickAdd, onExportData, notifications = [], o
       </div>
 
       {/* Global Search */}
-      <div className="flex-1 max-w-xl px-12 relative hidden md:block">
-        <div className="relative group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-500 transition-colors" size={16} />
-          <input 
-            type="text" 
-            placeholder="Search initiatives, notes, or tags... (Cmd+K)" 
-            className="w-full bg-slate-100 hover:bg-slate-200/50 focus:bg-white border focus:border-teal-500 border-transparent rounded-lg pl-9 pr-4 py-1.5 text-sm outline-none transition-all focus:ring-4 focus:ring-teal-500/10 placeholder:text-slate-500"
-          />
-        </div>
-      </div>
-
-
-
-      {/* Actions */}
+      <GlobalSearch 
+        initiatives={initiatives} 
+        onSelect={onNotificationClick} 
+      />      {/* Actions */}
       <div className="flex items-center space-x-4">
         <button 
           onClick={() => supabase.auth.signOut()}

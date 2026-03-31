@@ -286,6 +286,7 @@ function App() {
       onQuickAdd={handleQuickAdd}
       onExportData={handleExportCSV}
       stuckCount={stuckCount}
+      initiatives={initiatives}
       notifications={notifications}
       onMarkNotificationRead={handleMarkNotificationRead}
       onNotificationClick={handleNotificationClick}
