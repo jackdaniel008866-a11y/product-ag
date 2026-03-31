@@ -178,10 +178,15 @@ function App() {
   };
 
   const handleDeleteInitiative = async (id: string) => {
+    // 1. Optimistic UI: Delete it from the local browser immediately so it vanishes and clears from CSV
+    setInitiatives(prev => prev.filter(init => init.id !== id));
+
+    // 2. Perform the actual backend deletion
     const { error } = await supabase.from('initiatives').delete().eq('id', id);
-    if (!error) {
-      setInitiatives(prev => prev.filter(init => init.id !== id));
-    } else {
+    
+    // 3. Catch invisible failures
+    if (error) {
+      alert('WARNING: Your card was hidden locally, but Supabase blocked the deletion! Refresh the page. Error: ' + JSON.stringify(error));
       console.error('Error deleting initiative:', error);
     }
   };

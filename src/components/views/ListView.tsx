@@ -15,12 +15,14 @@ interface ListViewProps {
 export default function ListView({ initiatives, onInitiativeClick }: ListViewProps) {
   const { users } = useUsers();
   
+  const [productFilter, setProductFilter] = useState('All');
   const [stageFilter, setStageFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [ownerFilter, setOwnerFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
 
   const filteredInitiatives = initiatives.filter(init => {
+    if (productFilter !== 'All' && init.product !== productFilter) return false;
     if (stageFilter !== 'All' && init.stage !== stageFilter) return false;
     if (priorityFilter !== 'All' && init.priority !== priorityFilter) return false;
     if (statusFilter !== 'All' && init.status !== statusFilter) return false;
@@ -45,6 +47,16 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
           <span className="text-sm font-bold tracking-tight uppercase">Filters:</span>
         </div>
         
+        <select 
+          value={productFilter} 
+          onChange={e => setProductFilter(e.target.value)}
+          className="w-full sm:w-auto text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 font-medium text-slate-700 cursor-pointer transition-all"
+        >
+          <option value="All">All Products</option>
+          <option value="Surbo">Surbo</option>
+          <option value="Surbo Chat">Surbo Chat</option>
+        </select>
+
         <select 
           value={stageFilter} 
           onChange={e => setStageFilter(e.target.value)}

@@ -1,0 +1,1336 @@
+{
+  "users": [
+    {
+      "id": "15f68938-b608-4214-95fe-5c5ec6fbe498",
+      "name": "Deepjyoti Patar",
+      "initials": "DP",
+      "role": null,
+      "email": null
+    },
+    {
+      "id": "12255c92-85a1-46ee-a61b-96041c82424a",
+      "name": "Sahil Asgher",
+      "initials": "SA",
+      "role": null,
+      "email": null
+    },
+    {
+      "id": "4d76bd35-724b-4347-b4a2-ad29171b8069",
+      "name": "Nitin Verma",
+      "initials": "NV",
+      "role": null,
+      "email": null
+    },
+    {
+      "id": "63942d58-cf33-4f93-8fe7-56bc52831557",
+      "name": "Sahil Asgher",
+      "initials": "SA",
+      "role": null,
+      "email": null
+    },
+    {
+      "id": "867782c6-edfd-472a-b1fe-ec3aed9443d4",
+      "name": "Rajneesh Lakhera",
+      "initials": "RL",
+      "role": null,
+      "email": null
+    }
+  ],
+  "initiatives": [
+    {
+      "id": "init-etxtgk7",
+      "createdAt": "2026-03-29T12:19:42.957+00:00",
+      "updatedAt": "2026-03-30T12:22:01.307+00:00",
+      "title": "Analytics Dashboard Revamp",
+      "description": "Redesign the analytics dashboard for better insights.",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Low",
+      "type": "Internal Improvement",
+      "ownerId": "u3",
+      "stageUpdatedAt": "2026-03-30T12:22:01.307+00:00",
+      "tags": null,
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-yirmljc",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:22:01.307Z"
+        }
+      ],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:22:01.307Z"
+        }
+      ]
+    },
+    {
+      "id": "init-ynwg4iq",
+      "createdAt": "2026-03-30T12:44:01.786+00:00",
+      "updatedAt": "2026-03-30T12:44:01.786+00:00",
+      "title": "Private Olama Deployment",
+      "description": "Need to brainstorm on how can achieve a private deployment of LLM",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:44:01.786+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:44:01.786Z"
+        }
+      ]
+    },
+    {
+      "id": "init-3d7rxmv",
+      "createdAt": "2026-03-20T12:19:42.957+00:00",
+      "updatedAt": "2026-03-30T12:21:19.842+00:00",
+      "title": "Voicebot Context Retention",
+      "description": "Ensure voicebot remembers conversation context post-interruption.",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "High",
+      "type": "Enhancement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:21:19.842+00:00",
+      "tags": [
+        "#AI",
+        "#Voicebot"
+      ],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-9k246bt",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:21:19.842Z"
+        }
+      ],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:21:19.842Z"
+        }
+      ]
+    },
+    {
+      "id": "init-cv2o81v",
+      "createdAt": "2026-03-30T12:16:19.994+00:00",
+      "updatedAt": "2026-03-30T12:28:23.666+00:00",
+      "title": "Analysis & Identification of Legacy Data (>5 Years) - 13909",
+      "description": "Following the data retention policy of Surbo we need to accurately identify the data of all chatbot interaction data saved in S3  that will be older than 5 years as of 31 December 2025. This involves mapping data created on or before 31 December 2020.\n\nS3 Path: surbo-s3prod/intents, surbo-s3prod/user_responses\n\nA separate ticket will be provided for deletion of this identified data once this is done.",
+      "product": "Surbo",
+      "stage": "Planning",
+      "status": "Blocked",
+      "priority": "Medium",
+      "type": "Internal Improvement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:16:19.994+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-a8xb634",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:23:46.172Z"
+        },
+        {
+          "id": "sys-tmtr43q",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:28:23.666Z"
+        }
+      ],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Planning",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:16:19.994Z"
+        }
+      ]
+    },
+    {
+      "id": "init-gyu97nn",
+      "createdAt": "2026-03-30T12:44:41.919+00:00",
+      "updatedAt": "2026-03-30T12:44:41.919+00:00",
+      "title": "Instagram & Facebook Channel on Botsup from Surbo",
+      "description": "Need to bring",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:44:41.919+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:44:41.919Z"
+        }
+      ]
+    },
+    {
+      "id": "init-9g9wrm6",
+      "createdAt": "2026-03-30T12:17:25.56+00:00",
+      "updatedAt": "2026-03-30T12:17:25.56+00:00",
+      "title": "Clickhouse Implementation for Analytics | Surbo - 13928",
+      "description": "Currently, the Audience section displays user metrics such as All Users, New Users, and Daily Users. This functionality is currently enabled only for the PNB account and the data is stored using the Redis HyperLogLog data structure.\n\nTo improve accuracy, scalability, and reliability, we plan to migrate the storage and analytics of audience data to ClickHouse and enable this feature for all clients.\n\nCurrent Scenario:\n\nThe Audience section shows the following metrics:\n\nAll Users\n\nNew Users\n\nDaily Users\n\nData is currently stored using Redis HyperLogLog.\n\nThis feature is enabled only for the PNB account.\n\nRedis-based implementation has limited accuracy and scalability for long-term analytics.\n\nProposed Implementation:\n\nEnable the Audience analytics feature for all clients.\n\nReplace Redis HyperLogLog storage with ClickHouse.\n\nSurbo will store audience-related data in ClickHouse.\n\nAnalytics queries will retrieve the required metrics directly from ClickHouse.\n\nBenefits:\n\nImproved data accuracy.\n\nBetter scalability for large user volumes.\n\nMore reliable analytics infrastructure.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Enhancement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:17:25.56+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:17:25.560Z"
+        }
+      ]
+    },
+    {
+      "id": "init-ko0dzuk",
+      "createdAt": "2026-03-30T12:14:20.996+00:00",
+      "updatedAt": "2026-03-30T12:14:20.996+00:00",
+      "title": "Modularization of ML - 13839",
+      "description": "Currently, the Surbo platform is deployed as a combined or tightly coupled system where multiple services are packaged and deployed together. This includes ML-related capabilities such as OCR, Generative AI, and Intent Detection.\n\nThis approach results in:\n\nDeployment of ML services even when not required.\n\nHigher infrastructure and compute costs.\n\nLimited flexibility for client-specific deployments.\n\nIncreased operational complexity.\n\n\nProblem Statement\n\nThe current architecture does not allow independent deployment of the ML service. As a result:\n\nML components are deployed even for clients not using AI features.\n\nGPU/compute-heavy services increase infrastructure cost.\n\nRequirement\n\nRefactor the ML capabilities into a separate, independently deployable ML Service.\n\nThis service will include:\n\nOCR processing\n\nGenerative AI capabilities\n\nIntent detection engine\n\nThe ML service will:\n\nBe deployed only where required.\n\nExpose APIs for other Surbo modules.\n\nScale independently based on workload.\n\nOperate as an optional module in each instance.\n\n\nIn Scope\n\nSeparation of ML components into an independent service.\n\nAPI exposure for:\n\nOCR\n\nGenerative AI\n\nIntent Detection\n\nDeployment configuration to enable or disable ML service per instance.\n\nIntegration of existing Surbo modules with the ML service via APIs.\n\nOut of Scope\n\nModularization of non-ML services.\n\nUI redesign.\n\nFeature enhancements unrelated to ML service separation.\n\nBusiness Justification\n\nThis change will:\n\nReduce infrastructure costs for non-AI deployments.\n\nAllow AI-enabled deployments only where required.\n\nImprove scalability of ML workloads.\n\nEnable faster AI feature rollout.\n\nSupport differentiated AI-based pricing models.\n\nAcceptance Criteria\n\nML service can be deployed independently.\n\nSurbo instance can run without ML service when not required.\n\nOCR, Generative AI, and Intent Detection are accessible via APIs.\n\nExisting functionality remains unaffected.\n\nDeployment pipeline supports optional ML service activation.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Enhancement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:14:20.996+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:14:20.996Z"
+        }
+      ]
+    },
+    {
+      "id": "init-90ft0b6",
+      "createdAt": "2026-03-30T12:26:12.936+00:00",
+      "updatedAt": "2026-03-30T12:26:44.101+00:00",
+      "title": "Implement front end assitance for Redis API- BOTSUP - 13899",
+      "description": "We need a Redis API config screen where we can list all the apis with different keys and enable disable them from there.\nThese API updates key in the Reddis DB.\n\nCurrent scenario- We have to call these APIs manually everytime we want to update the keys in DB.\nWe do not have a provision to manage them in front end.\n\nRequirement- We want to establish these APIs in front end so that they can be accessed anytime. User should be able to enable and disable them.\nOnce enabled/disbaled their status will remain same untill it is changed again.\nThese two Keys are independent and does not impacts each others behaviour. They both can be in enable state parallely.\n\nUI- There will be a new section just below the Config > Account in Admin account only.\nNew section’s name- Redis API Config\nCurrently We will list two Keys only- \ndont_use_external_link_async_queue\ndont_use_chatbot_to_channel_async_queue\n\nBelow mentioned parameters are required for Listing-\nDB - It will show which db is being impacted.\nKey- It will show these keys - \ndont_use_external_link_async_queue\ndont_use_chatbot_to_channel_async_queue\nDescription- It should show this- Value 0 means Assync, Value 1 means Sync",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:26:12.936+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-10ay1jr",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:26:44.101Z"
+        }
+      ],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:26:12.936Z"
+        }
+      ]
+    },
+    {
+      "id": "init-783qlip",
+      "createdAt": "2026-03-30T12:31:28.663+00:00",
+      "updatedAt": "2026-03-30T12:31:28.663+00:00",
+      "title": "Improve Error Handling and Validation Messages During Assistant Creation in Hub - 13993",
+      "description": "While creating an Assistant in the Hub account, the current UI displays inaccurate or unclear error messages in certain scenarios. These messages are not user-friendly and can create confusion for users during assistant creation.\n\nWe need to improve the error handling and validation messages so that users receive clear and actionable feedback when an error occurs.\n\n\n1. Duplicate Assistant Name\n\nCurrent Behavior\n\nWhen a user tries to create a new assistant using an existing assistant name, the UI shows an unclear error message:\nObject: object\n\nExpected Behavior\n\nThe system should display a clear error message:\n\nError: Duplicate name\n\n2. Incorrect Model Selection\n\nCurrent Behavior\n\nWhen a user selects an incorrect or unsupported model during assistant creation, the system returns the following error:\n\n500: Internal Server Error\n\nExpected Behavior\n The UI should display a meaningful error message such as:\n\nError: Please choose the correct model\n\n3. Assistant Gets Saved Despite Error\n\nCurrent Behavior\n\nIn the incorrect model scenario, even after displaying the 500 error, the assistant still gets saved with inactive Status\n\nExpected Behavior\n\nThe assistant should not be saved if the selected model is invalid.",
+      "product": "Surbo",
+      "stage": "Planning",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Bug Theme",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:31:28.663+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Planning",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:31:28.663Z"
+        }
+      ]
+    },
+    {
+      "id": "init-c2ebs40",
+      "createdAt": "2026-03-30T12:32:44.245+00:00",
+      "updatedAt": "2026-03-30T12:37:54.021+00:00",
+      "title": "Enable passing of mobile number parameter in Master Intent for RCS channel - 14024",
+      "description": "Currently, in the bot builder, Master Intent supports passing user details (mobile number and name) for WhatsApp channel using predefined SRB parameters (e.g., WhatsApp number and WhatsApp name).\n\nHowever, for the RCS channel, this functionality is not available.\n\nCurrent Limitation:\n\nIn Master Intent → User Response field → Dropdown, only intents are visible.\n\nThere is no option to select mobile number parameters for RCS.\n\nRequirement\n\nWe want to enhance Master Intent functionality for RCS channel to allow passing of user details.\n\nEnhancement:\n\nWhen user clicks on User Response field:\n\nDropdown should include:\n\nAvailable intents (existing behavior)\n\nMobile Number parameter\n\n\n\nField\n\nValue\n\nUser Number\n\nSRB_1\n\n\n\n\n\nCurrent Behavior\n\nOnly intents are visible in the dropdown.\n\nNo option to pass mobile number or name for RCS channel.\n\nFeature exists for WhatsApp but missing for RCS.\n\nExpected Behavior\n\nDropdown in User Response field should show:\n\nIntents\n\nSRB_1 → User Number\n\nUsers should be able to select these parameters and pass them in Master Intent.\n\nThis should be applicable for Geolocation Master as well.\n\nNote- This should be common in Whatsapp and RCS.\nFor whatsapp we are updating icon and field name.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Enhancement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:32:44.245+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-51xrtyb",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:33:27.429Z"
+        },
+        {
+          "id": "sys-589usln",
+          "text": "🎯 Target date was set to Apr 1, 2026",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:37:54.021Z"
+        }
+      ],
+      "targetDate": "2026-04-01",
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:32:44.245Z"
+        }
+      ]
+    },
+    {
+      "id": "init-gn2u8yw",
+      "createdAt": "2026-03-30T12:13:15.697+00:00",
+      "updatedAt": "2026-03-30T12:13:15.697+00:00",
+      "title": "Validation Failure handling | Phase 2 | Botsup - 13929",
+      "description": "Currently, invalid input handling is not supported at the intent level for WA Flow, rating and product catelogue intents in both Surbo and Botsup. When a user enters an invalid input in these intents, there is no mechanism to redirect them further.\n\nWe need to enhance Botsup with intent-level validation failure handling for these intents. Surbo will not have a UI for this feature; however, the functionality will be mapped at the backend to ensure compatibility.\n\nIn Botsup: Full support and UI for setting up validation failure handling. UI can be copied from rest of the intents as this is already implemented there.\n\nIn Surbo: No UI changes, but backend mapping will ensure existing bots work with validation failure settings. If a Surbo user edits such an intent, they can modify other functionalities but cannot edit the validation failure settings, which will remain intact.\n\nScope of Change:\n\nSupport invalid input handling for:\n\nWA Flow\n\nRating\n\nProduct catelogue\n\nProvide option to redirect user to a defined path or intent when invalid input is given.\n\nEnable validation failure support in Botsup UI under each of the above intents.\n\nSurbo will not expose this feature in UI but will retain backend compatibility.\n\nRedirection handling for validation failure should be implemented in the same way as currently available in the Date intent.\n\nScenarios to Handle:\n\nIf user enters invalid input  → Redirect as per configuration.\n\nIf validation failure settings exist (configured via Botsup) and user opens the intent in Surbo:\n\nValidation failure configuration remains intact.\n\nUser can update other parts of the intent.\n\nUser cannot edit or remove validation failure settings from Surbo UI.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "867782c6-edfd-472a-b1fe-ec3aed9443d4",
+      "stageUpdatedAt": "2026-03-30T12:13:15.697+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:13:15.697Z"
+        }
+      ]
+    },
+    {
+      "id": "init-7101v40",
+      "createdAt": "2026-03-30T11:19:43.437+00:00",
+      "updatedAt": "2026-03-30T11:19:43.437+00:00",
+      "title": "Email Integration for Karix - 13901",
+      "description": "Platform- BOTSUP\nInstance- India\n\nWe need to integrate Email configurations for KARIX platform. There are several emails which are being triggered from the onboarding to BOt creation.\n1)Welcome mail- This mail triggers when we onboard a new user in the platform\nCurrent functionality - When Admin creates a new account using mobile number and email id, This email gets triggered on that particular email id.\nCurrent Subject-Welcome to Botsup!\nNew required content- \nChange Subject from “Welcome to Botsup“ to “Welcome“\nChange Botsup to Karix from everywhere it is written in the current mail.\nRemove Activate Plan button.\nRemove this line “In case of any support write to surbosupport@vfirst.com“\n\n2)OTP Verification mail- This mail triggers when user logged into the account and try for mail verification.\nCurrent functionality - When user logged into the account and clicks on “click here“ for email verification. We trigger an otp through the mail to the user.\nCurrent Subject-Confirm your Email | Botsup\nNew required content- \nRemove Botsup from the subject “Confirm your Email | Botsup“\nRemove “Welcome to Botsup.“ from the content.\nRemove “Yours, Team Botsup from the content”\n\n3)Reset Password- This mail triggers when user tries to reset the password.\nCurrent Subject- Confirm your Email | Botsup\nNew required content- \nUpdate the subject with- Reset your password!\nRemove “Welcome to Botsup.“ from the content.\nRemove “Yours, Team Botsup from the content”\n\n4)Report recieved mail- This mail triggers when user downloads the report. They recieve this report through the mail.\nCurrent Subject- Daily Report | Chatbot\nNew required content- \nRemove “In case of any query get in touch with us at surbosupport@vfirst.com“ this from the content.\nRemove “Yours, Team Botsup from the content”\n\n5)Team mate Addition- This mail triggers when user adds a team mate account. This mail goes to the team mate user.\nCurrent Subject- You have been invited to join Botsup\nNew required content- \nRemove Botsup from subject “You have been invited to join Botsup“\nRemove “In case of any query get in touch with us at surbosupport@vfirst.com“ this from the content.\nRemove “Yours, Team Botsup from the content”\nRemove Botsup from this line “You have been invited to join the team by botsup@vfirst.com on Botsup“\n\n6)Plan expiry- This email triggers in a specific time period when plan is about to expire.\nCurrent Subject- Chatbot Subscription Expiring soon!\nNew required content- \nRemove “In case of any query get in touch with us at surbosupport@vfirst.com“ this from the content.\nRemove “Yours, Team Botsup from the content”\nRemove “With Regards,\nTeam Valuefirst“\n\nNote- Remove Logo from all the emails.\nContent should be in plain text. No bold letters should be there.\nI have mentioned all the current subject lines of all the mails for the reference. All the mails can be checked in the mailtrap login\nAll other emails should not be integrated for Karix.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "High",
+      "type": "Client Ask",
+      "ownerId": "867782c6-edfd-472a-b1fe-ec3aed9443d4",
+      "stageUpdatedAt": "2026-03-30T11:19:43.437+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T11:19:43.437Z"
+        }
+      ]
+    },
+    {
+      "id": "init-kp5iohq",
+      "createdAt": "2026-03-30T11:20:34.402+00:00",
+      "updatedAt": "2026-03-30T11:20:34.402+00:00",
+      "title": "Manage Team mate screen optimisation for Karix| FE - 13922",
+      "description": "Instance- India\nPlatform- Botsup- Karix\n\nOnce we create and onboard a WABA account in Botsup, that user can login and add team mates uner its account so that team mates can also access the account.\nWhile adding team mate there are multiple permissions which can be enabled/disabled as per the role.\nIn current scenario, there are \n\n\n\nanalyst\n\ncreator\n\neditor\n\ntest1\n\nviewer\n\nthese many roles are visible and so many permissions are also visible according to these roles.\n\nFor Karix we need only creator as a role and few permissions only.\nUsers should not be able to add/remove any permission.\nuser can only see what all permissions are being assigned to the creator.\nThese will be fixed permissions.\n\nPermissions needs to be removed-\nRemove all the permission from front end which has Infinito and subscription in it.\nRemove all the permission related to Razorpay.\nRemove permission of Make payment(Bayan Pay)\nRemove permission of Add team mate.\nRemove permission of View invoice.\nRemove permission of View plan.\n\nIn UI only creator should be visible and his allowed permissions should be visible only.\nRest all the permissions should be removed.\nIf any of the allowed permission has above mentioned “words“ - remove them.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Client Ask",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T11:20:34.402+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T11:20:34.402Z"
+        }
+      ]
+    },
+    {
+      "id": "init-mrhqub8",
+      "createdAt": "2026-03-30T12:12:20.716+00:00",
+      "updatedAt": "2026-03-30T12:12:20.716+00:00",
+      "title": "Handle html tags in BOT report | Analytics - 13923",
+      "description": "Instance- India\nPlatform- Surbo, Botsup\nChannels- Whatsapp, web, Rcs\n\nCurrent scenario- While creating the bot, we use few html tags for text formatting.\nTo bold the text we write <b> Hello </b>\nTo format the sentence in next line we use <br>\nWe use/write these tags in front end of Intents.\n\nProblem statement- When we download reports , we get all the textual data selected/entered by users in the journey. In case where we are diplaying list/options to the end user in the child intent of an API and using html tags for formatting. When user selects any option in the journey and then we download the report, we can see html tags as well in the reports.\n\nFor analysis and data clarity , html tags should not be visible in the reports.\n\n\nProposed solution- We should give a provision to the user/analyst to choose intents while downloading the report. Those selected intents will hide html in the reports.\nIf user/analyst selects 5 intents in the report which consists html tags, then report should not show html tags in those intent’s data.\n\nFor UI- https://xd.adobe.com/view/72c84379-6f8e-4951-bdf6-6b9ba2e5fecc-279b/\nThere will be a drop down “Choose intents to hide HTML“\nThis drop down will show the list of all intents exist in the selected bot.\nThere will be a select all option also, so that all the intents can be selected in a single click.\nThis field should be optional, means if user does not select any intents still he should be able to download report.\n\nThis should be applicable in two sections-\n1) Download report under detail report section.\n2) Scgedule new report under Report scheduler",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Enhancement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:12:20.716+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:12:20.716Z"
+        }
+      ]
+    },
+    {
+      "id": "init-1v0bxjk",
+      "createdAt": "2026-03-30T12:15:18.061+00:00",
+      "updatedAt": "2026-03-30T12:23:41.504+00:00",
+      "title": "Integrate Karix RCM APIs with Surbo DIY (WhatsApp) - 13726",
+      "description": "Integrate Karix RCS (Rich Communication Services) APIs with the Surbo Chatbot for WhatsApp Channel to enable rich, interactive messaging capabilities including multimedia content, actions, and enhanced user engagement through WhatsApp channel.\n\nObjectives\n\nEnable Surbo Chatbot to send and receive messages via Karix APIs\n\nImplement rich messaging features (images, videos, carousels, list, button replies, etc.)\n\nEnsure reliable message delivery and tracking\n\nScope\n\nThis epic covers the complete integration between Karix RCM APIs and Surbo Chatbot, including:\n\nAPI authentication and authorization\n\nMessage sending and receiving functionality\n\nRich media handling (images, videos, files)\n\nInteractive elements (List, button, flows, actions, carousels)\n\nDelivery status tracking and webhooks\n\nSuccess Criteria\n\nAll Karix RCM API endpoints successfully integrated\n\nAll test cases passed\n\n\n\nDocument Link: https://documenter.getpostman.com/view/19789335/UzR1M3Tj \n\nPlease note: All the existing Generic WhatsApp channel supported features, validations and redirection logics should work as it is currently working with Unified and XML APIs.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Client Ask",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:15:34.178+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-za8otro",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:15:34.178Z"
+        },
+        {
+          "id": "sys-pcqs9ej",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:23:38.857Z"
+        },
+        {
+          "id": "sys-hgrw6br",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:23:41.504Z"
+        }
+      ],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Planning",
+          "exitedAt": "2026-03-30T12:15:34.178Z",
+          "enteredAt": "2026-03-30T12:15:18.061Z"
+        },
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:15:34.178Z"
+        }
+      ]
+    },
+    {
+      "id": "init-nhff5qu",
+      "createdAt": "2026-03-30T12:25:26.604+00:00",
+      "updatedAt": "2026-03-30T12:25:26.604+00:00",
+      "title": "Technical Analysis :WebEx Wrapper Integration (JLR) - 13927",
+      "description": "The client (JLR) requires a direct integration between SURBO and their custom WebEx Wrapper (Webhook) for live agent handover, bypassing the existing Genesis infrastructure.\n\nInitial review of the client's webhook schema indicates a gap in handling multi-part attachments and transcript synchronization. We need to define the bidirectional communication contract to ensure seamless session management and media transfer.\n\nTechnical Requirements & Gap Analysis\n\n1. Handover Flow (SURBO → Client Webhook)\n\nTrigger: Live Agent Node in SURBO journey.\n\nRequired Data: * Full conversation transcript (JSON/URL).\n\nUser metadata (Identifier, Region, Language).\n\nMedia Support: The client's current endpoint fails to receive attachments. We must define a standard attachments[] array for their wrapper to consume.\n\n2. Agent Response Flow (Client → SURBO)\n\nEndpoint: SURBO External Agent API.\n\nAttachment Handling: The client must provide a public URL for any media sent by the agent. SURBO will then deliver this to the end-user channel.\n\n3. Session Management (Crucial)\n\nState Persistence: The wrapper must maintain the conversation_id mapping.\n\nTermination Signal: The client API must send a Close_Session event to SURBO to trigger the post-chat/feedback journey.\n\n\n\nPlease check the feasibity and Efforts required to deliver this.",
+      "product": "Surbo",
+      "stage": "Planning",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:25:26.604+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Planning",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:25:26.604Z"
+        }
+      ]
+    },
+    {
+      "id": "init-78pmw9h",
+      "createdAt": "2026-03-30T12:24:26.188+00:00",
+      "updatedAt": "2026-03-30T12:27:00.851+00:00",
+      "title": "Structured responses -13857",
+      "description": "We need to evaluate the technical requirements for SIA to support Structured Messaging across WhatsApp, RCS and other channels. Currently, our LLM agents primarily output text; we need a standardized way to trigger rich UI elements that these channels support.\n\n\nScope of Analysis\n\nSchema Definition: Design a channel-agnostic JSON schema that the LLM can generate (or a post-processor can interpret) to represent:\n\nQuick Replies / Buttons: Max 3 for WhatsApp, up to 10 for RCS.\n\nList Messages: Vertical menus for larger selections.\n\nMCQ Options: Mapping LLM \"choices\" to interactive UI elements.\n\nLLM Prompt Engineering: Determine if the LLM should output the raw JSON structure or if we should use a \"Tool/Function Calling\" approach where the LLM calls a send_rich_message function.\n\nChannel Parity & Fallbacks: * Identify \"least common denominator\" features.\n\nDefine fallback behavior (e.g., if a channel doesn't support a specific button type, revert to numbered text list).\n\nState Management: How to handle the user's \"button click\" (Postback) when it returns to the LLM. Does the agent treat it as a new user message?\n\nAcceptance Criteria\n\nDocumented mapping of WhatsApp vs. RCS rich message constraints (character limits, button counts).\n\nProposed JSON schema for the SIA internal messaging layer.\n\nPrototype prompt/function definition for the LLM to trigger a \"List\" message.\n\nStrategy for handling \"Postback\" data (what happens when the user clicks)\n\nTechnical Considerations for Analysis\n\nCharacter Limits: Channels have character limits, If your LLM generates a 50-character response option, the integration will break unless you have a truncation or \"text-fallback\" strategy.\n\nThe \"Payload\" vs \"Label\": Buttons have a Label (what the user sees) and a Payload (what the system sees). Your analysis should define how the LLM assigns a unique ID to a choice so that when the user clicks \"Yes,\" the LLM knows which \"Yes\" they clicked in the conversation history.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:24:26.188+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-ft8gid3",
+          "text": "",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:27:00.851Z"
+        }
+      ],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:24:26.188Z"
+        }
+      ]
+    },
+    {
+      "id": "init-5fjgow0",
+      "createdAt": "2026-03-30T12:28:17.034+00:00",
+      "updatedAt": "2026-03-30T12:28:17.034+00:00",
+      "title": "Enhance Reports Data Flow in Infinito - 13691",
+      "description": "Currently, in Infinito, when users navigate to the Reports section, the system fetches analytics data from the Botsup database. \n\nWe need to enhance the reporting architecture so that Infinito reports ultimately fetch data from the Surbo database, with Botsup acting as a proxy layer.\n\nCurrent Behavior\n\nUser navigates to Reports section in Infinito.\n\nInfinito sends a request to Botsup.\n\nBotsup fetches report data directly from its own database.\n\nProposed Solution (Enhancement)\n\nUpdate the reporting data flow as follows:\n\nInfinito will continue to call Botsup for reports.\n\nBotsup will act as a proxy layer.\n\nInstead of querying its own database, Botsup will:\n\nFetch the required report data from the Surbo database\n\nReturn the response back to Infinito\n\nThis ensures that Surbo remains the single source of truth for analytics data.",
+      "product": "Surbo",
+      "stage": "Planning",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:28:17.034+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Planning",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:28:17.034Z"
+        }
+      ]
+    },
+    {
+      "id": "init-nbow2bs",
+      "createdAt": "2026-03-30T12:29:13.765+00:00",
+      "updatedAt": "2026-03-30T12:29:13.765+00:00",
+      "title": "Audit Logs X Infinito DIY - 14018",
+      "description": "Current Problem:\n\nOn Infinito DIY Chatbot, we don’t have any activity logs for compliances and to view change logs.\n\nRequirement:\n\nWe require a separate module named “Audit Logs” under the Home for all users at the last place. \n\nThis module will be based on permission and can be provided to any user based on RBAC (permission details are mentioned under Important Points to be considered as 8th & 9th point.\n\nIt will be available for the Admin user(Infinito Chatbot Admin and Botsup Admin), Parent User & Teammate user.\n\nAdmin logs should be visible to Admin only, not to any other users.\n\nInstances:\n\nBotsup\n\nInfinito\n\nAudit Log Module:\n\nFor the Admin-only audit log dashboard, show a Business User dropdown with search functionality to select the org. Post selection, the page table will be refreshed with user IDs.\n\nSearch Bar: Will match the keyword with all the logs (based on selected filters and date range) and fetch all the logs having the exact keyword. (For admin, it will only work post bussiness user selection).\n\nUser drop-down: Show all users along with the “All Users”(default) option. It will filter the data based on the selected user or all users (for admin it will work when BU is selected).\n\nData range selector: Filter the logs based on the date range (default 3 days, maximum selection 15 days).\n\nModule selection drop-down: Filter the result based on selected module, i.e. All Module (default), User, Chatbot, Integrations, Settings & Analytics (for admin it will work when BU is selected).\n\nBot selection drop-down: Shows the associated bots under the account, with the Select Bot (default) option (for admin it will work when BU is selected).\n\nA go button, when clicked, loads the updated logs based on the selected filter. \n\nImplement pagination and show 15 logs per page.\n\nBy default, selected values: \n\nUsers/ Fields\n\nBussiness User\n\nUser\n\nDate Range\n\nModule\n\nBot\n\nAdmin\n\nShow All users\n\nAll User (Post BU selection)\n\nlatest 3 dates (Post BU selection)\n\nAll Modules (Post BU selection)\n\nSelect Bot (Post BU selection)\n\nParent User\n\nDon't Show\n\nAll User\n\nselect latest 3 dates\n\nAll Modules\n\nSelect Bot\n\nTeam Mate\n\nDon't Show\n\nTeamMate_ID\n\nselect latest 3 dates\n\nAll Modules\n\nSelect Bot\n\n** By default, the Admin screen will be blank, but once a business user is selected, show the latest 3 days of logs and enable all of the remaining filters. Parent User will see the latest 15 logs, Teammate User will see their own latest 15 logs.\n\nContent of the table of audit-related details:\n\nUsername: The user who made the changes\n\nAction In: Flow, Login, Setting, Bot, Integration, Analytics, etc.\n\nBot ID: ID of the respective Bot, and in case of login, Analytics & settings, integration, mention NA.\n\nIP Address: IP address of the user who made the changes.\n\nDate & Time: Date & Time of the changes/ login.\n\nAction: Bot Saved as draft, Bot Publish, Version saved, Flow Reset, Login, Report Scheduled, Sandbox Enabled, User created on Botsup, etc (incoporate all the possible actions). Please let the product know if any clarification needed for this point.\n\nView Icon: It will open a pop-up showing old and new JSON with a copy button for both logs.\n\n\n\nImportant Points to be considered:\n\n\n\nAdmin logs will only be visible to the admin only.\n\nTemp Pass generation, changes using the temp pass will be visible to admin only.\n\nA duplicate of the bot will only be visible to the admin with both bot IDs.\n\nTeammates can see their own logs only.\n\nEvery single change should be incorporated: Incorporate all the logs, including creation, edit, delete, configuration of every element of the bot, setting, reporting, integration and login, etc accross all chanels.\n\nUnder login logs, shows the login & logout session details.\n\nLogs will be maintained based on the existing data retention policy, the latest 6 months logs on the dashboard and 5 years on the archive.\n\nFor Parent user permission will be given through Manage user on Admin on Infinito and Botsup.\n\nFor Teammates user, permission will be given through Users>> Teammates>> Permissions>> Audit Log (known as Activity Log).\n\nAttachments:\n\nDesign Link\n\nNavigation of Permission to teammate user\n\nNavigation of Permission to parent user\n\nFuture Scope:\n\nAudit log implementation on Wisely & Karix.\n\nDesign link: https://xd.adobe.com/view/1b3eda8d-0d57-4f29-9ab1-b744b4f7e493-4e6d/",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:29:13.765+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:29:13.765Z"
+        }
+      ]
+    },
+    {
+      "id": "init-fckebmc",
+      "createdAt": "2026-03-30T12:30:02.115+00:00",
+      "updatedAt": "2026-03-30T12:30:02.115+00:00",
+      "title": "Knowledge Base - Web Crawling Feature - 14023",
+      "description": "Module: AI Agent Library>Knowledge Base\n\n\n1. Feature Overview\n\nThe Web Crawling feature enables users on the Surbo DIY platform to teach their AI agent by pointing it at a website. The system automatically crawls the website, reads its pages, extracts content and links, indexes the information, and makes it available for the AI agent to reference when answering end-user queries.\n\nThis is a zero-configuration, consumer-grade experience. Users do not need to understand sitemaps, APIs, or HTML. The entire flow is guided, self-service, and non-destructive — users can add, refresh, or remove website sources at any time.\n\n1.1  Problem Statement\n\nToday, users must manually upload docs into their AI agent's knowledge base. This is:\n\nTime-consuming for websites with more than a few pages\n\nProne to staleness — content goes out of date as the website changes\n\nTechnically inaccessible for non-developer users\n\n1.2  Proposed Solution\n\nIntroduce an automated web crawling pipeline accessible through a guided UI with the following end-to-end flow:\n\nUser enters a website URL and optional configuration\n\nSystem crawls the site up to the specified depth and refresh schedule\n\nCrawled pages are indexed and stored per KB source\n\nUser can browse, filter, and preview individual crawled pages\n\nUser can attach the crawled pages with the AI agent in the intent.\n\nAI agent references indexed content when answering queries\n\n2. User Stories\n\nPersona\n\nI want to…\n\nSo that…\n\nAs a platform user\n\nadd my company website as a knowledge source without technical help\n\nmy AI chatbot can answer customer questions using up-to-date content from my site\n\nAs a platform user\n\nsee exactly which pages were crawled and what content was extracted\n\nI can verify my AI has the right information and troubleshoot incorrect answers\n\nAs a platform user\n\nmanually trigger a refresh of a website source\n\nI can update my AI's knowledge immediately after a major site update\n\nAs a platform user\n\nremove a crawled page or an entire website source\n\nI can keep my AI's knowledge base accurate and focused\n\n3. Screens & UI States\n\n3.1  Knowledge Base — Web Crawling Tab\n\nThis is the landing screen for all web-crawling sources. It has two states:\n\nState\n\nBehaviour\n\nEmpty State\n\nShown when no web sources have been added yet.\n\nDisplays a floating illustration, headline \"No websites connected yet\", a short plain-English description of the feature, and a primary CTA button \"Add New\". The illustration gently floats  to draw attention without being distracting.\n\nList State\n\nShown once one or more sources exist. Displays a card grid of all website sources. Each card shows: source name, Web links count, size, URL, and actions (Edit and Delete).\n\nAn \"Add New\" button is persistently visible in the top-right corner.\n\n3.2  Add Website Form\n\nAccessed via the \"Add New\" or \"Add WebLink\" button. A single-step form presented in a card. No multi-step wizard — all fields are visible at once to reduce cognitive overhead for non-technical users.\n\n3.3  Detail View (Crawled Pages List)\n\nAccessed by clicking a website source card. Displays a header stats bar followed by a searchable, filterable table of all crawled pages. Clicking the eye icon on any row opens a content drawer. Clicking the trash/delete icon deletes the particular crawled link. Clicking the refresh icon fetches the lates data of that specific web link and updates the crawled data.\n\nStats bar elements:\na) Website Link : The link that has been fetched\nb) Weblinks crawled : Count of the links crawled\nc) Total size : Aggregated size of the links crawled\nd) Depth Level : The level of depth the website has been crawled\ne) Refresh Schedule: Frequency of the web crawling that has been set\nf) Status : If linked with any agent in a bot or not (Linked/Not Linked)\n\nTable columns: Refer section 4.2\n\n3.4  Content Drawer\nA slide-in panel from the right showing the extracted text content of a single page plus all outbound links found on that page. Allows users to verify what their AI will learn from each page without leaving the platform and the content on this page should be editable by the user.\n\n4. Field Definitions & Behaviour\n\nAll fields use plain-English labels targeted at non-technical users. Technical terms are hidden behind tooltips (? icons). The table below defines every input field in the Add Website form.\n\n4.1  Add Website Form Fields\n\nField Label\n\nType\n\nPlain-English Description\n\nValidation & Behaviour\n\nWhat should we call this source?\n\nText input\n\nA internal name for this website source. Used as the card title and in the detail view header. Not visible to end users of the AI chatbot.\n\nRequired. Max 60 characters. Character counter shown. Inline error on empty submit: \"Please give this a name.\" Input highlights red on error.\n\nDescription\n\nText input\n\nOptional memo visible only to the platform user. Helps identify the source in large knowledge bases. The AI does not use this field.\n\nNo max length enforced in UI (backend may truncate at 255 chars). Placeholder: \"e.g. Official product help pages.\"\n\nWebsite address (URL)\n\nURL input\n\nThe starting URL the crawler will visit. This is the entry point — all crawling begins here and follows links outward from this page.\n\nRequired. Must begin with http:// or https://. Real-time validation: border turns red and inline error appears if format is invalid. On valid entry, error clears immediately. Hint text: \"Paste the full link, e.g. https://support.mycompany.com\".\n\nRead the entire website automatically\n\nToggle (on/off)\n\nWhen enabled, the crawler will attempt to follow all discovered links regardless of depth. When disabled, the Depth selector below controls how many levels deep the crawler goes.\n\nDefault: OFF. When toggled ON, the Depth selector (how deep should we go?)is visually dimmed and disabled (pointer-events: none). Toggle state persists within the session. Tooltip: \"Enable to let us explore all pages automatically.\"\n\nHow deep should we go?\n\nNumber input\n\nE.g. controls the crawl depth — how many levels of links the crawler follows from the starting URL. Level 1 = homepage only. Level 2 = homepage + all pages it links to directly. Level 3 = one level deeper still. And so on.\n\nDefault: 1. Selected state highlighted. Disabled and dimmed when \"Read entire website\" toggle is ON. Hint text updates per selection with plain-English context. Tooltip: \"Level 1 = homepage only. Level 2 = homepage + pages it links to.\"\n\nHow often should we check for updates?\n\nDropdown\n\nControls how frequently the system re-crawls the website to pick up new or changed content. Ensures the AI's knowledge stays current without manual intervention.\n\nDefault: Never. Options: \"Every day\", \"Every week\", \"Every month\", “Custom”.Mutually exclusive chips. \nCustom: Input Number of days\n\n4.2  Crawled Pages Table Columns\n\nColumn\n\nWhat it means\n\nBehaviour\n\nS.No.\n\nSequential row number within this website source.\n\nAuto-generated. Resets to 1 per source.\n\nAdd to KB\n\nWhether the crawled web link needs to be used in the KB of the Agent\n\nIf Checked (Default), the crawled link will be add to the Agent’s knowledge base (RAG).\n\nID\n\nA short unique identifier for the crawled page record within the system. Used for debugging and API references.\n\nSystem-generated. Displayed in a monospace code chip. Not editable by the user.\n\nURL\n\nThe full web address of the crawled page. Clicking opens the page in a new browser tab so the user can compare the live page to the extracted content.\n\nClick to copy option appears on mouse hover and URL gets copied to clipboard on click.\n\nLast Updated\n\nThe date and time the system last successfully extracted and indexed content from this page.\n\nTooltip: \"When we last successfully read this page.\" Format: D Mon, HH:MM AM/PM IST. Never shows future dates.\n\nNext Refresh\n\nThe scheduled date and time of the next automatic re-crawl for this page, based on the refresh frequency set by the user at the source level.\n\nTooltip: \"When we'll check this page for changes next.\" Shows \"—\" if refresh frequency is set to Manual. Format matches Last Updated.\n\nSize\n\nThe size of the extracted and stored text content for this page, measured in kilobytes. Gives the user a sense of how much content the has been indexed from each page.\n\nTooltip: \"How much content was read from this page.\" Displayed as \"X KB\" or \"X MB\" (auto-scaled). Does not include raw HTML — reflects clean extracted text size only.\n\nActions\n\nRow-level action buttons: View Content (eye icon), Manual Refresh (Refresh icon), Remove Page (bin icon).\n\nRemove triggers a confirmation dialog.\n\n5. Interaction & Behaviour Specification\n\n5.1  Form Validation\n\nSource Name: Required. Shows inline error \"Please give this a name.\" on submit if empty. Input border turns red.\n\nWebsite URL: Required. Real-time validation on input change — error shown immediately if URL does not start with http:// or https://. Error clears as soon as the user types a valid format.\n\nAll other fields have defaults and are not required.\n\nThe form does not crawls until all required fields are valid. \n\n5.2  Progress Toast\n\nAfter the user clicks \"Start Reading Website\", a toast notification appears in the bottom-right corner showing real-time crawl progress. The toast progresses through four labelled stages:\n\nProgress\n\nStage Label\n\nSub-text shown\n\n0–20%\n\nConnecting to website…\n\nChecking if the site is accessible\n\n20–50%\n\nReading pages…\n\nScanning content and links\n\n50–75%\n\nProcessing content…\n\nWe are learning from the pages\n\n100%\n\nAll done! 🎉\n\n\"[Source Name]\" is ready — click the card to explore\n\nThe progress bar turns green at 100%. The icon changes from an hourglass to a green checkmark. The toast auto-dismisses. The Submit button shimmer-animates during processing and resets to its default state after completion. The view transitions to the List State 800ms after 100% is reached.\n\n5.3  Search & Filter (Detail View)\n\nSearch input filters the pages table in real time as the user types. Matches against ID and URL (case-insensitive).\n\nIf no pages match the filters, an empty state message is shown in the table body: \"No pages match your search. Try a different keyword or filter.\"\n\n5.4  Delete & Remove Behaviour\n\nRemoving a website source (bin icon on card): shows a browser confirm dialog \"Remove \\\"[Name]\\\" from your knowledge base?\" Confirmed deletion removes the card and all associated crawled page data. If no sources remain, the view reverts to Empty State.\n\nRemoving an individual page (bin icon on table row): shows an inline confirmation. Removing a page removes it from the index — the AI can no longer reference it.\n\n6. Acceptance Criteria\n\nID\n\nCriterion\n\nPriority\n\nAC-01\n\nUser can navigate to Knowledge Base > Web Crawling tab and see an empty state with a CTA button when no sources exist.\n\nMust\n\nAC-02\n\nUser can open the Add Website form and see all fields with plain-English labels and tooltip icons.\n\nMust\n\nAC-03\n\nSource Name field shows an inline error on empty submit attempt.\n\nMust\n\nAC-04\n\nURL field shows a real-time inline error for invalid URL formats and clears it when the user corrects the input.\n\nMust\n\nAC-05\n\n\"Read entire website\" toggle disables the Depth input field when turned on and re-enables it when turned off.\n\nMust\n\nAC-06\n\nDepth input field hint text updates to reflect the selected level in plain English.\n\nShould\n\nAC-07\n\nSubmit button triggers a progress toast with at minimum 3 visible stage transitions before showing 100% completion.\n\nMust\n\nAC-08\n\nAfter successful submission, the view transitions to the List State and the new source card is visible.\n\nMust\n\nAC-09\n\nEach source card correctly displays  web link count, size, and URL.\n\nMust\n\nAC-10\n\nClicking a source card navigates to the Detail View showing the pages table.\n\nMust\n\nAC-11\n\nPages table displays all columns with correct data, tooltips on applicable headers.\n\nMust\n\nAC-12\n\nContent drawer opens from the right with slide animation when the eye icon is clicked.\n\nMust\n\nAC-13\n\nDrawer shows page , URL, size, last updated, extracted content, and outbound links.\n\nMust\n\nAC-14\n\nDrawer closes when the overlay or ✕ or close button is clicked.\n\nMust\n\nAC-15\n\nSearch input filters pages table in real time against id and URL.\n\nMust\n\nAC-16\n\nEmpty filter state message shown when no pages match the active filters.\n\nShould\n\nAC-17\n\nDeleting a source card shows a confirmation dialog and removes the card and all associated pages on confirm.\n\nMust\n\nAC-18\n\nDeleting the last source card transitions the view back to Empty State.\n\nMust\n\nAC-19\n\n\"Refresh Now\" button in the Detail View header triggers a re-crawl and updates button text to loading state during processing.\n\nShould\n\n 7. Out of Scope \n\nAuthentication-gated pages (pages behind a login wall)\n\n8. Technical Notes for Engineering\n\nCrawl jobs should be queued and processed asynchronously. The frontend polls for status updates — or uses WebSocket/SSE for real-time progress.\n\nImplement crawl rate limiting per domain to avoid being blocked or causing load on the target server.\n\nStore extracted content as clean text along with the crawled images in the KB index.\n\nPage size reported in the UI should reflect clean extracted text size.\n\n\"Next Refresh\" timestamps should be stored in UTC and converted to the user's timezone (Asia/Kolkata IST for the current deployment) on the frontend.\n\nSource-level delete should cascade to all associated crawled page records.\n\nThe system should handle crawl errors gracefully — mark the page as \"Error\" status and continue crawling other pages rather than failing the entire job.",
+      "product": "Surbo",
+      "stage": "Planning",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:30:02.115+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Planning",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:30:02.115Z"
+        }
+      ]
+    },
+    {
+      "id": "init-5r77zzu",
+      "createdAt": "2026-03-30T12:43:23.369+00:00",
+      "updatedAt": "2026-03-30T12:43:23.369+00:00",
+      "title": "MCP Implementation",
+      "description": "Need to brainstorm on MCP implementation post custom events implementation",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:43:23.369+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:43:23.369Z"
+        }
+      ]
+    },
+    {
+      "id": "init-j2iu9cu",
+      "createdAt": "2026-03-30T12:35:23.893+00:00",
+      "updatedAt": "2026-03-30T12:35:44.91+00:00",
+      "title": "Ml migration from Surbo to Botsup",
+      "description": "We need to migrate the ML functionality from surbo to botsup. We need to create the ticket by 31st march",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:35:23.893+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-ek1wtie",
+          "text": "🎯 Target date was removed (previously Apr 5, 2026)",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:35:44.910Z"
+        }
+      ],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:35:23.893Z"
+        }
+      ]
+    },
+    {
+      "id": "init-ov6drov",
+      "createdAt": "2026-03-30T12:37:08.855+00:00",
+      "updatedAt": "2026-03-30T12:37:08.855+00:00",
+      "title": "SIA Restriction on number of messages generated by Gen AI",
+      "description": "We need to implement a functionality where we can restrict the bot and give a fallback message/feature post the number of messages which are pre configured",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:37:08.855+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:37:08.855Z"
+        }
+      ]
+    },
+    {
+      "id": "init-0vo5rqb",
+      "createdAt": "2026-03-30T12:33:21.197+00:00",
+      "updatedAt": "2026-03-30T12:37:58.571+00:00",
+      "title": "Enhance Master Intent with Tag Selection Support and Response Saving via Session Variables - 14021",
+      "description": "Platform- Infinto/Botsup\nInstance- India, KSA, Indo\nChannel- Whatsapp, Web, RCS\n\nCurrently, in the Master Intent (Excel / Geolocation), the User Response field under the “Search Variable” section only allows values to be passed through:\n\nPrevious intent responses\n\nManual entry using syntax like: {{SESSION:TAG}}\n\nThere is no direct UI support to select session tags, intent tags.\n\nAdditionally, there is no provision to store the response data fetched from the master sheet, limiting reuse of this data across the bot journey.\n\nProblem Statement\n\n1. Limited Tag Usage in User Response Field\n\nUsers cannot select session variables or tags directly from UI\n\nManual syntax ({{SESSION:TAG}}) is required\n\n2. No Option to Save Master Intent Response\n\nMaster intent fetches data from Excel/Geo sheets\n\nRetrieved data cannot be stored for reuse\n\nAnalysts cannot use this data in:\n\nOther intents\n\nAPI parameters\n\nProposed Solution\n\n1. Tag Selection Support in User Response Field\n\nEnhancement\n\nAdd a Tag Icon/Button below the User Response field in the Search Variable section\n\nBehavior\n\nOn clicking the tag icon:\n\nA dropdown should appear\n\nIt should display:\n\nSession variables\n\nThis dropdown should behave similar to other intents (e.g  text intent)\n\nExpected Outcome\n\nUsers can easily select variables instead of writing manual syntax\n\n2. Add “Save Response in Bot” Section\n\nEnhancement\n\nIntroduce a new section similar to API intent:\n\nSave Response in Bot\n\nBehavior\n\nWhen enabled:\n\nSystem should allow users to map Excel column values to session variables\n\nUser should be able to:\n\nDefine session variable names\n\nMap each variable to a column from the master sheet\n\nExample\n\nExcel Columns:\n\nName\n\nAccount Number\n\nBranch\n\nUser Configuration:\n\nuser_name → Name\n\naccount_number → Account Number\n\nData Handling\n\nIf multiple values are returned for a column:\n\nStore them in comma-separated format\n\nExample:\n\nAccount Numbers → 12345, 67890, 45678\n\nSession Variable Behavior\n\nCreated session variables should:\n\nBe accessible across the entire bot journey\n\nBe visible in all tag-supported intents\n\nBe selectable via tag dropdowns\n\nIntegration with API Intent\n\nThese session variables should be usable directly in:\n\nAPI parameters under session variable\n\nUse cases to be considered-\nUser is able to to pass session variables in tag values in the master intent.\nUser is able to save excel data in session variables.\nUser is able to pass this session variable in further API intent and other intents.\nUser is able to pass this session variable in further Master intent.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Enhancement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:33:21.197+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-svuamv1",
+          "text": "🎯 Target date was set to Apr 1, 2026",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:37:58.571Z"
+        }
+      ],
+      "targetDate": "2026-04-01",
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:33:21.197Z"
+        }
+      ]
+    },
+    {
+      "id": "init-3uwe2zc",
+      "createdAt": "2026-03-30T12:34:22.267+00:00",
+      "updatedAt": "2026-03-30T12:38:06.522+00:00",
+      "title": "14029 - Allow Dynamic URL (Tag-Based) Support in Rich Card “Visit Website” Button (Master Intent Integration)",
+      "description": "While configuring a Master Intent (Excel-based) and (geo location based) and using its response to populate a Rich Card Intent, there is a limitation in passing dynamic URLs to the “Visit Website” button.\n\nIn this use case, the URL is stored in an Excel column of the Master Intent and is expected to be passed dynamically using a tag format such as:\n\n{{URLfield}}\n\nHowever, currently the frontend validation restricts saving the bot, throwing an error:\n\nInvalid URL in cards\n\n\n\nProblem Statement\n\nRich Card “Visit Website” button requires a valid static URL\n\nDynamic values (tags like {{URLfield}}) are not accepted\n\nUI validation blocks saving the bot\n\nThis functionality is supported in Surbo (legacy platform) but not working in the current system\n\nExpected Behavior\n\nSystem should allow dynamic URL values using tags (e.g., {{URLfield}})\n\n\nProposed Solution\n\nUpdate validation logic to:\n\nAllow tag-based values in URL field\n\nSkip strict URL validation when dynamic tags are used\n\nEnsure backend supports resolving dynamic URL at runtime\n\nThis should be implemented for both excel and geolocation based Master.\n\n\nNote- there might be a case where user enters randomly in {{}}. For such cases we should not block him from saving the intent. We are expecting error in such case at the run time.\nWe can think of an alternate for this in later stage.\nWe might implement validations only for static invalid URLs in future.",
+      "product": "Surbo",
+      "stage": "Execution",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Enhancement",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:34:22.267+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [
+        {
+          "id": "sys-auzafpb",
+          "text": "🎯 Target date was set to Apr 1, 2026",
+          "authorId": "system",
+          "isSystem": true,
+          "createdAt": "2026-03-30T12:38:06.522Z"
+        }
+      ],
+      "targetDate": "2026-04-01",
+      "stageHistory": [
+        {
+          "stage": "Execution",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:34:22.267Z"
+        }
+      ]
+    },
+    {
+      "id": "init-grdsj72",
+      "createdAt": "2026-03-30T12:38:54.538+00:00",
+      "updatedAt": "2026-03-30T12:38:54.538+00:00",
+      "title": "BOT-13827 date format message  - Rahul",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:38:54.538+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:38:54.538Z"
+        }
+      ]
+    },
+    {
+      "id": "init-99dnkhw",
+      "createdAt": "2026-03-30T12:39:06.321+00:00",
+      "updatedAt": "2026-03-30T12:39:06.321+00:00",
+      "title": "13481- Asset management",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:39:06.321+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:39:06.321Z"
+        }
+      ]
+    },
+    {
+      "id": "init-xi4ues1",
+      "createdAt": "2026-03-30T12:39:20.837+00:00",
+      "updatedAt": "2026-03-30T12:39:20.837+00:00",
+      "title": "13548- Chatbot ASYNC",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:39:20.837+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:39:20.837Z"
+        }
+      ]
+    },
+    {
+      "id": "init-x3n3b5c",
+      "createdAt": "2026-03-30T12:39:32.371+00:00",
+      "updatedAt": "2026-03-30T12:39:32.371+00:00",
+      "title": "13725 Slow queries/ Reward app - Check status with Ankit",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:39:32.371+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:39:32.371Z"
+        }
+      ]
+    },
+    {
+      "id": "init-fszt099",
+      "createdAt": "2026-03-30T12:39:41.888+00:00",
+      "updatedAt": "2026-03-30T12:39:41.888+00:00",
+      "title": "13773- Enhance Index to optimize query- Ankit",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:39:41.888+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:39:41.888Z"
+        }
+      ]
+    },
+    {
+      "id": "init-phsfzuv",
+      "createdAt": "2026-03-30T12:39:49.603+00:00",
+      "updatedAt": "2026-03-30T12:39:49.603+00:00",
+      "title": "13756- Consent Management- Faraz",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:39:49.603+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:39:49.603Z"
+        }
+      ]
+    },
+    {
+      "id": "init-mwvf0r7",
+      "createdAt": "2026-03-30T12:39:57.621+00:00",
+      "updatedAt": "2026-03-30T12:39:57.621+00:00",
+      "title": "BOT-13808      Azure integration with SIA",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:39:57.621+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:39:57.621Z"
+        }
+      ]
+    },
+    {
+      "id": "init-i2mpkal",
+      "createdAt": "2026-03-30T12:40:07.254+00:00",
+      "updatedAt": "2026-03-30T12:40:07.254+00:00",
+      "title": "BOT-12134 Azure API development",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:40:07.254+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:40:07.254Z"
+        }
+      ]
+    },
+    {
+      "id": "init-w4hktr4",
+      "createdAt": "2026-03-30T12:40:31.421+00:00",
+      "updatedAt": "2026-03-30T12:40:31.421+00:00",
+      "title": "13924- Indo UAT on WA flows",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:40:31.421+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:40:31.421Z"
+        }
+      ]
+    },
+    {
+      "id": "init-deg823s",
+      "createdAt": "2026-03-30T12:40:41.02+00:00",
+      "updatedAt": "2026-03-30T12:40:41.02+00:00",
+      "title": "13633- Media library- Lalit, Akshay, Ashish",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:40:41.02+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:40:41.020Z"
+        }
+      ]
+    },
+    {
+      "id": "init-hzr4ld6",
+      "createdAt": "2026-03-30T12:40:50.803+00:00",
+      "updatedAt": "2026-03-30T12:40:50.803+00:00",
+      "title": "BOT-13890 Session variable support in list& reply",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:40:50.803+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:40:50.803Z"
+        }
+      ]
+    },
+    {
+      "id": "init-0ckjloa",
+      "createdAt": "2026-03-30T12:40:58.787+00:00",
+      "updatedAt": "2026-03-30T12:40:58.787+00:00",
+      "title": "BOT-13912 Optimise UI for integration screen",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:40:58.787+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:40:58.787Z"
+        }
+      ]
+    },
+    {
+      "id": "init-6cg4lb4",
+      "createdAt": "2026-03-30T12:41:07.037+00:00",
+      "updatedAt": "2026-03-30T12:41:07.037+00:00",
+      "title": "BOT-13970 Copy paste",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Testing",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:41:07.037+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Testing",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:41:07.037Z"
+        }
+      ]
+    },
+    {
+      "id": "init-rxzz2wa",
+      "createdAt": "2026-03-30T12:41:40.772+00:00",
+      "updatedAt": "2026-03-30T12:41:40.772+00:00",
+      "title": "AI transcript Analytics- need to create",
+      "description": "We need to brainstorm on AI analytics",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:41:40.772+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:41:40.772Z"
+        }
+      ]
+    },
+    {
+      "id": "init-hd6z6d2",
+      "createdAt": "2026-03-30T12:42:04.903+00:00",
+      "updatedAt": "2026-03-30T12:42:04.903+00:00",
+      "title": "Dockerisation of Infinito Bot",
+      "description": "",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:42:04.903+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:42:04.903Z"
+        }
+      ]
+    },
+    {
+      "id": "init-yse8biv",
+      "createdAt": "2026-03-30T12:42:39.586+00:00",
+      "updatedAt": "2026-03-30T12:42:39.586+00:00",
+      "title": "Context retention/ cross session memory and cross channel",
+      "description": "We need to implement cross session memory and also cross channel",
+      "product": "Surbo",
+      "stage": "Roadmap",
+      "status": "Active",
+      "priority": "Medium",
+      "type": "Feature",
+      "ownerId": "u1",
+      "stageUpdatedAt": "2026-03-30T12:42:39.586+00:00",
+      "tags": [],
+      "teamMembers": null,
+      "notes": null,
+      "blockerReason": null,
+      "comments": [],
+      "targetDate": null,
+      "stageHistory": [
+        {
+          "stage": "Roadmap",
+          "exitedAt": null,
+          "enteredAt": "2026-03-30T12:42:39.586Z"
+        }
+      ]
+    }
+  ],
+  "notifications": [
+    {
+      "id": "666a2478-7774-4df0-8c8b-6092b072a0b0",
+      "user_id": "12255c92-85a1-46ee-a61b-96041c82424a",
+      "message": "Nitin Verma tagged you in a comment on \"RMVNEK\"",
+      "initiative_id": "init-vgngu51",
+      "is_read": false,
+      "created_at": "2026-03-25T07:19:17.238297+00:00"
+    },
+    {
+      "id": "6cc6a089-bb09-43dc-99ed-5692fcff63f1",
+      "user_id": "15f68938-b608-4214-95fe-5c5ec6fbe498",
+      "message": "Nitin Verma tagged you in a comment on \"RMVNEK\"",
+      "initiative_id": "init-vgngu51",
+      "is_read": false,
+      "created_at": "2026-03-25T07:19:17.238297+00:00"
+    },
+    {
+      "id": "19eb1f31-d8d0-4652-9e64-021b4153f7ae",
+      "user_id": "63942d58-cf33-4f93-8fe7-56bc52831557",
+      "message": "Nitin Verma tagged you in a comment on \"RMVNEK\"",
+      "initiative_id": "init-vgngu51",
+      "is_read": false,
+      "created_at": "2026-03-25T07:19:17.238297+00:00"
+    },
+    {
+      "id": "7a131670-f5c9-4492-8cd2-3b7d64aa1a16",
+      "user_id": "12255c92-85a1-46ee-a61b-96041c82424a",
+      "message": "Nitin Verma tagged you in a comment on \"khjh\"",
+      "initiative_id": "init-oyjaeah",
+      "is_read": false,
+      "created_at": "2026-03-25T07:50:19.147662+00:00"
+    },
+    {
+      "id": "6c1c31a4-f5cf-428a-bca9-d64f96695f27",
+      "user_id": "63942d58-cf33-4f93-8fe7-56bc52831557",
+      "message": "Nitin Verma tagged you in a comment on \"khjh\"",
+      "initiative_id": "init-oyjaeah",
+      "is_read": false,
+      "created_at": "2026-03-25T07:50:19.147662+00:00"
+    },
+    {
+      "id": "b3e6e274-25cd-4752-a3d0-a6b20b2424a9",
+      "user_id": "12255c92-85a1-46ee-a61b-96041c82424a",
+      "message": "Nitin Verma tagged you in a comment on \"RMVNEK\"",
+      "initiative_id": "init-vgngu51",
+      "is_read": false,
+      "created_at": "2026-03-25T07:50:48.695181+00:00"
+    },
+    {
+      "id": "689e1025-b7e0-4f40-a6ac-efe604fad41f",
+      "user_id": "63942d58-cf33-4f93-8fe7-56bc52831557",
+      "message": "Nitin Verma tagged you in a comment on \"RMVNEK\"",
+      "initiative_id": "init-vgngu51",
+      "is_read": false,
+      "created_at": "2026-03-25T07:50:48.695181+00:00"
+    },
+    {
+      "id": "eb713935-19e3-4e16-805a-0ad6e01987fa",
+      "user_id": "15f68938-b608-4214-95fe-5c5ec6fbe498",
+      "message": "Nitin Verma tagged you in a comment on \"jsnc\"",
+      "initiative_id": "init-ppp6x6r",
+      "is_read": true,
+      "created_at": "2026-03-25T09:43:04.239496+00:00"
+    }
+  ],
+  "metadata": {
+    "exportedAt": "2026-03-30T12:47:11.041Z",
+    "totalUsers": 5,
+    "totalInitiatives": 41,
+    "totalNotifications": 8
+  }
+}
