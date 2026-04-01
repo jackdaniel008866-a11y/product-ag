@@ -13,10 +13,12 @@ interface KanbanBoardProps {
 }
 
 export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInitiative, stuckDaysThreshold }: KanbanBoardProps) {
+  const [productFilter, setProductFilter] = useState('All');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
   const filteredInitiatives = initiatives.filter(init => {
+    if (productFilter !== 'All' && init.product !== productFilter) return false;
     if (startDate && new Date(init.createdAt) < new Date(startDate)) return false;
     if (endDate) {
       const end = new Date(endDate);
@@ -34,6 +36,17 @@ export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInit
           <Filter size={16} className="mr-1.5" />
           <span className="text-sm font-bold tracking-tight uppercase">Filters:</span>
         </div>
+        
+        <select 
+          value={productFilter} 
+          onChange={e => setProductFilter(e.target.value)}
+          className="w-full sm:w-auto text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 font-medium text-slate-700 cursor-pointer transition-all"
+        >
+          <option value="All">All Products</option>
+          <option value="Surbo">Surbo</option>
+          <option value="Surbo Chat">Surbo Chat</option>
+        </select>
+        
         <div className="flex items-center space-x-1 bg-slate-50 border border-slate-300 rounded-lg px-2 overflow-hidden focus-within:ring-1 focus-within:ring-teal-500 focus-within:border-teal-400 transition-all">
           <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">From</span>
           <input 
