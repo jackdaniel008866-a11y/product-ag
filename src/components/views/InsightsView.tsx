@@ -315,12 +315,12 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
   }
 
   return (
-    <div className="max-w-5xl mx-auto py-6 animate-in fade-in duration-300">
+    <div className="max-w-5xl mx-auto py-6 animate-in fade-in duration-300 transition-colors">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
           Direction Intelligence
         </h2>
-        <p className="text-slate-500 text-sm mt-1">Algorithmic pipeline analysis generating strategic operational insights.</p>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Algorithmic pipeline analysis generating strategic operational insights.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -345,80 +345,80 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Positive Signals */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-emerald-50/50 p-4 border-b border-emerald-100 flex items-center gap-2">
-            <CheckCircle className="text-emerald-600 w-5 h-5" />
-            <h3 className="font-bold text-emerald-900">Positive Signals</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col transition-colors">
+          <div className="bg-emerald-50/50 dark:bg-emerald-900/10 p-4 border-b border-emerald-100 dark:border-emerald-900/40 flex items-center gap-2">
+            <CheckCircle className="text-emerald-600 dark:text-emerald-500 w-5 h-5" />
+            <h3 className="font-bold text-emerald-900 dark:text-emerald-300">Positive Signals</h3>
           </div>
           <div className="p-5 flex-1 space-y-3">
             {topPositive.length > 0 ? topPositive.map((sig, i) => (
-              <div key={i} className="flex items-start gap-2 text-sm text-slate-700 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 mt-1.5" />
+              <div key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-emerald-500 shrink-0 mt-1.5" />
                 <span>{sig}</span>
               </div>
             )) : (
-               <p className="text-slate-400 text-sm italic py-4">No dominant positive signals detected.</p>
+               <p className="text-slate-400 dark:text-slate-500 text-sm italic py-4">No dominant positive signals detected.</p>
             )}
           </div>
         </div>
 
         {/* Risk Signals */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-red-50/50 p-4 border-b border-red-100 flex items-center gap-2">
-            <AlertTriangle className="text-red-500 w-5 h-5" />
-            <h3 className="font-bold text-red-900">Risk Signals</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col transition-colors">
+          <div className="bg-red-50/50 dark:bg-red-900/10 p-4 border-b border-red-100 dark:border-red-900/40 flex items-center gap-2">
+            <AlertTriangle className="text-red-500 dark:text-red-400 w-5 h-5" />
+            <h3 className="font-bold text-red-900 dark:text-red-300">Risk Signals</h3>
           </div>
           <div className="p-5 flex-1 space-y-3">
             {topRisk.length > 0 ? topRisk.map((sig, i) => (
-              <div key={i} className="flex items-start gap-2 text-sm text-slate-700 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0 mt-1.5" />
+              <div key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400 dark:bg-red-500 shrink-0 mt-1.5" />
                 <span>{sig}</span>
               </div>
             )) : (
-              <p className="text-slate-400 text-sm italic py-4">No critical risk signals detected.</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm italic py-4">No critical risk signals detected.</p>
             )}
           </div>
         </div>
 
         {/* Suggested Actions */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-indigo-50/50 p-4 border-b border-indigo-100 flex items-center gap-2">
-            <Lightbulb className="text-indigo-600 w-5 h-5" />
-            <h3 className="font-bold text-indigo-900">Suggested Actions</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col transition-colors">
+          <div className="bg-indigo-50/50 dark:bg-indigo-900/10 p-4 border-b border-indigo-100 dark:border-indigo-900/40 flex items-center gap-2">
+            <Lightbulb className="text-indigo-600 dark:text-indigo-400 w-5 h-5" />
+            <h3 className="font-bold text-indigo-900 dark:text-indigo-300">Suggested Actions</h3>
           </div>
           <div className="p-5 flex-1 space-y-3">
             {topActions.length > 0 ? topActions.map((action, i) => (
-              <div key={i} className="flex items-start gap-2 text-sm text-slate-700 font-medium bg-slate-50 p-2.5 rounded border border-slate-100">
-                <span className="text-indigo-600 shrink-0">👉</span>
+              <div key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300 font-medium bg-slate-50 dark:bg-slate-800/80 p-2.5 rounded border border-slate-100 dark:border-slate-700">
+                <span className="text-indigo-600 dark:text-indigo-400 shrink-0">👉</span>
                 <span>{action}</span>
               </div>
             )) : (
-              <p className="text-slate-400 text-sm italic py-4">Pipeline operating optimally.</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm italic py-4">Pipeline operating optimally.</p>
             )}
           </div>
         </div>
       </div>
 
       {/* Historical Trend Section */}
-      <div className="mt-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-        <div className="bg-slate-50 border-b border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="mt-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col transition-colors">
+        <div className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <LineChart className="text-indigo-600 w-5 h-5" />
-            <h3 className="font-bold text-slate-800">Historical Trend</h3>
+            <LineChart className="text-indigo-600 dark:text-indigo-400 w-5 h-5" />
+            <h3 className="font-bold text-slate-800 dark:text-slate-100">Historical Trend</h3>
           </div>
           <div className="flex items-center gap-3">
             <input 
               type="date" 
               value={startDate} 
               onChange={(e) => setStartDate(e.target.value)} 
-              className="px-3 py-1.5 border border-slate-300 rounded text-sm text-slate-700 bg-white shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none [color-scheme:light] dark:[color-scheme:dark]"
             />
             <span className="text-slate-400 font-medium">to</span>
             <input 
               type="date" 
               value={endDate} 
               onChange={(e) => setEndDate(e.target.value)} 
-              className="px-3 py-1.5 border border-slate-300 rounded text-sm text-slate-700 bg-white shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none [color-scheme:light] dark:[color-scheme:dark]"
             />
           </div>
         </div>
@@ -444,8 +444,8 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
                     const py = 240 - 30 - (s / 100) * 180;
                     return (
                       <g key={s}>
-                        <line x1="40" y1={py} x2="760" y2={py} stroke={s === 0 ? "#cbd5e1" : "#f1f5f9"} strokeWidth={s === 0 ? "2" : "1"} strokeDasharray={s > 0 ? "4 4" : "none"} />
-                        <text x="30" y={py + 3} fontSize="10" fill="#94a3b8" textAnchor="end">{s}</text>
+                        <line x1="40" y1={py} x2="760" y2={py} strokeWidth={s === 0 ? "2" : "1"} strokeDasharray={s > 0 ? "4 4" : "none"} className={`transition-colors ${s === 0 ? 'stroke-slate-300 dark:stroke-slate-600' : 'stroke-slate-100 dark:stroke-slate-800/80'}`} />
+                        <text x="30" y={py + 3} fontSize="10" fill="currentColor" textAnchor="end" className="text-slate-400 dark:text-slate-500">{s}</text>
                       </g>
                     );
                   })}
@@ -464,9 +464,9 @@ export default function InsightsView({ initiatives }: InsightsViewProps) {
                      
                      return (
                        <g key={ds.date}>
-                         <circle cx={x} cy={y} r="4" fill="white" stroke="#6366f1" strokeWidth="2" className="transition-all hover:r-6 hover:stroke-[3px] cursor-pointer" />
+                         <circle cx={x} cy={y} r="4" stroke="#6366f1" strokeWidth="2" className="transition-all hover:r-6 hover:stroke-[3px] cursor-pointer fill-white dark:fill-slate-900" />
                          {showLabel && (
-                           <text x={x} y={240 - 10} fontSize="10" fill="#64748b" textAnchor="middle" className="font-medium whitespace-nowrap">
+                           <text x={x} y={240 - 10} fontSize="10" fill="currentColor" textAnchor="middle" className="font-medium whitespace-nowrap text-slate-500 dark:text-slate-400">
                              {ds.date.substring(5).replace('-', '/')}
                            </text>
                          )}

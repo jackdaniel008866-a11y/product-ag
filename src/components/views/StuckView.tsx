@@ -21,31 +21,31 @@ export default function StuckView({ initiatives, onInitiativeClick, stuckDaysThr
     <div className="max-w-4xl mx-auto py-4">
       <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-bold text-slate-800 flex items-center">
+          <h2 className="text-lg font-bold text-slate-800 dark:text-white flex items-center">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500 mr-2 shadow-[0_0_6px_rgba(239,68,68,0.5)]"></span>
             Attention Required
           </h2>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Initiatives that are officially blocked or haven't moved stages in over {stuckDaysThreshold} days.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3">
-          <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+          <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700">
             {[3, 7, 14, 30].map(days => (
               <button
                 key={days}
                 onClick={() => onThresholdChange(days)}
                 className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
                   stuckDaysThreshold === days 
-                    ? 'bg-white text-teal-700 shadow-sm border border-slate-200' 
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                    ? 'bg-white dark:bg-slate-700 text-teal-700 dark:text-teal-400 shadow-sm border border-slate-200 dark:border-slate-600' 
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
                 }`}
               >
                 {days}d
               </button>
             ))}
           </div>
-          <div className="bg-red-50 text-red-600 px-3 py-1.5 rounded-lg border border-red-100 font-semibold text-sm whitespace-nowrap">
+          <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg border border-red-100 dark:border-red-900/50 font-semibold text-sm whitespace-nowrap">
             {stuckItems.length} Stuck Items
           </div>
         </div>
@@ -58,12 +58,12 @@ export default function StuckView({ initiatives, onInitiativeClick, stuckDaysThr
       </div>
       
       {stuckItems.length === 0 && (
-        <div className="text-center py-24 bg-white rounded-2xl border border-slate-200 border-dashed">
-          <div className="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+        <div className="text-center py-24 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 border-dashed">
+          <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><path d="m9 11 3 3L22 4"></path></svg>
           </div>
-          <h3 className="text-slate-800 font-medium text-lg">Everything is moving!</h3>
-          <p className="text-slate-500 text-sm mt-1">No initiatives are blocked or stuck right now.</p>
+          <h3 className="text-slate-800 dark:text-slate-200 font-medium text-lg">Everything is moving!</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">No initiatives are blocked or stuck right now.</p>
         </div>
       )}
     </div>

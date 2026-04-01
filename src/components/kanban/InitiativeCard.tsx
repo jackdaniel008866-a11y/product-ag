@@ -27,8 +27,8 @@ export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold
       draggable={true}
       onDragStart={handleDragStart}
       className={clsx(
-        "bg-white rounded-xl p-3 border shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-all group",
-        initiative.status === 'Blocked' ? 'border-red-300' : 'border-slate-200'
+        "bg-white dark:bg-slate-800 rounded-xl p-3 border shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-all group",
+        initiative.status === 'Blocked' ? 'border-red-300 dark:border-red-900/50' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
       )}
     >
       <div className="flex justify-between items-start mb-2">
@@ -36,39 +36,39 @@ export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold
           {initiative.priority === 'High' && (
             <Zap size={14} className="text-red-500 fill-red-500" />
           )}
-          <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+          <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700/50 px-1.5 py-0.5 rounded">
             {initiative.type}
           </span>
         </div>
         {initiative.product === 'Surbo' ? (
-          <span className="text-[10px] font-medium text-teal-600 bg-teal-50 px-1.5 rounded-full border border-teal-100">Surbo</span>
+          <span className="text-[10px] font-medium text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-1.5 rounded-full border border-teal-100 dark:border-teal-800/50">Surbo</span>
         ) : (
-          <span className="text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 rounded-full border border-blue-100">Surbo Chat</span>
+          <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1.5 rounded-full border border-blue-100 dark:border-blue-800/50">Surbo Chat</span>
         )}
       </div>
 
-      <h4 className="font-semibold text-sm leading-snug mb-1 text-slate-800 line-clamp-2">
+      <h4 className="font-semibold text-sm leading-snug mb-1 text-slate-800 dark:text-slate-100 line-clamp-2">
         {initiative.title}
       </h4>
       
       {initiative.status === 'Blocked' && initiative.blockerReason && (
-        <div className="mt-2 mb-2 p-1.5 bg-red-50 text-red-700 text-xs rounded border border-red-100 flex items-start">
+        <div className="mt-2 mb-2 p-1.5 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 text-xs rounded border border-red-100 dark:border-red-900/50 flex items-start">
           <AlertCircle size={14} className="mr-1 mt-0.5 flex-shrink-0" />
           <span className="line-clamp-2 break-words leading-tight">{initiative.blockerReason}</span>
         </div>
       )}
 
-      <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+      <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           {/* Owner Avatar */}
-          <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-semibold text-slate-600 border border-white shrink-0">
+          <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-semibold text-slate-600 dark:text-slate-300 border border-white dark:border-slate-600 shrink-0">
             {owner?.initials || '??'}
           </div>
           <div className="flex space-x-1">
             {initiative.tags?.slice(0, 1).map(tag => (
-              <span key={tag} className="text-[10px] text-slate-500 truncate max-w-[60px]">{tag}</span>
+              <span key={tag} className="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[60px]">{tag}</span>
             ))}
-            {(initiative.tags?.length || 0) > 1 && <span className="text-[10px] text-slate-400">+{initiative.tags!.length - 1}</span>}
+            {(initiative.tags?.length || 0) > 1 && <span className="text-[10px] text-slate-400 dark:text-slate-500">+{initiative.tags!.length - 1}</span>}
           </div>
         </div>
 
@@ -84,13 +84,13 @@ export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold
             <span className="w-2 h-2 rounded-full bg-emerald-500" title="Moving Fast"></span>
           )}
           
-          <div className="flex items-center text-xs text-slate-400 font-medium ml-1">
+          <div className="flex items-center text-xs text-slate-400 dark:text-slate-500 font-medium ml-1">
             <Clock size={12} className="mr-0.5" />
             <span>{daysInStage}d</span>
           </div>
 
           {initiative.targetDate && (
-            <div className="flex items-center text-[11px] text-indigo-500 font-bold ml-1.5 bg-indigo-50 px-1.5 rounded border border-indigo-100/50" title="Target Date">
+            <div className="flex items-center text-[11px] text-indigo-500 dark:text-indigo-400 font-bold ml-1.5 bg-indigo-50 dark:bg-indigo-900/30 px-1.5 rounded border border-indigo-100/50 dark:border-indigo-900/50" title="Target Date">
               <Calendar size={10} className="mr-1" />
               <span>{format(new Date(initiative.targetDate), 'MMM d')}</span>
             </div>

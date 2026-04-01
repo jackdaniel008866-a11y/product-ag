@@ -12,7 +12,8 @@ import RoadmapView from './components/views/RoadmapView';
 import QuickAddModal from './components/modals/QuickAddModal';
 import EditInitiativeModal from './components/modals/EditInitiativeModal';
 import AuthModal from './components/auth/AuthModal';
-import { useUsers } from './contexts/UserContext';
+import { useUsers, UserProvider } from './contexts/UserContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { supabase } from './lib/supabase';
 import type { Session } from '@supabase/supabase-js';
 
@@ -280,67 +281,71 @@ function App() {
   };
 
   return (
-    <AppLayout 
-      currentView={currentView} 
-      onViewChange={setCurrentView}
-      onQuickAdd={handleQuickAdd}
-      onExportData={handleExportCSV}
-      stuckCount={stuckCount}
-      initiatives={initiatives}
-      notifications={notifications}
-      onMarkNotificationRead={handleMarkNotificationRead}
-      onNotificationClick={handleNotificationClick}
-    >
-      <div className="h-full">
-        {currentView === 'kanban' && (
-          <KanbanBoard 
-            initiatives={initiatives} 
-            onInitiativeClick={setEditingInitiativeId} 
-            onMoveInitiative={handleMoveInitiative} 
-            stuckDaysThreshold={stuckDaysThreshold}
-          />
-        )}
-        {currentView === 'roadmap' && (
-          <RoadmapView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
-        )}
-        {currentView === 'list' && (
-          <ListView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
-        )}
-        {currentView === 'stuck' && (
-          <StuckView 
-            initiatives={initiatives} 
-            onInitiativeClick={setEditingInitiativeId} 
-            stuckDaysThreshold={stuckDaysThreshold}
-            onThresholdChange={setStuckDaysThreshold}
-          />
-        )}
-        {currentView === 'product' && (
-          <ProductView initiatives={initiatives} />
-        )}
-        {currentView === 'insights' && (
-          <InsightsView initiatives={initiatives} />
-        )}
-        {currentView === 'team' && (
-          <TeamView users={usersList} onRemoveUser={removeUser} />
-        )}
-      </div>
+    <ThemeProvider defaultTheme="system" storageKey="product-ag-theme">
+      <UserProvider>
+        <AppLayout 
+          currentView={currentView} 
+          onViewChange={setCurrentView}
+          onQuickAdd={handleQuickAdd}
+          onExportData={handleExportCSV}
+          stuckCount={stuckCount}
+          initiatives={initiatives}
+          notifications={notifications}
+          onMarkNotificationRead={handleMarkNotificationRead}
+          onNotificationClick={handleNotificationClick}
+        >
+          <div className="h-full">
+            {currentView === 'kanban' && (
+              <KanbanBoard 
+                initiatives={initiatives} 
+                onInitiativeClick={setEditingInitiativeId} 
+                onMoveInitiative={handleMoveInitiative} 
+                stuckDaysThreshold={stuckDaysThreshold}
+              />
+            )}
+            {currentView === 'roadmap' && (
+              <RoadmapView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
+            )}
+            {currentView === 'list' && (
+              <ListView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
+            )}
+            {currentView === 'stuck' && (
+              <StuckView 
+                initiatives={initiatives} 
+                onInitiativeClick={setEditingInitiativeId} 
+                stuckDaysThreshold={stuckDaysThreshold}
+                onThresholdChange={setStuckDaysThreshold}
+              />
+            )}
+            {currentView === 'product' && (
+              <ProductView initiatives={initiatives} />
+            )}
+            {currentView === 'insights' && (
+              <InsightsView initiatives={initiatives} />
+            )}
+            {currentView === 'team' && (
+              <TeamView users={usersList} onRemoveUser={removeUser} />
+            )}
+          </div>
 
-      <QuickAddModal 
-        isOpen={isQuickAddOpen} 
-        onClose={() => setIsQuickAddOpen(false)} 
-        onSave={handleSaveInitiative} 
-      />
+          <QuickAddModal 
+            isOpen={isQuickAddOpen} 
+            onClose={() => setIsQuickAddOpen(false)} 
+            onSave={handleSaveInitiative} 
+          />
 
-      <EditInitiativeModal
-        initiative={initiatives.find(i => i.id === editingInitiativeId) || null}
-        currentUserMetadata={session.user.user_metadata || {}}
-        currentUserId={session.user.id}
-        onClose={() => setEditingInitiativeId(null)}
-        onUpdate={handleUpdateInitiative}
-        onDelete={handleDeleteInitiative}
-        onAddComment={handleAddComment}
-      />
-    </AppLayout>
+          <EditInitiativeModal
+            initiative={initiatives.find(i => i.id === editingInitiativeId) || null}
+            currentUserMetadata={session.user.user_metadata || {}}
+            currentUserId={session.user.id}
+            onClose={() => setEditingInitiativeId(null)}
+            onUpdate={handleUpdateInitiative}
+            onDelete={handleDeleteInitiative}
+            onAddComment={handleAddComment}
+          />
+        </AppLayout>
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 

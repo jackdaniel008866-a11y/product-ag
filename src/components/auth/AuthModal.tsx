@@ -100,90 +100,90 @@ export default function AuthModal() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 transition-colors">
       <div className="max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="text-center mb-8 flex flex-col items-center">
-          <img src="/valuefirst-logo.png" alt="Valuefirst Logo" className="h-16 object-contain mb-8" />
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 mb-2 whitespace-nowrap">Surbo / Surbo Chat</h1>
-          <h2 className="text-lg font-semibold tracking-tight text-teal-600 mb-4">Product Management Tracker</h2>
-          <p className="text-slate-500 font-medium">
+          <img src="/valuefirst-logo.png" alt="Valuefirst Logo" className="h-16 object-contain mb-8 dark:brightness-200 dark:contrast-200" />
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-2 whitespace-nowrap">Surbo / Surbo Chat</h1>
+          <h2 className="text-lg font-semibold tracking-tight text-teal-600 dark:text-teal-400 mb-4">Product Management Tracker</h2>
+          <p className="text-slate-500 dark:text-slate-400 font-medium">
             {isLogin ? "Sign in to access the workspace." : "Create your team account."}
           </p>
         </div>
 
-        <div className={`bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200 p-6 md:p-8 transition-all duration-300 ${error ? 'border-red-300 shadow-red-100' : ''}`}>
+        <div className={`bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-800 p-6 md:p-8 transition-all duration-300 ${error ? 'border-red-300 dark:border-red-800 shadow-red-100 dark:shadow-none' : ''}`}>
           <form onSubmit={handleAuth} className="space-y-4">
             
             {!isLogin && (
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block">First Name</label>
+                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block">First Name</label>
                   <input
                     type="text"
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium text-slate-900"
+                    className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 dark:focus:border-teal-500 transition-all font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block">Last Name</label>
+                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block">Last Name</label>
                   <input
                     type="text"
                     required
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium text-slate-900"
+                    className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 dark:focus:border-teal-500 transition-all font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
                   />
                 </div>
               </div>
             )}
 
             <div>
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block">Corporate Email</label>
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block">Corporate Email</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@vfirst.com"
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium text-slate-900"
+                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 dark:focus:border-teal-500 transition-all font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block">Password</label>
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block">Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium text-slate-900"
+                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 dark:focus:border-teal-500 transition-all font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
               />
             </div>
 
             {!isLogin && (
               <div>
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block">Confirm Password</label>
+                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block">Confirm Password</label>
                 <input
                   type="password"
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium text-slate-900"
+                  className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 dark:focus:border-teal-500 transition-all font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
                 />
               </div>
             )}
 
             {error && (
-              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg flex items-start gap-2 text-sm font-medium animate-in fade-in">
+              <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg flex items-start gap-2 text-sm font-medium animate-in fade-in border border-transparent dark:border-red-800">
                 <AlertTriangle className="w-5 h-5 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
             
             {successMessage && (
-              <div className="bg-emerald-50 border border-emerald-100/50 text-emerald-700 px-4 py-3.5 rounded-lg flex items-start gap-2.5 text-sm font-medium animate-in fade-in transition-all">
+              <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100/50 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 px-4 py-3.5 rounded-lg flex items-start gap-2.5 text-sm font-medium animate-in fade-in transition-all">
                 <span className="text-emerald-500 shrink-0 text-xl leading-none">✉️</span>
                 <span className="leading-snug">{successMessage}</span>
               </div>
@@ -192,7 +192,7 @@ export default function AuthModal() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white rounded-xl py-4 font-semibold transition-all active:scale-[0.98] shadow-sm hover:shadow-md mt-6"
+              className="w-full flex items-center justify-center space-x-2 bg-slate-900 dark:bg-teal-600 hover:bg-slate-800 dark:hover:bg-teal-500 disabled:opacity-50 text-white rounded-xl py-4 font-semibold transition-all active:scale-[0.98] shadow-sm hover:shadow-md mt-6"
             >
               <span>{loading ? "Authenticating..." : (isLogin ? "Sign In" : "Register Account")}</span>
               {!loading && <ArrowRight size={18} />}
@@ -207,7 +207,7 @@ export default function AuthModal() {
                 setError(null);
                 setSuccessMessage(null);
               }}
-              className="text-sm text-slate-500 hover:text-slate-800 font-semibold transition-colors"
+              className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-semibold transition-colors"
             >
               {isLogin ? "Need an account? Sign up" : "Already have an account? Sign in"}
             </button>

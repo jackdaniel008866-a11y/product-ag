@@ -31,8 +31,8 @@ export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInit
   return (
     <div className="flex flex-col h-full animate-in fade-in duration-300">
       {/* Date Filter Bar */}
-      <div className="bg-white border text-sm border-slate-200 rounded-xl p-3 flex flex-wrap gap-2 shadow-sm items-center shrink-0 mb-4">
-        <div className="flex items-center text-slate-500 mr-2">
+      <div className="bg-white dark:bg-slate-900 border text-sm border-slate-200 dark:border-slate-800 rounded-xl p-3 flex flex-wrap gap-2 shadow-sm items-center shrink-0 mb-4 transition-colors">
+        <div className="flex items-center text-slate-500 dark:text-slate-400 mr-2">
           <Filter size={16} className="mr-1.5" />
           <span className="text-sm font-bold tracking-tight uppercase">Filters:</span>
         </div>
@@ -40,27 +40,27 @@ export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInit
         <select 
           value={productFilter} 
           onChange={e => setProductFilter(e.target.value)}
-          className="w-full sm:w-auto text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 font-medium text-slate-700 cursor-pointer transition-all"
+          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
         >
           <option value="All">All Products</option>
           <option value="Surbo">Surbo</option>
           <option value="Surbo Chat">Surbo Chat</option>
         </select>
         
-        <div className="flex items-center space-x-1 bg-slate-50 border border-slate-300 rounded-lg px-2 overflow-hidden focus-within:ring-1 focus-within:ring-teal-500 focus-within:border-teal-400 transition-all">
-          <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">From</span>
+        <div className="flex items-center space-x-1 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 overflow-hidden focus-within:ring-1 focus-within:ring-teal-500 focus-within:border-teal-400 transition-all">
+          <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500 tracking-wider">From</span>
           <input 
              type="date"
              value={startDate}
              onChange={e => setStartDate(e.target.value)}
-             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 font-medium w-32"
+             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 dark:text-slate-200 font-medium w-32 [color-scheme:light] dark:[color-scheme:dark]"
           />
-          <span className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">To</span>
+          <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500 tracking-wider ml-1">To</span>
           <input 
              type="date"
              value={endDate}
              onChange={e => setEndDate(e.target.value)}
-             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 font-medium w-32"
+             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 dark:text-slate-200 font-medium w-32 [color-scheme:light] dark:[color-scheme:dark]"
           />
         </div>
       </div>

@@ -21,10 +21,10 @@ export default function ProductView({ initiatives }: ProductViewProps) {
 
   const renderStats = (title: string, data: Initiative[], badgeColor: string) => {
     return (
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full max-h-[80vh]">
-        <div className={`p-4 border-b border-slate-100 flex items-center justify-between shadow-sm shrink-0 ${badgeColor}`}>
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col h-full max-h-[80vh] transition-colors">
+        <div className={`p-4 border-b border-slate-100 dark:border-slate-800/50 flex items-center justify-between shadow-sm shrink-0 ${badgeColor}`}>
           <h3 className="font-bold text-lg">{title}</h3>
-          <span className="font-medium bg-white/40 text-slate-800 px-2.5 py-0.5 rounded-full text-xs shadow-sm border border-white/20">{data.length} Initiatives</span>
+          <span className="font-medium bg-white/40 dark:bg-black/20 text-slate-800 dark:text-white px-2.5 py-0.5 rounded-full text-xs shadow-sm border border-white/20 dark:border-white/10">{data.length} Initiatives</span>
         </div>
         <div className="p-4 flex-1 overflow-y-auto custom-scrollbar bg-slate-50/30">
           <div className="space-y-4">
@@ -43,10 +43,10 @@ export default function ProductView({ initiatives }: ProductViewProps) {
               return (
                 <div key={stage} className="animate-in fade-in duration-300">
                   <div className="flex justify-between text-sm mb-1.5">
-                    <span className="text-slate-600 font-bold uppercase tracking-wide text-[11px]">{stage}</span>
-                    <span className="font-bold text-slate-700 text-xs">{items.length}</span>
+                    <span className="text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wide text-[11px]">{stage}</span>
+                    <span className="font-bold text-slate-700 dark:text-slate-300 text-xs">{items.length}</span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
                     <div className={`${colorClass} h-2.5 rounded-full transition-all duration-500`} style={{ width: `${percentage}%` }}></div>
                   </div>
                 </div>
@@ -69,19 +69,19 @@ export default function ProductView({ initiatives }: ProductViewProps) {
     <div className="max-w-5xl mx-auto py-4">
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Product Focus Breakdown</h2>
-          <p className="text-slate-500 text-sm mt-1">High-level distribution of initiatives actively moved within this timeframe.</p>
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Product Focus Breakdown</h2>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">High-level distribution of initiatives actively moved within this timeframe.</p>
         </div>
         
-        <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 self-start md:self-auto overflow-x-auto hide-scrollbar">
+        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700 self-start md:self-auto overflow-x-auto hide-scrollbar">
           {[1, 7, 15, 30, 45, 60, 90, 0].map(days => (
             <button
               key={days}
               onClick={() => setTimeFilterDays(days)}
               className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all whitespace-nowrap ${
                 timeFilterDays === days 
-                  ? 'bg-white text-teal-700 shadow-sm border border-slate-200' 
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                  ? 'bg-white dark:bg-slate-700 text-teal-700 dark:text-teal-400 shadow-sm border border-slate-200 dark:border-slate-600' 
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
               {days === 0 ? 'All Time' : `${days} Days`}
@@ -91,8 +91,8 @@ export default function ProductView({ initiatives }: ProductViewProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {renderStats('Surbo', surbo, 'bg-teal-50 text-teal-800 border-teal-100')}
-        {renderStats('Surbo Chat', surboChat, 'bg-blue-50 text-blue-800 border-blue-100')}
+        {renderStats('Surbo', surbo, 'bg-teal-50 dark:bg-teal-900/30 text-teal-800 dark:text-teal-400 border-teal-100 dark:border-teal-900/50')}
+        {renderStats('Surbo Chat', surboChat, 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border-blue-100 dark:border-blue-900/50')}
       </div>
     </div>
   );

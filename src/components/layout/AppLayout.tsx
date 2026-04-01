@@ -20,7 +20,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children, currentView, onViewChange, onQuickAdd, onExportData, stuckCount, initiatives, notifications, onMarkNotificationRead, onNotificationClick }: AppLayoutProps) {
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-slate-50 text-slate-900">
+    <div className="flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       <Header 
         onQuickAdd={onQuickAdd} 
         onExportData={onExportData}
