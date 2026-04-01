@@ -1,6 +1,8 @@
 
+import { useState } from 'react';
 import type { Initiative, Stage } from '../../types';
 import { STAGES } from '../../data/mockData';
+import { Filter } from 'lucide-react';
 import KanbanColumn from './KanbanColumn';
 
 interface KanbanBoardProps {
@@ -11,21 +13,61 @@ interface KanbanBoardProps {
 }
 
 export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInitiative, stuckDaysThreshold }: KanbanBoardProps) {
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const filteredInitiatives = initiatives.filter(init => {
+    if (startDate && new Date(init.createdAt) < new Date(startDate)) return false;
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      if (new Date(init.createdAt) > end) return false;
+    }
+    return true;
+  });
+
   return (
-    <div className="h-full w-full flex space-x-4 overflow-x-auto pb-4 custom-scrollbar-x pr-8">
-      {STAGES.filter(stage => stage !== 'Roadmap').map((stage) => {
-        const columnInitiatives = initiatives.filter(i => i.stage === stage);
-        return (
-          <KanbanColumn 
-            key={stage} 
-            stage={stage} 
-            initiatives={columnInitiatives} 
-            onInitiativeClick={onInitiativeClick}
-            onMoveInitiative={onMoveInitiative}
-            stuckDaysThreshold={stuckDaysThreshold}
+    <div className="flex flex-col h-full animate-in fade-in duration-300">
+      {/* Date Filter Bar */}
+      <div className="bg-white border text-sm border-slate-200 rounded-xl p-3 flex flex-wrap gap-2 shadow-sm items-center shrink-0 mb-4">
+        <div className="flex items-center text-slate-500 mr-2">
+          <Filter size={16} className="mr-1.5" />
+          <span className="text-sm font-bold tracking-tight uppercase">Filters:</span>
+        </div>
+        <div className="flex items-center space-x-1 bg-slate-50 border border-slate-300 rounded-lg px-2 overflow-hidden focus-within:ring-1 focus-within:ring-teal-500 focus-within:border-teal-400 transition-all">
+          <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">From</span>
+          <input 
+             type="date"
+             value={startDate}
+             onChange={e => setStartDate(e.target.value)}
+             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 font-medium w-32"
           />
-        );
-      })}
+          <span className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">To</span>
+          <input 
+             type="date"
+             value={endDate}
+             onChange={e => setEndDate(e.target.value)}
+             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 font-medium w-32"
+          />
+        </div>
+      </div>
+
+      {/* Board Columns */}
+      <div className="flex-1 w-full flex space-x-4 overflow-x-auto pb-4 custom-scrollbar-x pr-8 min-h-0">
+        {STAGES.filter(stage => stage !== 'Roadmap').map((stage) => {
+          const columnInitiatives = filteredInitiatives.filter(i => i.stage === stage);
+          return (
+            <KanbanColumn 
+              key={stage} 
+              stage={stage} 
+              initiatives={columnInitiatives} 
+              onInitiativeClick={onInitiativeClick}
+              onMoveInitiative={onMoveInitiative}
+              stuckDaysThreshold={stuckDaysThreshold}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
