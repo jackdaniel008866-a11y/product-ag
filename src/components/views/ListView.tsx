@@ -20,10 +20,20 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [ownerFilter, setOwnerFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const filteredInitiatives = initiatives.filter(init => {
     if (productFilter !== 'All' && init.product !== productFilter) return false;
     if (stageFilter !== 'All' && init.stage !== stageFilter) return false;
+    
+    // Date Range Logic
+    if (startDate && new Date(init.createdAt) < new Date(startDate)) return false;
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      if (new Date(init.createdAt) > end) return false;
+    }
     if (priorityFilter !== 'All' && init.priority !== priorityFilter) return false;
     if (statusFilter !== 'All' && init.status !== statusFilter) return false;
     
@@ -98,6 +108,23 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
           <option value="Parked">Parked</option>
           <option value="Deployed">Deployed</option>
         </select>
+        
+        <div className="flex items-center space-x-1 w-full sm:w-auto bg-slate-50 border border-slate-300 rounded-lg px-2 overflow-hidden focus-within:ring-1 focus-within:ring-teal-500 focus-within:border-teal-400 transition-all">
+          <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">From</span>
+          <input 
+             type="date"
+             value={startDate}
+             onChange={e => setStartDate(e.target.value)}
+             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 font-medium w-32"
+          />
+          <span className="text-xs font-bold uppercase text-slate-400 tracking-wider ml-1">To</span>
+          <input 
+             type="date"
+             value={endDate}
+             onChange={e => setEndDate(e.target.value)}
+             className="bg-transparent text-sm py-1.5 px-1 outline-none text-slate-700 font-medium w-32"
+          />
+        </div>
       </div>
 
       {/* Table */}
@@ -106,18 +133,19 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-medium">
-              <th className="px-5 py-3 font-semibold w-1/3">Initiative</th>
+              <th className="px-5 py-3 font-semibold w-[28%]">Initiative</th>
               <th className="px-5 py-3 font-semibold">Stage</th>
               <th className="px-5 py-3 font-semibold">Priority</th>
               <th className="px-5 py-3 font-semibold">Owner</th>
               <th className="px-5 py-3 font-semibold">Status</th>
+              <th className="px-5 py-3 font-semibold">Created</th>
               <th className="px-5 py-3 font-semibold">Target Date</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {filteredInitiatives.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-5 py-12 text-center">
+                <td colSpan={7} className="px-5 py-12 text-center">
                   <div className="text-slate-400 mb-2">
                     <Filter size={24} className="mx-auto opacity-50" />
                   </div>
@@ -166,6 +194,9 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
                       )}></span>
                       <span className="text-slate-700 text-xs font-bold uppercase tracking-wider">{init.status}</span>
                     </div>
+                  </td>
+                  <td className="px-5 py-3.5 text-slate-500 text-sm font-medium whitespace-nowrap">
+                    {format(new Date(init.createdAt), 'MMM d, yyyy')}
                   </td>
                   <td className="px-5 py-3.5 text-slate-700 text-sm font-medium whitespace-nowrap">
                     {init.targetDate ? format(new Date(init.targetDate), 'MMM d, yyyy') : <span className="text-slate-300">-</span>}

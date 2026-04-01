@@ -90,11 +90,15 @@ export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold
           </div>
 
           {initiative.targetDate && (
-            <div className="flex items-center text-[11px] text-indigo-500 font-bold ml-1.5 bg-indigo-50 px-1.5 rounded border border-indigo-100/50">
+            <div className="flex items-center text-[11px] text-indigo-500 font-bold ml-1.5 bg-indigo-50 px-1.5 rounded border border-indigo-100/50" title="Target Date">
               <Calendar size={10} className="mr-1" />
               <span>{format(new Date(initiative.targetDate), 'MMM d')}</span>
             </div>
           )}
+          
+          <div className="flex items-center text-[10px] text-slate-400 font-medium ml-1.5" title="Creation Date">
+             <span className="opacity-70">Created {format(new Date(initiative.createdAt), 'MMM d')}</span>
+          </div>
         </div>
       </div>
     </div>
