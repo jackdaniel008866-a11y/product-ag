@@ -23,10 +23,33 @@ export function UserProvider({ children }: { children: ReactNode }) {
       });
   }, []);
 
-  const users = usersList.reduce((acc, user) => {
+  // Deduplicate users by name so dropdowns don't show multiples
+  const uniqueUsersList = usersList.filter((user, index, self) =>
+    index === self.findIndex((t) => t.name === user.name)
+  );
+
+  // Map user IDs properly
+  let users = usersList.reduce((acc, user) => {
     acc[user.id] = user;
     return acc;
   }, {} as Record<string, User>);
+
+  // Self-heal known generic legacy mapping
+  // Map hardcoded 'ownerId' missing from DB directly to discovered authenticated active federated users
+  const legacyToName: Record<string, string> = {
+    'u1': 'Sahil Asgher', 
+    'u2': 'Deepjyoti Patar',
+    'u3': 'Rajneesh Lakhera',
+    'u4': 'Nitin Verma'
+  };
+  
+  Object.keys(legacyToName).forEach(legacyId => {
+     // Find the real UUID user instance for that name
+     const trueUser = usersList.find(u => u.name === legacyToName[legacyId]);
+     if (trueUser) {
+        users[legacyId] = trueUser;
+     }
+  });
 
   const addUser = async (name: string, initials: string) => {
     const id = `u${Date.now()}`;
@@ -50,7 +73,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ users, usersList, addUser, removeUser }}>
+    <UserContext.Provider value={{ users, usersList: uniqueUsersList, addUser, removeUser }}>
       {children}
     </UserContext.Provider>
   );

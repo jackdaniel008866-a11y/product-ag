@@ -39,12 +39,20 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
   // Sync state when initiative changes
   useEffect(() => {
     if (initiative) {
+      const legacyMap: Record<string, string> = {
+        'u1': '12255c92-85a1-46ee-a61b-96041c82424a', 
+        'u2': '15f68938-b608-4214-95fe-5c5ec6fbe498',
+        'u3': '867782c6-edfd-472a-b1fe-ec3aed9443d4',
+        'u4': '4d76bd35-724b-4347-b4a2-ad29171b8069',
+        '63942d58-cf33-4f93-8fe7-56bc52831557': '12255c92-85a1-46ee-a61b-96041c82424a'
+      };
+      
       setTitle(initiative.title);
       setDescription(initiative.description || '');
       setProduct(initiative.product);
       setType(initiative.type);
       setPriority(initiative.priority);
-      setOwnerId(initiative.ownerId);
+      setOwnerId(legacyMap[initiative.ownerId] || initiative.ownerId);
       setStage(initiative.stage);
       setStatus(initiative.status);
       setTargetDate(initiative.targetDate || '');
