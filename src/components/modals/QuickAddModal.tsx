@@ -12,7 +12,7 @@ interface QuickAddModalProps {
 }
 
 export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModalProps) {
-  const { users } = useUsers();
+  const { usersList } = useUsers();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [product, setProduct] = useState<Product>('Surbo');
@@ -128,7 +128,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
                     onChange={e => setOwnerId(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900"
                   >
-                    {Object.values(users).map(user => (
+                    {usersList.map(user => (
                       <option key={user.id} value={user.id}>{user.name}</option>
                     ))}
                   </select>

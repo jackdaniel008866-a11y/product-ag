@@ -13,7 +13,7 @@ interface ListViewProps {
 }
 
 export default function ListView({ initiatives, onInitiativeClick }: ListViewProps) {
-  const { users } = useUsers();
+  const { users, usersList } = useUsers();
   
   const [productFilter, setProductFilter] = useState('All');
   const [stageFilter, setStageFilter] = useState('All');
@@ -94,7 +94,7 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
         >
           <option value="All">All Owners</option>
           <option value="Unassigned">Unassigned</option>
-          {Object.values(users).map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+          {usersList.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
         </select>
 
         <select 

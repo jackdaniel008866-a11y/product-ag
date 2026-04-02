@@ -17,7 +17,7 @@ interface EditInitiativeModalProps {
 }
 
 export default function EditInitiativeModal({ initiative, currentUserId, currentUserMetadata, onClose, onUpdate, onDelete, onAddComment }: EditInitiativeModalProps) {
-  const { users } = useUsers();
+  const { users, usersList } = useUsers();
   const [title, setTitle] = useState('');
   const [titleError, setTitleError] = useState(false);
   const [description, setDescription] = useState('');
@@ -135,7 +135,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     onAddComment(initiative.id, comment);
     
     // Process tags
-    const taggedUsers = Object.values(users).filter(u => new RegExp(`@${u.name}(\\b|\\s|$)`, 'i').test(newCommentText));
+    const taggedUsers = usersList.filter(u => new RegExp(`@${u.name}(\\b|\\s|$)`, 'i').test(newCommentText));
     if (taggedUsers.length > 0) {
       const payloads = taggedUsers.map(u => ({
         user_id: u.id,
@@ -186,7 +186,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     textareaRef.current.focus();
   };
 
-  const filteredUsers = Object.values(users).filter(u => u.name.toLowerCase().includes(tagSearchText));
+  const filteredUsers = usersList.filter(u => u.name.toLowerCase().includes(tagSearchText));
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-0 sm:p-4">
@@ -325,7 +325,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
                   value={ownerId} onChange={e => setOwnerId(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800"
                 >
-                  {Object.values(users).map(user => (
+                  {usersList.map(user => (
                     <option key={user.id} value={user.id}>{user.name}</option>
                   ))}
                 </select>
