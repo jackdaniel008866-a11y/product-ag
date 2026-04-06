@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { Initiative } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
 import { format } from 'date-fns';
-import { STAGES } from '../../data/mockData';
+import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
 import { clsx } from 'clsx';
 import { Filter } from 'lucide-react';
 
@@ -19,6 +19,7 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
   const [stageFilter, setStageFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [ownerFilter, setOwnerFilter] = useState('All');
+  const [developerFilter, setDeveloperFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -42,6 +43,14 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
         if (init.ownerId && users[init.ownerId]) return false;
       } else {
         if (init.ownerId !== ownerFilter) return false;
+      }
+    }
+    
+    if (developerFilter !== 'All') {
+      if (developerFilter === 'Unassigned') {
+        if (init.developers && init.developers.length > 0) return false;
+      } else {
+        if (!init.developers || !init.developers.includes(developerFilter)) return false;
       }
     }
     
@@ -95,6 +104,20 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
           <option value="All">All Owners</option>
           <option value="Unassigned">Unassigned</option>
           {usersList.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+        </select>
+
+        <select 
+          value={developerFilter} 
+          onChange={e => setDeveloperFilter(e.target.value)}
+          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
+        >
+          <option value="All">All Developers</option>
+          <option value="Unassigned">No Developers</option>
+          {Object.entries(DEVELOPER_TEAMS).map(([team, devs]) => (
+            <optgroup key={team} label={team} className="font-bold text-slate-500 dark:text-slate-400">
+              {devs.map(dev => <option key={dev} value={dev} className="font-medium text-slate-700 dark:text-slate-200">{dev}</option>)}
+            </optgroup>
+          ))}
         </select>
 
         <select 
