@@ -52,10 +52,26 @@ export interface Initiative {
   blockerReason?: string;
   notes?: string;
   targetDate?: string | null; // ISO date string or yyyy-mm-dd format
+  developers?: string[];
   comments?: Comment[];
   tags?: string[];
   stageUpdatedAt: string; // ISO date string
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
   stageHistory?: StageTransition[];
+}
+
+export type SalesRequestStatus = 'Assisting' | 'Awaiting Sales Update' | 'Closed - Won' | 'Closed - Lost';
+
+export interface SalesRequest {
+  id: string;
+  client_name: string;
+  sales_poc: string;
+  description: string;
+  product_owner_id?: string;
+  status: SalesRequestStatus;
+  outcome?: string;
+  follow_up_date?: string; // ISO date string
+  created_at: string;
+  updated_at: string;
 }

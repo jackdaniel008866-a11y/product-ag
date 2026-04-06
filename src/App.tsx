@@ -9,6 +9,7 @@ import ProductView from './components/views/ProductView';
 import InsightsView from './components/views/InsightsView';
 import TeamView from './components/views/TeamView';
 import RoadmapView from './components/views/RoadmapView';
+import ClientUpdatesView from './components/views/ClientUpdatesView';
 import QuickAddModal from './components/modals/QuickAddModal';
 import EditInitiativeModal from './components/modals/EditInitiativeModal';
 import AuthModal from './components/auth/AuthModal';
@@ -16,8 +17,9 @@ import { useUsers, UserProvider } from './contexts/UserContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { supabase } from './lib/supabase';
 import type { Session } from '@supabase/supabase-js';
+import type { SalesRequest } from './types';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights' | 'client-updates';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -28,6 +30,7 @@ function App() {
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [editingInitiativeId, setEditingInitiativeId] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
+  const [salesRequests, setSalesRequests] = useState<SalesRequest[]>([]);
   const { usersList, removeUser } = useUsers();
 
   useEffect(() => {
@@ -77,6 +80,16 @@ function App() {
           console.error('Error fetching notifications:', error);
         } else {
           setNotifications(data || []);
+        }
+      });
+      
+    // Fetch Sales Requests
+    supabase.from('sales_requests').select('*').order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching sales requests:', error);
+        } else {
+          setSalesRequests(data || []);
         }
       });
 
@@ -230,6 +243,39 @@ function App() {
     setEditingInitiativeId(initiativeId);
   };
 
+  const handleSaveSalesRequest = async (newItem: Omit<SalesRequest, 'id' | 'created_at' | 'updated_at'>) => {
+    const payload = {
+      ...newItem,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    const { data, error } = await supabase.from('sales_requests').insert([payload]).select().single();
+    if (error) {
+      console.error('Error saving sales request:', error);
+    } else if (data) {
+      setSalesRequests(prev => [data, ...prev]);
+    }
+  };
+
+  const handleUpdateSalesRequest = async (id: string, updates: Partial<SalesRequest>) => {
+    const payload = { ...updates, updated_at: new Date().toISOString() };
+    // Optimistic UI updates
+    setSalesRequests(prev => prev.map(sr => sr.id === id ? { ...sr, ...payload } : sr));
+    
+    const { error } = await supabase.from('sales_requests').update(payload).eq('id', id);
+    if (error) {
+      console.error('Error updating sales request:', error);
+    }
+  };
+
+  const handleDeleteSalesRequest = async (id: string) => {
+    setSalesRequests(prev => prev.filter(sr => sr.id !== id));
+    const { error } = await supabase.from('sales_requests').delete().eq('id', id);
+    if (error) {
+       console.error('Error deleting sales request:', error);
+    }
+  };
+
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -248,11 +294,12 @@ function App() {
       return;
     }
 
-    const headers = ['ID', 'Title', 'Description', 'Product', 'Type', 'Priority', 'Owner', 'Stage', 'Status', 'Target Date', 'Tags', 'Created At'];
+    const headers = ['ID', 'Title', 'Description', 'Product', 'Type', 'Priority', 'Owner', 'Developers', 'Stage', 'Status', 'Target Date', 'Tags', 'Created At'];
     const csvContent = [
       headers.join(','),
       ...initiatives.map(init => {
         const ownerName = usersList.find(u => u.id === init.ownerId)?.name || 'Unknown';
+        const developerNames = (init.developers || []).join(' | ');
         return [
           `"${init.id}"`,
           `"${(init.title || '').replace(/"/g, '""')}"`,
@@ -261,6 +308,7 @@ function App() {
           `"${init.type}"`,
           `"${init.priority}"`,
           `"${ownerName}"`,
+          `"${developerNames}"`,
           `"${init.stage}"`,
           `"${init.status}"`,
           `"${init.targetDate || ''}"`,
@@ -322,6 +370,14 @@ function App() {
             )}
             {currentView === 'insights' && (
               <InsightsView initiatives={initiatives} />
+            )}
+            {currentView === 'client-updates' && (
+              <ClientUpdatesView 
+                salesRequests={salesRequests} 
+                onSave={handleSaveSalesRequest}
+                onUpdate={handleUpdateSalesRequest}
+                onDelete={handleDeleteSalesRequest}
+              />
             )}
             {currentView === 'team' && (
               <TeamView users={usersList} onRemoveUser={removeUser} />

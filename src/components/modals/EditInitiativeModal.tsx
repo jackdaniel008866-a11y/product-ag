@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, type FormEvent } from 'react';
 import type { Initiative, Product, InitiativeType, Priority, Stage, Status, Comment } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
-import { STAGES } from '../../data/mockData';
-import { X, Save, MessageSquare, Send, Calendar, AtSign } from 'lucide-react';
+import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
+import { X, Save, MessageSquare, Send, Calendar, AtSign, Users } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { format } from 'date-fns';
 
@@ -28,6 +28,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
   const [stage, setStage] = useState<Stage>('Planning');
   const [status, setStatus] = useState<Status>('Active');
   const [targetDate, setTargetDate] = useState('');
+  const [developers, setDevelopers] = useState<string[]>([]);
   
   // Comment Thread State
   const [newCommentText, setNewCommentText] = useState('');
@@ -56,6 +57,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
       setStage(initiative.stage);
       setStatus(initiative.status);
       setTargetDate(initiative.targetDate || '');
+      setDevelopers(initiative.developers || []);
       setNewCommentText(''); // Clear draft on open
     }
   }, [initiative]);
@@ -107,6 +109,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
       stage,
       status,
       targetDate: finalTargetDate,
+      developers,
       updatedAt: new Date().toISOString(),
     };
 
@@ -329,6 +332,37 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
                     <option key={user.id} value={user.id}>{user.name}</option>
                   ))}
                 </select>
+              </div>
+
+              {/* Developers */}
+              <div className="col-span-1 md:col-span-2 mt-2">
+                <h3 className="flex items-center text-sm font-bold text-slate-800 dark:text-slate-100 mb-3">
+                  <Users size={16} className="mr-2 text-indigo-500" />
+                  Assigned Developers
+                </h3>
+                <div className="max-h-48 overflow-y-auto w-full border border-slate-200 dark:border-slate-700/60 rounded-xl p-3 bg-slate-50 dark:bg-slate-800/50 custom-scrollbar space-y-4">
+                  {Object.entries(DEVELOPER_TEAMS).map(([team, devs]) => (
+                    <div key={team}>
+                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">{team}</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                        {devs.map(dev => (
+                          <label key={dev} className="flex items-center space-x-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 p-2 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-600 hover:shadow-sm">
+                            <input 
+                              type="checkbox" 
+                              checked={developers.includes(dev)}
+                              onChange={(e) => {
+                                if (e.target.checked) setDevelopers([...developers, dev]);
+                                else setDevelopers(developers.filter(d => d !== dev));
+                              }}
+                              className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-800 bg-white w-4 h-4" 
+                            />
+                            <span className="font-medium select-none">{dev}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
             </div>

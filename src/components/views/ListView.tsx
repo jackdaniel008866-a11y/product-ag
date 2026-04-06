@@ -137,6 +137,7 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
               <th className="px-5 py-3 font-semibold">Stage</th>
               <th className="px-5 py-3 font-semibold">Priority</th>
               <th className="px-5 py-3 font-semibold">Owner</th>
+              <th className="px-5 py-3 font-semibold w-[15%]">Developers</th>
               <th className="px-5 py-3 font-semibold">Status</th>
               <th className="px-5 py-3 font-semibold">Created</th>
               <th className="px-5 py-3 font-semibold">Target Date</th>
@@ -181,6 +182,19 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
                         {users[init.ownerId]?.initials || '??'}
                       </div>
                       <span className="text-slate-700 dark:text-slate-300 font-medium">{users[init.ownerId]?.name || 'Unassigned'}</span>
+                    </div>
+                  </td>
+                  <td className="px-5 py-3.5">
+                    <div className="flex flex-wrap gap-1.5 max-w-[200px]">
+                      {!init.developers || init.developers.length === 0 ? (
+                        <span className="text-xs text-slate-400 dark:text-slate-500 italic">None</span>
+                      ) : (
+                        init.developers.map((dev, idx) => (
+                          <span key={idx} className="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shadow-sm truncate max-w-[120px]" title={dev}>
+                            {dev}
+                          </span>
+                        ))
+                      )}
                     </div>
                   </td>
                   <td className="px-5 py-3.5 whitespace-nowrap">

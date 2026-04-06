@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { Initiative, Product, InitiativeType, Priority, Stage } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
-import { STAGES } from '../../data/mockData';
+import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
 import { X } from 'lucide-react';
 
 interface QuickAddModalProps {
@@ -21,6 +21,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
   const [ownerId, setOwnerId] = useState('u1'); // Default to Nitin
   const [stage, setStage] = useState<Stage>('Planning');
   const [targetDate, setTargetDate] = useState('');
+  const [developers, setDevelopers] = useState<string[]>([]);
 
   if (!isOpen) return null;
 
@@ -38,6 +39,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
       stage,
       status: 'Active',
       targetDate: targetDate ? targetDate : undefined,
+      developers,
       tags: [],
     });
 
@@ -50,6 +52,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
     setOwnerId('u1');
     setStage('Planning');
     setTargetDate('');
+    setDevelopers([]);
     onClose();
   };
 
@@ -167,6 +170,34 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
                     className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 transition-all [color-scheme:light] dark:[color-scheme:dark]"
                   />
                 </div>
+
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Developers</label>
+                  <div className="max-h-44 overflow-y-auto w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 bg-slate-50 dark:bg-slate-800 custom-scrollbar space-y-3">
+                    {Object.entries(DEVELOPER_TEAMS).map(([team, devs]) => (
+                      <div key={team}>
+                        <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 px-1">{team}</div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                          {devs.map(dev => (
+                            <label key={dev} className="flex items-center space-x-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700/50 p-1.5 rounded cursor-pointer transition-colors border border-transparent hover:border-slate-300 dark:hover:border-slate-600">
+                              <input 
+                                type="checkbox" 
+                                checked={developers.includes(dev)}
+                                onChange={(e) => {
+                                  if (e.target.checked) setDevelopers([...developers, dev]);
+                                  else setDevelopers(developers.filter(d => d !== dev));
+                                }}
+                                className="rounded border-slate-300 text-teal-600 focus:ring-teal-500 dark:border-slate-600 dark:bg-slate-700 bg-white" 
+                              />
+                              <span className="font-medium">{dev}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
