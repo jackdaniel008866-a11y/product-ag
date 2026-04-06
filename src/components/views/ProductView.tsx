@@ -102,17 +102,11 @@ export default function ProductView({ initiatives }: ProductViewProps) {
 
         <div className="space-y-8">
           {Object.entries(DEVELOPER_TEAMS).map(([team, devs]) => {
-            const teamDevsWithTickets = devs.filter(dev => 
-              filteredInitiatives.some(i => i.developers?.includes(dev))
-            );
-            
-            if (teamDevsWithTickets.length === 0) return null;
-            
             return (
               <div key={team}>
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 ml-1">{team}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {teamDevsWithTickets.map(dev => {
+                  {devs.map(dev => {
                     const devInitiatives = filteredInitiatives.filter(i => i.developers?.includes(dev));
                     return (
                       <div key={dev}>
