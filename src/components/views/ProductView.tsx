@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { Initiative, Stage } from '../../types';
 import { differenceInDays } from 'date-fns';
-
-const STAGES: Stage[] = ['Roadmap', 'Planning', 'Execution', 'Testing', 'Deployed', 'Parked'];
+import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
 
 interface ProductViewProps {
   initiatives: Initiative[];
@@ -22,9 +21,9 @@ export default function ProductView({ initiatives }: ProductViewProps) {
   const renderStats = (title: string, data: Initiative[], badgeColor: string) => {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col h-full max-h-[80vh] transition-colors">
-        <div className={`p-4 border-b border-slate-100 dark:border-slate-800/50 flex items-center justify-between shadow-sm shrink-0 ${badgeColor}`}>
-          <h3 className="font-bold text-lg">{title}</h3>
-          <span className="font-medium bg-white/40 dark:bg-black/20 text-slate-800 dark:text-white px-2.5 py-0.5 rounded-full text-xs shadow-sm border border-white/20 dark:border-white/10">{data.length} Initiatives</span>
+        <div className={`p-3 border-b border-slate-100 dark:border-slate-800/50 flex items-center justify-between shadow-sm shrink-0 ${badgeColor}`}>
+          <h3 className="font-bold text-base truncate pr-2">{title}</h3>
+          <span className="font-semibold bg-white/40 dark:bg-black/20 text-slate-800 dark:text-white px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider shadow-sm border border-white/20 dark:border-white/10 shrink-0">{data.length} Tickets</span>
         </div>
         <div className="p-4 flex-1 overflow-y-auto custom-scrollbar bg-slate-50/30">
           <div className="space-y-4">
@@ -93,6 +92,39 @@ export default function ProductView({ initiatives }: ProductViewProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {renderStats('Surbo', surbo, 'bg-teal-50 dark:bg-teal-900/30 text-teal-800 dark:text-teal-400 border-teal-100 dark:border-teal-900/50')}
         {renderStats('Surbo Chat', surboChat, 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border-blue-100 dark:border-blue-900/50')}
+      </div>
+
+      <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Developer Bandwidth</h2>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Ticket stage distribution currently assigned to specific engineering resources.</p>
+        </div>
+
+        <div className="space-y-8">
+          {Object.entries(DEVELOPER_TEAMS).map(([team, devs]) => {
+            const teamDevsWithTickets = devs.filter(dev => 
+              filteredInitiatives.some(i => i.developers?.includes(dev))
+            );
+            
+            if (teamDevsWithTickets.length === 0) return null;
+            
+            return (
+              <div key={team}>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 ml-1">{team}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {teamDevsWithTickets.map(dev => {
+                    const devInitiatives = filteredInitiatives.filter(i => i.developers?.includes(dev));
+                    return (
+                      <div key={dev}>
+                        {renderStats(dev, devInitiatives, 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/50')}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
