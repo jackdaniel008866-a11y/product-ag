@@ -103,6 +103,8 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
                   >
                     <option value="Surbo">Surbo</option>
                     <option value="Surbo Chat">Surbo Chat</option>
+                    <option value="Surbo Ace">Surbo Ace</option>
+                    <option value="AI Voicebot">AI Voicebot</option>
                   </select>
                 </div>
                 

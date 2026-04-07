@@ -1,4 +1,4 @@
-export type Product = 'Surbo' | 'Surbo Chat';
+export type Product = 'Surbo' | 'Surbo Chat' | 'Surbo Ace' | 'AI Voicebot';
 export type InitiativeType = 'Feature' | 'Enhancement' | 'Client Ask' | 'Bug Theme' | 'Experiment' | 'Internal Improvement';
 export type Priority = 'High' | 'Medium' | 'Low';
 export type Stage = 'Roadmap' | 'Planning' | 'Execution' | 'Testing' | 'Deployed' | 'Parked';

@@ -17,7 +17,9 @@ export default function ProductView({ initiatives }: ProductViewProps) {
 
   const surbo = filteredInitiatives.filter(i => i.product === 'Surbo');
   const surboChat = filteredInitiatives.filter(i => i.product === 'Surbo Chat');
-
+  const surboAce = filteredInitiatives.filter(i => i.product === 'Surbo Ace');
+  const aiVoicebot = filteredInitiatives.filter(i => i.product === 'AI Voicebot');
+  
   const renderStats = (title: string, data: Initiative[], badgeColor: string) => {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col h-full max-h-[80vh] transition-colors">
@@ -89,9 +91,11 @@ export default function ProductView({ initiatives }: ProductViewProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {renderStats('Surbo', surbo, 'bg-teal-50 dark:bg-teal-900/30 text-teal-800 dark:text-teal-400 border-teal-100 dark:border-teal-900/50')}
         {renderStats('Surbo Chat', surboChat, 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border-blue-100 dark:border-blue-900/50')}
+        {renderStats('Surbo Ace', surboAce, 'bg-purple-50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400 border-purple-100 dark:border-purple-900/50')}
+        {renderStats('AI Voicebot', aiVoicebot, 'bg-rose-50 dark:bg-rose-900/30 text-rose-800 dark:text-rose-400 border-rose-100 dark:border-rose-900/50')}
       </div>
 
       <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
