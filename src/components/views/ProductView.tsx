@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Initiative, Stage } from '../../types';
+import type { Initiative } from '../../types';
 import { differenceInDays } from 'date-fns';
 import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
 
