@@ -8,7 +8,7 @@ import { X } from 'lucide-react';
 interface QuickAddModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (initiative: Omit<Initiative, 'id' | 'createdAt' | 'updatedAt' | 'stageUpdatedAt'>) => void;
+  onSave: (initiative: Omit<Initiative, 'id' | 'createdAt' | 'updatedAt' | 'stageUpdatedAt'>) => void | Promise<void>;
 }
 
 export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModalProps) {
@@ -25,40 +25,45 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    onSave({
-      title: title.trim(),
-      description: description.trim(),
-      product,
-      type,
-      priority,
-      ownerId,
-      stage,
-      status: 'Active',
-      targetDate: targetDate ? targetDate : undefined,
-      developers,
-      tags: [],
-    });
+    try {
+      await onSave({
+        title: title.trim(),
+        description: description.trim(),
+        product,
+        type,
+        priority,
+        ownerId,
+        stage,
+        status: 'Active',
+        targetDate: targetDate ? targetDate : undefined,
+        developers,
+        tags: [],
+      });
 
-    // Reset form
-    setTitle('');
-    setDescription('');
-    setProduct('Surbo');
-    setType('Feature');
-    setPriority('Medium');
-    setOwnerId('u1');
-    setStage('Planning');
-    setTargetDate('');
-    setDevelopers([]);
-    onClose();
+      // Reset form
+      setTitle('');
+      setDescription('');
+      setProduct('Surbo');
+      setType('Feature');
+      setPriority('Medium');
+      setOwnerId('u1');
+      setStage('Planning');
+      setTargetDate('');
+      setDevelopers([]);
+      onClose();
+    } catch (error) {
+      console.error('Submission failed', error);
+      // Modal stays open so the user doesn't lose what they typed.
+    }
   };
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-0 sm:p-4">
-      <div className="bg-white dark:bg-slate-900 w-full h-full sm:h-auto sm:max-w-2xl sm:rounded-2xl shadow-xl flex flex-col animate-in slide-in-from-bottom-4 sm:slide-in-from-bottom-8 duration-300 overflow-hidden relative border border-transparent dark:border-slate-800 transition-colors">
+      <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-2xl shadow-xl flex flex-col animate-in slide-in-from-bottom-4 sm:slide-in-from-bottom-8 duration-300 overflow-hidden relative border border-transparent dark:border-slate-800 transition-colors">
         <div className="flex justify-between items-center p-4 md:p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 transition-colors">
           <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">Quick Add Initiative</h2>
           <button onClick={onClose} className="p-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
@@ -66,7 +71,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="flex flex-col flex-1">
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden min-h-0">
           <div className="p-4 md:p-6 overflow-y-auto custom-scrollbar flex-1 relative">
             <div className="space-y-4">
               <div>

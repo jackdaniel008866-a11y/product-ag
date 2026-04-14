@@ -133,6 +133,8 @@ function App() {
       setInitiatives(prev => [freshInitiative, ...prev]);
     } else {
       console.error('Error saving initiative:', error);
+      alert(`Could not save initiative. Supabase Error: ${error.message}`);
+      throw error;
     }
   };
 
@@ -252,6 +254,8 @@ function App() {
     const { data, error } = await supabase.from('sales_requests').insert([payload]).select().single();
     if (error) {
       console.error('Error saving sales request:', error);
+      alert(`Could not save request. Supabase Error: ${error.message}`);
+      throw error;
     } else if (data) {
       setSalesRequests(prev => [data, ...prev]);
     }

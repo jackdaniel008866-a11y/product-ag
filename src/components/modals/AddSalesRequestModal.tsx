@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 interface AddSalesRequestModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (req: Omit<SalesRequest, 'id' | 'created_at' | 'updated_at'>) => void;
+  onSave: (req: Omit<SalesRequest, 'id' | 'created_at' | 'updated_at'>) => void | Promise<void>;
 }
 
 export default function AddSalesRequestModal({ isOpen, onClose, onSave }: AddSalesRequestModalProps) {
@@ -20,30 +20,35 @@ export default function AddSalesRequestModal({ isOpen, onClose, onSave }: AddSal
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientName.trim() || !salesPoc.trim()) return;
 
-    onSave({
-      client_name: clientName.trim(),
-      sales_poc: salesPoc.trim(),
-      description: description.trim(),
-      product_owner_id: productOwner || undefined,
-      status: 'Assisting',
-      follow_up_date: followUpDate || undefined
-    });
+    try {
+      await onSave({
+        client_name: clientName.trim(),
+        sales_poc: salesPoc.trim(),
+        description: description.trim(),
+        product_owner_id: productOwner || undefined,
+        status: 'Assisting',
+        follow_up_date: followUpDate || undefined
+      });
 
-    setClientName('');
-    setSalesPoc('');
-    setDescription('');
-    setProductOwner('');
-    setFollowUpDate('');
-    onClose();
+      setClientName('');
+      setSalesPoc('');
+      setDescription('');
+      setProductOwner('');
+      setFollowUpDate('');
+      onClose();
+    } catch (error) {
+      // App.tsx handles the alert, we just prevent modal from closing here
+      console.error('Submission failed', error);
+    }
   };
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-xl flex flex-col animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
+      <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] sm:h-auto max-w-xl sm:max-h-[90vh] rounded-2xl shadow-xl flex flex-col animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800 overflow-hidden relative">
         <div className="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 rounded-t-2xl">
           <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">Log New Client Request</h2>
           <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded bg-white dark:bg-slate-800 border shadow-sm">
@@ -51,8 +56,8 @@ export default function AddSalesRequestModal({ isOpen, onClose, onSave }: AddSal
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="p-5 space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden min-h-0">
+          <div className="p-5 space-y-4 overflow-y-auto custom-scrollbar flex-1 relative">
             
             <div className="grid grid-cols-2 gap-4">
               <div>

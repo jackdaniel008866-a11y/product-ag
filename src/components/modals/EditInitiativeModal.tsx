@@ -193,7 +193,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-0 sm:p-4">
-      <div className="bg-white dark:bg-slate-900 w-full h-full sm:h-auto sm:max-w-2xl sm:max-h-[90vh] sm:rounded-2xl shadow-xl flex flex-col animate-in zoom-in-95 duration-200 overflow-hidden relative border border-transparent dark:border-slate-800 transition-colors">
+      <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] sm:h-auto sm:max-w-2xl sm:max-h-[90vh] sm:rounded-2xl shadow-xl flex flex-col animate-in zoom-in-95 duration-200 overflow-hidden relative border border-transparent dark:border-slate-800 transition-colors">
         <div className="flex justify-between items-center p-4 md:p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 shrink-0 transition-colors">
           <div className="flex items-center space-x-3">
             <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-700 px-2 py-1 rounded truncate max-w-[120px]">
@@ -206,7 +206,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
+        <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden min-h-0">
           <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 relative">
             
             {/* Title & Description */}
