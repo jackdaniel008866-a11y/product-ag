@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Plus, CheckCircle2, Circle, Trash2, Search, StickyNote, Check, Calendar, X, MessageSquare, Clock } from 'lucide-react';
-import { differenceInDays, parseISO, isAfter, isBefore, startOfDay, endOfDay, format } from 'date-fns';
+import { differenceInDays, parseISO, isAfter, isBefore, startOfDay, endOfDay, format, isSameDay } from 'date-fns';
 import { supabase } from '../../lib/supabase';
 import type { PersonalTask, PersonalNote, PersonalTaskTag, PersonalUpdate } from '../../types';
 
