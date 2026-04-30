@@ -181,6 +181,26 @@ export default function MySpaceView() {
     await supabase.from(table).update({ updates: newUpdatesList }).eq('id', slideOver.item.id);
   };
 
+  const handleToggleSlideOverTag = async (tag: PersonalTaskTag) => {
+    if (slideOver.type !== 'task' || !slideOver.item) return;
+    const currentTask = slideOver.item as PersonalTask;
+    const currentTags = currentTask.tags || [];
+    
+    let newTags;
+    if (currentTags.includes(tag)) {
+      newTags = currentTags.filter(t => t !== tag);
+    } else {
+      newTags = [...currentTags, tag];
+    }
+
+    // Optimistic Update
+    const updatedTask = { ...currentTask, tags: newTags };
+    setSlideOver(prev => ({ ...prev, item: updatedTask }));
+    setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+
+    await supabase.from('personal_tasks').update({ tags: newTags }).eq('id', updatedTask.id);
+  };
+
   // --- Filtering ---
   const isWithinDateRange = (dateStr: string) => {
     if (!startDate && !endDate) return true;
@@ -522,10 +542,23 @@ export default function MySpaceView() {
             {slideOver.type === 'task' ? (
               <div>
                 <p className="text-lg font-medium text-slate-800 dark:text-slate-100">{(slideOver.item as PersonalTask).content}</p>
-                <div className="flex gap-2 mt-3">
-                  {((slideOver.item as PersonalTask).tags || []).map(t => (
-                    <span key={t} className="px-2 py-1 text-xs font-medium rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">{t}</span>
-                  ))}
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {TAGS.map(tag => {
+                    const isSelected = ((slideOver.item as PersonalTask).tags || []).includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        onClick={() => handleToggleSlideOverTag(tag)}
+                        className={`px-2 py-1 text-[10px] font-medium rounded-full transition-colors border ${
+                          isSelected 
+                            ? 'bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800/50' 
+                            : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                        }`}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ) : (
