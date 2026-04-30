@@ -82,7 +82,7 @@ export interface PersonalTask {
   id: string;
   user_id: string;
   content: string;
-  product_tag: PersonalTaskTag;
+  tags: PersonalTaskTag[];
   is_completed: boolean;
   created_at: string;
 }
