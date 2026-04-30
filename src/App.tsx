@@ -7,6 +7,8 @@ import ListView from './components/views/ListView';
 import StuckView from './components/views/StuckView';
 import ProductView from './components/views/ProductView';
 import InsightsView from './components/views/InsightsView';
+import DigestView from './components/views/DigestView';
+import MySpaceView from './components/views/MySpaceView';
 import TeamView from './components/views/TeamView';
 import RoadmapView from './components/views/RoadmapView';
 import ClientUpdatesView from './components/views/ClientUpdatesView';
@@ -19,7 +21,7 @@ import { supabase } from './lib/supabase';
 import type { Session } from '@supabase/supabase-js';
 import type { SalesRequest } from './types';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights' | 'client-updates';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights' | 'client-updates' | 'digest' | 'my-space';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -385,6 +387,12 @@ function App() {
             )}
             {currentView === 'team' && (
               <TeamView users={usersList} onRemoveUser={removeUser} />
+            )}
+            {currentView === 'digest' && (
+              <DigestView initiatives={initiatives} />
+            )}
+            {currentView === 'my-space' && (
+              <MySpaceView />
             )}
           </div>
 

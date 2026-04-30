@@ -3,7 +3,7 @@ import Header from './Header';
 import ViewTabs from './ViewTabs';
 import type { AppNotification, Initiative } from '../../types';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights' | 'client-updates';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights' | 'client-updates' | 'digest' | 'my-space';
 
 interface AppLayoutProps {
   children: React.ReactNode;

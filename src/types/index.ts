@@ -75,3 +75,22 @@ export interface SalesRequest {
   created_at: string;
   updated_at: string;
 }
+
+export type PersonalTaskTag = 'Surbo' | 'Surbo Chat' | 'AI Voicebot' | 'Meeting' | 'Demo' | 'Deep Work' | 'Client Call' | 'Admin' | 'Follow Up' | 'Review' | 'Strategy' | 'General';
+
+export interface PersonalTask {
+  id: string;
+  user_id: string;
+  content: string;
+  product_tag: PersonalTaskTag;
+  is_completed: boolean;
+  created_at: string;
+}
+
+export interface PersonalNote {
+  id: string;
+  user_id: string;
+  title: string;
+  content: string;
+  created_at: string;
+}
