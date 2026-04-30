@@ -37,6 +37,9 @@ export default function MySpaceView() {
   const [slideOver, setSlideOver] = useState<SlideOverState>({ isOpen: false, type: null, item: null });
   const [newUpdateText, setNewUpdateText] = useState('');
 
+  // Mobile Tab State
+  const [mobileTab, setMobileTab] = useState<'tasks' | 'notes'>('tasks');
+
   useEffect(() => {
     async function loadPersonalData() {
       const { data: { session } } = await supabase.auth.getSession();
@@ -245,10 +248,38 @@ export default function MySpaceView() {
   }
 
   return (
-    <div className="relative flex flex-col lg:flex-row h-full gap-6 overflow-hidden">
+    <div className="relative flex flex-col h-full overflow-hidden">
       
-      {/* LEFT PANEL: Daily Actions (Tasks) */}
-      <div className={`w-full lg:w-5/12 xl:w-1/3 flex flex-col h-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 transition-all ${slideOver.isOpen ? 'hidden md:flex opacity-30 pointer-events-none' : ''}`}>
+      {/* MOBILE TAB SWITCHER */}
+      <div className="flex lg:hidden bg-slate-100 dark:bg-slate-800 p-1 mb-4 rounded-lg shrink-0">
+        <button
+          onClick={() => setMobileTab('tasks')}
+          className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
+            mobileTab === 'tasks' 
+              ? 'bg-white dark:bg-slate-700 text-teal-600 dark:text-teal-400 shadow-sm' 
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+          }`}
+        >
+          Daily Actions
+        </button>
+        <button
+          onClick={() => setMobileTab('notes')}
+          className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
+            mobileTab === 'notes' 
+              ? 'bg-white dark:bg-slate-700 text-amber-600 dark:text-amber-400 shadow-sm' 
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+          }`}
+        >
+          Brain Dump
+        </button>
+      </div>
+
+      <div className="relative flex flex-col lg:flex-row h-full gap-6 overflow-hidden flex-1">
+        
+        {/* LEFT PANEL: Daily Actions (Tasks) */}
+        <div className={`w-full lg:w-5/12 xl:w-1/3 flex-col h-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 transition-all ${
+          mobileTab === 'notes' ? 'hidden lg:flex' : 'flex'
+        } ${slideOver.isOpen ? 'hidden md:flex opacity-30 pointer-events-none' : ''}`}>
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
@@ -257,7 +288,7 @@ export default function MySpaceView() {
             </h2>
           </div>
           
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex overflow-x-auto no-scrollbar items-center gap-2 pb-1">
             <div className="flex bg-slate-100 dark:bg-slate-800 rounded-md p-1">
               {['All', 'Pending', 'Completed'].map(status => (
                 <button
@@ -431,7 +462,9 @@ export default function MySpaceView() {
       </div>
 
       {/* RIGHT PANEL: Brain Dump (Notes) */}
-      <div className={`w-full lg:w-7/12 xl:w-2/3 flex flex-col h-full bg-slate-50/50 dark:bg-slate-900/20 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all ${slideOver.isOpen ? 'hidden md:flex opacity-30 pointer-events-none' : ''}`}>
+      <div className={`w-full lg:w-7/12 xl:w-2/3 flex-col h-full bg-slate-50/50 dark:bg-slate-900/20 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all ${
+        mobileTab === 'tasks' ? 'hidden lg:flex' : 'flex'
+      } ${slideOver.isOpen ? 'hidden md:flex opacity-30 pointer-events-none' : ''}`}>
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap justify-between items-center gap-4 bg-white dark:bg-slate-900">
           <div className="flex items-center gap-2">
             <StickyNote size={20} className="text-amber-500" />
@@ -623,6 +656,7 @@ export default function MySpaceView() {
         </div>
       )}
 
+      </div>
     </div>
   );
 }
