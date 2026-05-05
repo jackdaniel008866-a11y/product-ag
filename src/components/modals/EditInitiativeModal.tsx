@@ -76,8 +76,13 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     const existingDate = initiative.targetDate || undefined;
     
     let updatedComments = initiative.comments || [];
+    let updatedTargetDateHistory = initiative.targetDateHistory || [];
     
     if (finalTargetDate !== existingDate) {
+      if (finalTargetDate) {
+        updatedTargetDateHistory = [...updatedTargetDateHistory, { date: finalTargetDate, setAt: new Date().toISOString() }];
+      }
+
       let sysMsg = '';
       if (!existingDate && finalTargetDate) {
         sysMsg = `🎯 Target date was set to ${format(new Date(finalTargetDate), 'MMM d, yyyy')}`;
@@ -109,7 +114,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
       stage,
       status,
       targetDate: finalTargetDate,
-      originalTargetDate: !initiative.originalTargetDate && finalTargetDate ? finalTargetDate : initiative.originalTargetDate,
+      targetDateHistory: updatedTargetDateHistory,
       developers,
       updatedAt: new Date().toISOString(),
     };

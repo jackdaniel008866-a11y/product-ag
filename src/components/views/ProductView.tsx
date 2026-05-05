@@ -14,63 +14,84 @@ export default function ProductView({ initiatives }: ProductViewProps) {
   const [analyticsStartDate, setAnalyticsStartDate] = useState('');
   const [analyticsEndDate, setAnalyticsEndDate] = useState('');
 
-  // Process data for Recharts Spillover Graph
+  // Process data for Recharts Spillover Graph using Ledger Logic
   const spilloverData = useMemo(() => {
-    // 1. Filter initiatives that have an originalTargetDate
-    let analyzable = initiatives.filter(i => i.originalTargetDate);
-
-    // 2. Apply Date Filter (based on originalTargetDate)
-    if (analyticsStartDate) {
-      analyzable = analyzable.filter(i => isAfter(parseISO(i.originalTargetDate!), startOfDay(parseISO(analyticsStartDate))) || format(parseISO(i.originalTargetDate!), 'yyyy-MM-dd') === analyticsStartDate);
-    }
-    if (analyticsEndDate) {
-      analyzable = analyzable.filter(i => isBefore(parseISO(i.originalTargetDate!), endOfDay(parseISO(analyticsEndDate))) || format(parseISO(i.originalTargetDate!), 'yyyy-MM-dd') === analyticsEndDate);
-    }
-
-    // 3. Group by originalTargetDate
     const grouped: Record<string, any> = {};
     const today = new Date();
 
-    analyzable.forEach(init => {
-      const dateStr = format(parseISO(init.originalTargetDate!), 'MMM d, yyyy');
-      if (!grouped[dateStr]) {
-        grouped[dateStr] = { 
-          dateStr, 
-          Completed: 0, 
-          Deferred: 0, 
-          SpilledOver: 0, 
-          Upcoming: 0, 
-          rawDate: parseISO(init.originalTargetDate!),
-          items: {
-            Completed: [] as Initiative[],
-            Deferred: [] as Initiative[],
-            SpilledOver: [] as Initiative[],
-            Upcoming: [] as Initiative[]
+    initiatives.forEach(init => {
+      const history = init.targetDateHistory || [];
+      if (history.length === 0) return;
+
+      history.forEach((log, index) => {
+        // Skip invalid dates
+        if (!log.date) return;
+        
+        const dateStr = format(parseISO(log.date), 'MMM d, yyyy');
+        if (!grouped[dateStr]) {
+          grouped[dateStr] = { 
+            dateStr, 
+            Completed: 0, 
+            Deferred: 0, 
+            PulledForward: 0,
+            SpilledOver: 0, 
+            Upcoming: 0, 
+            rawDate: parseISO(log.date),
+            items: {
+              Completed: [] as Initiative[],
+              Deferred: [] as any[],
+              PulledForward: [] as any[],
+              SpilledOver: [] as Initiative[],
+              Upcoming: [] as Initiative[]
+            }
+          };
+        }
+
+        const nextLog = history[index + 1];
+
+        if (nextLog && nextLog.date) {
+          // Date was changed!
+          const isPushedBack = isAfter(startOfDay(parseISO(nextLog.date)), startOfDay(parseISO(log.date)));
+          if (isPushedBack) {
+            grouped[dateStr].Deferred += 1;
+            grouped[dateStr].items.Deferred.push({ ...init, displayNextDate: nextLog.date });
+          } else {
+            grouped[dateStr].PulledForward += 1;
+            grouped[dateStr].items.PulledForward.push({ ...init, displayNextDate: nextLog.date });
           }
-        };
-      }
+        } else {
+          // This is the current/final target date.
+          // If the actual current targetDate is null, it means it was removed after this log.
+          if (!init.targetDate) return; 
 
-      const isCompleted = init.stage === 'Deployed';
-      const isDeferred = init.targetDate && isAfter(startOfDay(parseISO(init.targetDate)), startOfDay(parseISO(init.originalTargetDate!)));
-      const isPast = isBefore(startOfDay(parseISO(init.originalTargetDate!)), startOfDay(today));
+          const isCompleted = init.stage === 'Deployed';
+          const isPast = isBefore(startOfDay(parseISO(log.date)), startOfDay(today));
 
-      if (isCompleted) {
-        grouped[dateStr].Completed += 1;
-        grouped[dateStr].items.Completed.push(init);
-      } else if (isDeferred) {
-        grouped[dateStr].Deferred += 1;
-        grouped[dateStr].items.Deferred.push(init);
-      } else if (isPast) {
-        grouped[dateStr].SpilledOver += 1;
-        grouped[dateStr].items.SpilledOver.push(init);
-      } else {
-        grouped[dateStr].Upcoming += 1;
-        grouped[dateStr].items.Upcoming.push(init);
-      }
+          if (isCompleted) {
+            grouped[dateStr].Completed += 1;
+            grouped[dateStr].items.Completed.push(init);
+          } else if (isPast) {
+            grouped[dateStr].SpilledOver += 1;
+            grouped[dateStr].items.SpilledOver.push(init);
+          } else {
+            grouped[dateStr].Upcoming += 1;
+            grouped[dateStr].items.Upcoming.push(init);
+          }
+        }
+      });
     });
 
-    // 4. Sort chronologically
-    return Object.values(grouped).sort((a, b) => a.rawDate.getTime() - b.rawDate.getTime());
+    // Apply Date Filter AFTER grouping so we don't lose hops
+    let result = Object.values(grouped);
+    if (analyticsStartDate) {
+      result = result.filter(g => isAfter(g.rawDate, startOfDay(parseISO(analyticsStartDate))) || format(g.rawDate, 'yyyy-MM-dd') === analyticsStartDate);
+    }
+    if (analyticsEndDate) {
+      result = result.filter(g => isBefore(g.rawDate, endOfDay(parseISO(analyticsEndDate))) || format(g.rawDate, 'yyyy-MM-dd') === analyticsEndDate);
+    }
+
+    // Sort chronologically
+    return result.sort((a, b) => a.rawDate.getTime() - b.rawDate.getTime());
   }, [initiatives, analyticsStartDate, analyticsEndDate]);
 
   // Filter initiatives by updatedAt being within the selected timeframe (or all if 0)
@@ -241,6 +262,7 @@ export default function ProductView({ initiatives }: ProductViewProps) {
                     <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', fontSize: '14px', fontWeight: 500 }} />
                     <Bar dataKey="Completed" stackId="a" fill="#10b981" radius={[0, 0, 4, 4]} />
                     <Bar dataKey="Upcoming" stackId="a" fill="#3b82f6" />
+                    <Bar dataKey="PulledForward" name="Pulled Forward" stackId="a" fill="#c084fc" />
                     <Bar dataKey="SpilledOver" name="Spilled Over" stackId="a" fill="#ef4444" />
                     <Bar dataKey="Deferred" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]} />
                   </BarChart>
@@ -269,7 +291,16 @@ export default function ProductView({ initiatives }: ProductViewProps) {
                           <div>
                             <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1 block">Deferred (Pushed Back)</span>
                             <div className="space-y-1">
-                              {data.items.Deferred.map((init: any) => <div key={init.id} className="text-sm text-slate-600 dark:text-slate-300 flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>{init.title} <span className="text-xs text-slate-400 ml-2">→ {format(new Date(init.targetDate), 'MMM d')}</span></div>)}
+                              {data.items.Deferred.map((init: any) => <div key={init.id} className="text-sm text-slate-600 dark:text-slate-300 flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>{init.title} <span className="text-xs text-slate-400 ml-2">→ {format(new Date(init.displayNextDate), 'MMM d')}</span></div>)}
+                            </div>
+                          </div>
+                        )}
+
+                        {data.items.PulledForward?.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 mb-1 block">Pulled Forward</span>
+                            <div className="space-y-1">
+                              {data.items.PulledForward.map((init: any) => <div key={init.id} className="text-sm text-slate-600 dark:text-slate-300 flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2"></span>{init.title} <span className="text-xs text-slate-400 ml-2">→ {format(new Date(init.displayNextDate), 'MMM d')}</span></div>)}
                             </div>
                           </div>
                         )}

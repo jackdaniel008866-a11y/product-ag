@@ -39,6 +39,11 @@ export interface AppNotification {
   created_at: string;
 }
 
+export interface TargetDateChange {
+  date: string; // ISO date string or yyyy-mm-dd
+  setAt: string; // ISO datetime
+}
+
 export interface Initiative {
   id: string;
   title: string;
@@ -51,8 +56,8 @@ export interface Initiative {
   status: Status;
   blockerReason?: string;
   notes?: string;
-  targetDate?: string | null; // ISO date string or yyyy-mm-dd format
-  originalTargetDate?: string | null; // Baseline target date
+  targetDate?: string | null; // Current target date
+  targetDateHistory?: TargetDateChange[]; // Ledger of all target dates
   developers?: string[];
   comments?: Comment[];
   tags?: string[];

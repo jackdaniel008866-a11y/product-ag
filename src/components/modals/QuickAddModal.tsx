@@ -40,7 +40,7 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
         stage,
         status: 'Active',
         targetDate: targetDate ? targetDate : undefined,
-        originalTargetDate: targetDate ? targetDate : undefined,
+        targetDateHistory: targetDate ? [{ date: targetDate, setAt: new Date().toISOString() }] : [],
         comments: [],
         tags: [],
         developers,
