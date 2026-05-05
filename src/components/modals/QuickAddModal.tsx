@@ -40,8 +40,10 @@ export default function QuickAddModal({ isOpen, onClose, onSave }: QuickAddModal
         stage,
         status: 'Active',
         targetDate: targetDate ? targetDate : undefined,
-        developers,
+        originalTargetDate: targetDate ? targetDate : undefined,
+        comments: [],
         tags: [],
+        developers,
       });
 
       // Reset form

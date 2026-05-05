@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Initiative } from '../../types';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, parseISO, isAfter, isBefore, startOfDay, endOfDay, format } from 'date-fns';
 import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Calendar } from 'lucide-react';
 
 interface ProductViewProps {
   initiatives: Initiative[];
@@ -9,6 +11,50 @@ interface ProductViewProps {
 
 export default function ProductView({ initiatives }: ProductViewProps) {
   const [timeFilterDays, setTimeFilterDays] = useState<number>(30);
+  const [analyticsStartDate, setAnalyticsStartDate] = useState('');
+  const [analyticsEndDate, setAnalyticsEndDate] = useState('');
+
+  // Process data for Recharts Spillover Graph
+  const spilloverData = useMemo(() => {
+    // 1. Filter initiatives that have an originalTargetDate
+    let analyzable = initiatives.filter(i => i.originalTargetDate);
+
+    // 2. Apply Date Filter (based on originalTargetDate)
+    if (analyticsStartDate) {
+      analyzable = analyzable.filter(i => isAfter(parseISO(i.originalTargetDate!), startOfDay(parseISO(analyticsStartDate))) || format(parseISO(i.originalTargetDate!), 'yyyy-MM-dd') === analyticsStartDate);
+    }
+    if (analyticsEndDate) {
+      analyzable = analyzable.filter(i => isBefore(parseISO(i.originalTargetDate!), endOfDay(parseISO(analyticsEndDate))) || format(parseISO(i.originalTargetDate!), 'yyyy-MM-dd') === analyticsEndDate);
+    }
+
+    // 3. Group by originalTargetDate
+    const grouped: Record<string, any> = {};
+    const today = new Date();
+
+    analyzable.forEach(init => {
+      const dateStr = format(parseISO(init.originalTargetDate!), 'MMM d, yyyy');
+      if (!grouped[dateStr]) {
+        grouped[dateStr] = { dateStr, Completed: 0, Deferred: 0, SpilledOver: 0, Upcoming: 0, rawDate: parseISO(init.originalTargetDate!) };
+      }
+
+      const isCompleted = init.stage === 'Deployed';
+      const isDeferred = init.targetDate && isAfter(startOfDay(parseISO(init.targetDate)), startOfDay(parseISO(init.originalTargetDate!)));
+      const isPast = isBefore(startOfDay(parseISO(init.originalTargetDate!)), startOfDay(today));
+
+      if (isCompleted) {
+        grouped[dateStr].Completed += 1;
+      } else if (isDeferred) {
+        grouped[dateStr].Deferred += 1;
+      } else if (isPast) {
+        grouped[dateStr].SpilledOver += 1;
+      } else {
+        grouped[dateStr].Upcoming += 1;
+      }
+    });
+
+    // 4. Sort chronologically
+    return Object.values(grouped).sort((a, b) => a.rawDate.getTime() - b.rawDate.getTime());
+  }, [initiatives, analyticsStartDate, analyticsEndDate]);
 
   // Filter initiatives by updatedAt being within the selected timeframe (or all if 0)
   const filteredInitiatives = timeFilterDays === 0 
@@ -122,6 +168,73 @@ export default function ProductView({ initiatives }: ProductViewProps) {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* Spillover Analytics Section */}
+      <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+        <div className="mb-6 flex flex-col md:flex-row justify-between md:items-end gap-4">
+          <div>
+            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Sprint Capacity & Spillover</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Analyze planned target dates vs actual completion and deferrals.</p>
+          </div>
+          
+          <div className="flex items-center space-x-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 shadow-sm">
+            <Calendar size={16} className="text-slate-400 ml-1" />
+            <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">Target Date Filter:</span>
+            <input 
+               type="date"
+               value={analyticsStartDate}
+               onChange={e => setAnalyticsStartDate(e.target.value)}
+               className="bg-transparent text-sm py-1 px-1 outline-none text-slate-700 dark:text-slate-200 font-medium w-32 [color-scheme:light] dark:[color-scheme:dark]"
+            />
+            <span className="text-xs text-slate-400">to</span>
+            <input 
+               type="date"
+               value={analyticsEndDate}
+               onChange={e => setAnalyticsEndDate(e.target.value)}
+               className="bg-transparent text-sm py-1 px-1 outline-none text-slate-700 dark:text-slate-200 font-medium w-32 [color-scheme:light] dark:[color-scheme:dark]"
+            />
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+          {spilloverData.length > 0 ? (
+            <div className="h-[400px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={spilloverData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.2} />
+                  <XAxis 
+                    dataKey="dateStr" 
+                    tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} 
+                    axisLine={false} 
+                    tickLine={false} 
+                  />
+                  <YAxis 
+                    tick={{ fill: '#64748b', fontSize: 12 }} 
+                    axisLine={false} 
+                    tickLine={false} 
+                    allowDecimals={false}
+                  />
+                  <Tooltip 
+                    cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', backgroundColor: 'rgba(15, 23, 42, 0.9)', color: '#fff' }}
+                  />
+                  <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', fontSize: '14px', fontWeight: 500 }} />
+                  <Bar dataKey="Completed" stackId="a" fill="#10b981" radius={[0, 0, 4, 4]} />
+                  <Bar dataKey="Upcoming" stackId="a" fill="#3b82f6" />
+                  <Bar dataKey="SpilledOver" name="Spilled Over" stackId="a" fill="#ef4444" />
+                  <Bar dataKey="Deferred" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="h-[400px] w-full flex flex-col items-center justify-center text-slate-400">
+              <Calendar size={48} className="opacity-20 mb-4" />
+              <p className="text-lg font-medium text-slate-500">No Target Dates Set</p>
+              <p className="text-sm">Assign target dates to initiatives to see sprint capacity.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

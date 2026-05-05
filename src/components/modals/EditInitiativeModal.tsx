@@ -109,6 +109,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
       stage,
       status,
       targetDate: finalTargetDate,
+      originalTargetDate: !initiative.originalTargetDate && finalTargetDate ? finalTargetDate : initiative.originalTargetDate,
       developers,
       updatedAt: new Date().toISOString(),
     };
