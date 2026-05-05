@@ -34,7 +34,20 @@ export default function ProductView({ initiatives }: ProductViewProps) {
     analyzable.forEach(init => {
       const dateStr = format(parseISO(init.originalTargetDate!), 'MMM d, yyyy');
       if (!grouped[dateStr]) {
-        grouped[dateStr] = { dateStr, Completed: 0, Deferred: 0, SpilledOver: 0, Upcoming: 0, rawDate: parseISO(init.originalTargetDate!) };
+        grouped[dateStr] = { 
+          dateStr, 
+          Completed: 0, 
+          Deferred: 0, 
+          SpilledOver: 0, 
+          Upcoming: 0, 
+          rawDate: parseISO(init.originalTargetDate!),
+          items: {
+            Completed: [] as Initiative[],
+            Deferred: [] as Initiative[],
+            SpilledOver: [] as Initiative[],
+            Upcoming: [] as Initiative[]
+          }
+        };
       }
 
       const isCompleted = init.stage === 'Deployed';
@@ -43,12 +56,16 @@ export default function ProductView({ initiatives }: ProductViewProps) {
 
       if (isCompleted) {
         grouped[dateStr].Completed += 1;
+        grouped[dateStr].items.Completed.push(init);
       } else if (isDeferred) {
         grouped[dateStr].Deferred += 1;
+        grouped[dateStr].items.Deferred.push(init);
       } else if (isPast) {
         grouped[dateStr].SpilledOver += 1;
+        grouped[dateStr].items.SpilledOver.push(init);
       } else {
         grouped[dateStr].Upcoming += 1;
+        grouped[dateStr].items.Upcoming.push(init);
       }
     });
 
@@ -200,34 +217,86 @@ export default function ProductView({ initiatives }: ProductViewProps) {
 
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
           {spilloverData.length > 0 ? (
-            <div className="h-[400px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={spilloverData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.2} />
-                  <XAxis 
-                    dataKey="dateStr" 
-                    tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} 
-                    axisLine={false} 
-                    tickLine={false} 
-                  />
-                  <YAxis 
-                    tick={{ fill: '#64748b', fontSize: 12 }} 
-                    axisLine={false} 
-                    tickLine={false} 
-                    allowDecimals={false}
-                  />
-                  <Tooltip 
-                    cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', backgroundColor: 'rgba(15, 23, 42, 0.9)', color: '#fff' }}
-                  />
-                  <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', fontSize: '14px', fontWeight: 500 }} />
-                  <Bar dataKey="Completed" stackId="a" fill="#10b981" radius={[0, 0, 4, 4]} />
-                  <Bar dataKey="Upcoming" stackId="a" fill="#3b82f6" />
-                  <Bar dataKey="SpilledOver" name="Spilled Over" stackId="a" fill="#ef4444" />
-                  <Bar dataKey="Deferred" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <>
+              <div className="h-[400px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={spilloverData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.2} />
+                    <XAxis 
+                      dataKey="dateStr" 
+                      tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} 
+                      axisLine={false} 
+                      tickLine={false} 
+                    />
+                    <YAxis 
+                      tick={{ fill: '#64748b', fontSize: 12 }} 
+                      axisLine={false} 
+                      tickLine={false} 
+                      allowDecimals={false}
+                    />
+                    <Tooltip 
+                      cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', backgroundColor: 'rgba(15, 23, 42, 0.9)', color: '#fff' }}
+                    />
+                    <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', fontSize: '14px', fontWeight: 500 }} />
+                    <Bar dataKey="Completed" stackId="a" fill="#10b981" radius={[0, 0, 4, 4]} />
+                    <Bar dataKey="Upcoming" stackId="a" fill="#3b82f6" />
+                    <Bar dataKey="SpilledOver" name="Spilled Over" stackId="a" fill="#ef4444" />
+                    <Bar dataKey="Deferred" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Detailed Ticket Breakdown */}
+              <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+                <h3 className="font-bold text-slate-800 dark:text-slate-100 mb-4">Ticket Breakdown</h3>
+                <div className="space-y-6 max-h-[500px] overflow-y-auto custom-scrollbar pr-2">
+                  {spilloverData.map((data: any) => (
+                    <div key={data.dateStr} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
+                      <h4 className="font-bold text-slate-700 dark:text-slate-200 mb-3 text-sm">{data.dateStr}</h4>
+                      
+                      <div className="space-y-4">
+                        {data.items.Completed.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1 block">Completed</span>
+                            <div className="space-y-1">
+                              {data.items.Completed.map((init: any) => <div key={init.id} className="text-sm text-slate-600 dark:text-slate-300 flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>{init.title}</div>)}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {data.items.Deferred.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1 block">Deferred (Pushed Back)</span>
+                            <div className="space-y-1">
+                              {data.items.Deferred.map((init: any) => <div key={init.id} className="text-sm text-slate-600 dark:text-slate-300 flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-2"></span>{init.title} <span className="text-xs text-slate-400 ml-2">→ {format(new Date(init.targetDate), 'MMM d')}</span></div>)}
+                            </div>
+                          </div>
+                        )}
+
+                        {data.items.SpilledOver.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-red-600 dark:text-red-400 mb-1 block">Spilled Over (Overdue)</span>
+                            <div className="space-y-1">
+                              {data.items.SpilledOver.map((init: any) => <div key={init.id} className="text-sm text-slate-600 dark:text-slate-300 flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-red-500 mr-2"></span>{init.title}</div>)}
+                            </div>
+                          </div>
+                        )}
+
+                        {data.items.Upcoming.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-1 block">Upcoming</span>
+                            <div className="space-y-1">
+                              {data.items.Upcoming.map((init: any) => <div key={init.id} className="text-sm text-slate-600 dark:text-slate-300 flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>{init.title}</div>)}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
           ) : (
             <div className="h-[400px] w-full flex flex-col items-center justify-center text-slate-400">
               <Calendar size={48} className="opacity-20 mb-4" />
