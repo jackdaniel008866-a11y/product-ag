@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
 import { clsx } from 'clsx';
 import { Filter } from 'lucide-react';
+import MultiSelectDropdown from '../ui/MultiSelectDropdown';
 
 interface ListViewProps {
   initiatives: Initiative[];
@@ -15,18 +16,20 @@ interface ListViewProps {
 export default function ListView({ initiatives, onInitiativeClick }: ListViewProps) {
   const { users, usersList } = useUsers();
   
-  const [productFilter, setProductFilter] = useState('All');
-  const [stageFilter, setStageFilter] = useState('All');
-  const [priorityFilter, setPriorityFilter] = useState('All');
-  const [ownerFilter, setOwnerFilter] = useState('All');
-  const [developerFilter, setDeveloperFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const [productFilter, setProductFilter] = useState<string[]>([]);
+  const [stageFilter, setStageFilter] = useState<string[]>([]);
+  const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
+  const [ownerFilter, setOwnerFilter] = useState<string[]>([]);
+  const [developerFilter, setDeveloperFilter] = useState<string[]>([]);
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
   const filteredInitiatives = initiatives.filter(init => {
-    if (productFilter !== 'All' && init.product !== productFilter) return false;
-    if (stageFilter !== 'All' && init.stage !== stageFilter) return false;
+    if (productFilter.length > 0 && !productFilter.includes(init.product)) return false;
+    if (stageFilter.length > 0 && !stageFilter.includes(init.stage)) return false;
+    if (priorityFilter.length > 0 && !priorityFilter.includes(init.priority)) return false;
+    if (statusFilter.length > 0 && !statusFilter.includes(init.status)) return false;
     
     // Date Range Logic
     if (startDate && new Date(init.createdAt) < new Date(startDate)) return false;
@@ -35,23 +38,19 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
       end.setHours(23, 59, 59, 999);
       if (new Date(init.createdAt) > end) return false;
     }
-    if (priorityFilter !== 'All' && init.priority !== priorityFilter) return false;
-    if (statusFilter !== 'All' && init.status !== statusFilter) return false;
     
-    if (ownerFilter !== 'All') {
-      if (ownerFilter === 'Unassigned') {
-        if (init.ownerId && users[init.ownerId]) return false;
-      } else {
-        if (init.ownerId !== ownerFilter) return false;
-      }
+    if (ownerFilter.length > 0) {
+      const isUnassigned = !init.ownerId || !users[init.ownerId];
+      const matchUnassigned = isUnassigned && ownerFilter.includes('Unassigned');
+      const matchAssigned = !isUnassigned && ownerFilter.includes(init.ownerId);
+      if (!matchUnassigned && !matchAssigned) return false;
     }
     
-    if (developerFilter !== 'All') {
-      if (developerFilter === 'Unassigned') {
-        if (init.developers && init.developers.length > 0) return false;
-      } else {
-        if (!init.developers || !init.developers.includes(developerFilter)) return false;
-      }
+    if (developerFilter.length > 0) {
+      const isUnassigned = !init.developers || init.developers.length === 0;
+      const matchUnassigned = isUnassigned && developerFilter.includes('Unassigned');
+      const matchAssigned = !isUnassigned && init.developers?.some(dev => developerFilter.includes(dev));
+      if (!matchUnassigned && !matchAssigned) return false;
     }
     
     return true;
@@ -66,73 +65,69 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
           <span className="text-sm font-bold tracking-tight uppercase">Filters:</span>
         </div>
         
-        <select 
-          value={productFilter} 
-          onChange={e => setProductFilter(e.target.value)}
-          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
-        >
-          <option value="All">All Products</option>
-          <option value="Surbo">Surbo</option>
-          <option value="Surbo Chat">Surbo Chat</option>
-          <option value="Surbo Ace">Surbo Ace</option>
-          <option value="AI Voicebot">AI Voicebot</option>
-        </select>
+        <MultiSelectDropdown
+          label="Product"
+          selectedValues={productFilter}
+          onChange={setProductFilter}
+          options={[
+            { value: 'Surbo', label: 'Surbo' },
+            { value: 'Surbo Chat', label: 'Surbo Chat' },
+            { value: 'Surbo Ace', label: 'Surbo Ace' },
+            { value: 'AI Voicebot', label: 'AI Voicebot' },
+          ]}
+        />
 
-        <select 
-          value={stageFilter} 
-          onChange={e => setStageFilter(e.target.value)}
-          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
-        >
-          <option value="All">All Phases</option>
-          {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
-        </select>
+        <MultiSelectDropdown
+          label="Phase"
+          selectedValues={stageFilter}
+          onChange={setStageFilter}
+          options={STAGES.map(s => ({ value: s, label: s }))}
+        />
 
-        <select 
-          value={priorityFilter} 
-          onChange={e => setPriorityFilter(e.target.value)}
-          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
-        >
-          <option value="All">All Priorities</option>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-        </select>
+        <MultiSelectDropdown
+          label="Priority"
+          selectedValues={priorityFilter}
+          onChange={setPriorityFilter}
+          options={[
+            { value: 'High', label: 'High' },
+            { value: 'Medium', label: 'Medium' },
+            { value: 'Low', label: 'Low' },
+          ]}
+        />
 
-        <select 
-          value={ownerFilter} 
-          onChange={e => setOwnerFilter(e.target.value)}
-          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
-        >
-          <option value="All">All Owners</option>
-          <option value="Unassigned">Unassigned</option>
-          {usersList.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-        </select>
+        <MultiSelectDropdown
+          label="Owner"
+          selectedValues={ownerFilter}
+          onChange={setOwnerFilter}
+          options={[
+            { value: 'Unassigned', label: 'Unassigned', group: 'Unassigned' },
+            ...usersList.map(u => ({ value: u.id, label: u.name, group: 'Team Members' }))
+          ]}
+        />
 
-        <select 
-          value={developerFilter} 
-          onChange={e => setDeveloperFilter(e.target.value)}
-          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
-        >
-          <option value="All">All Developers</option>
-          <option value="Unassigned">No Developers</option>
-          {Object.entries(DEVELOPER_TEAMS).map(([team, devs]) => (
-            <optgroup key={team} label={team} className="font-bold text-slate-500 dark:text-slate-400">
-              {devs.map(dev => <option key={dev} value={dev} className="font-medium text-slate-700 dark:text-slate-200">{dev}</option>)}
-            </optgroup>
-          ))}
-        </select>
+        <MultiSelectDropdown
+          label="Developer"
+          selectedValues={developerFilter}
+          onChange={setDeveloperFilter}
+          options={[
+            { value: 'Unassigned', label: 'No Developers', group: 'Unassigned' },
+            ...Object.entries(DEVELOPER_TEAMS).flatMap(([team, devs]) => 
+              devs.map(dev => ({ value: dev, label: dev, group: team }))
+            )
+          ]}
+        />
 
-        <select 
-          value={statusFilter} 
-          onChange={e => setStatusFilter(e.target.value)}
-          className="w-full sm:w-auto text-sm border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-500 bg-slate-50 dark:bg-slate-800 font-medium text-slate-700 dark:text-slate-200 cursor-pointer transition-all"
-        >
-          <option value="All">All Statuses</option>
-          <option value="Active">Active</option>
-          <option value="Blocked">Blocked</option>
-          <option value="Parked">Parked</option>
-          <option value="Deployed">Deployed</option>
-        </select>
+        <MultiSelectDropdown
+          label="Status"
+          selectedValues={statusFilter}
+          onChange={setStatusFilter}
+          options={[
+            { value: 'Active', label: 'Active' },
+            { value: 'Blocked', label: 'Blocked' },
+            { value: 'Parked', label: 'Parked' },
+            { value: 'Deployed', label: 'Deployed' },
+          ]}
+        />
         
         <div className="flex items-center space-x-1 w-full sm:w-auto bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2 overflow-hidden focus-within:ring-1 focus-within:ring-teal-500 focus-within:border-teal-400 transition-all">
           <span className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500 tracking-wider">From</span>
