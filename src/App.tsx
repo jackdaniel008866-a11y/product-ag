@@ -32,6 +32,7 @@ function App() {
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [editingInitiativeId, setEditingInitiativeId] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
+  const [listFilteredData, setListFilteredData] = useState<Initiative[]>([]);
   const [salesRequests, setSalesRequests] = useState<SalesRequest[]>([]);
   const { usersList, removeUser } = useUsers();
 
@@ -295,15 +296,17 @@ function App() {
   }
 
   const handleExportCSV = () => {
-    if (initiatives.length === 0) {
-      alert("No initiatives to export.");
+    const dataToExport = currentView === 'list' && listFilteredData.length > 0 ? listFilteredData : initiatives;
+    
+    if (dataToExport.length === 0) {
+      alert("No initiatives to export (try clearing your filters).");
       return;
     }
 
     const headers = ['ID', 'Title', 'Description', 'Product', 'Type', 'Priority', 'Owner', 'Developers', 'Stage', 'Status', 'Target Date', 'Tags', 'Created At'];
     const csvContent = [
       headers.join(','),
-      ...initiatives.map(init => {
+      ...dataToExport.map(init => {
         const ownerName = usersList.find(u => u.id === init.ownerId)?.name || 'Unknown';
         const developerNames = (init.developers || []).join(' | ');
         return [
@@ -361,7 +364,7 @@ function App() {
               <RoadmapView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
             )}
             {currentView === 'list' && (
-              <ListView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} />
+              <ListView initiatives={initiatives} onInitiativeClick={setEditingInitiativeId} onFilterChange={setListFilteredData} />
             )}
             {currentView === 'stuck' && (
               <StuckView 

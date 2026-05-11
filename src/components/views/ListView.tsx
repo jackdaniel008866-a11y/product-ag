@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Initiative } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
 import { format } from 'date-fns';
@@ -11,9 +11,10 @@ import MultiSelectDropdown from '../ui/MultiSelectDropdown';
 interface ListViewProps {
   initiatives: Initiative[];
   onInitiativeClick: (id: string) => void;
+  onFilterChange?: (filtered: Initiative[]) => void;
 }
 
-export default function ListView({ initiatives, onInitiativeClick }: ListViewProps) {
+export default function ListView({ initiatives, onInitiativeClick, onFilterChange }: ListViewProps) {
   const { users, usersList } = useUsers();
   
   const [productFilter, setProductFilter] = useState<string[]>([]);
@@ -55,6 +56,12 @@ export default function ListView({ initiatives, onInitiativeClick }: ListViewPro
     
     return true;
   });
+
+  useEffect(() => {
+    if (onFilterChange) {
+      onFilterChange(filteredInitiatives);
+    }
+  }, [filteredInitiatives, onFilterChange]);
 
   return (
     <div className="flex flex-col h-full space-y-4 animate-in fade-in duration-300">
