@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, CheckCircle2, Circle, Trash2, Search, StickyNote, Check, Calendar, X, MessageSquare, Clock } from 'lucide-react';
+import { Plus, CheckCircle2, Circle, Trash2, Search, StickyNote, Check, Calendar, X, MessageSquare, Clock, Edit2 } from 'lucide-react';
 import { differenceInDays, parseISO, isAfter, isBefore, startOfDay, endOfDay, format, isSameDay } from 'date-fns';
 import { supabase } from '../../lib/supabase';
 import type { PersonalTask, PersonalNote, PersonalTaskTag, PersonalUpdate } from '../../types';
@@ -36,6 +36,11 @@ export default function MySpaceView() {
   // Slide-over state
   const [slideOver, setSlideOver] = useState<SlideOverState>({ isOpen: false, type: null, item: null });
   const [newUpdateText, setNewUpdateText] = useState('');
+  
+  // Edit State
+  const [isEditingItem, setIsEditingItem] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
 
   // Mobile Tab State
   const [mobileTab, setMobileTab] = useState<'tasks' | 'notes'>('tasks');
@@ -149,13 +154,61 @@ export default function MySpaceView() {
   };
 
   // --- Slide Over & Updates Logic ---
-  const openSlideOver = (type: 'task' | 'note', item: PersonalTask | PersonalNote) => {
+  const openSlideOver = (type: 'task' | 'note', item: PersonalTask | PersonalNote, editMode = false) => {
     setSlideOver({ isOpen: true, type, item });
     setNewUpdateText('');
+    setIsEditingItem(editMode);
+    if (editMode) {
+      if (type === 'task') {
+        setEditContent((item as PersonalTask).content);
+      } else {
+        setEditTitle((item as PersonalNote).title || '');
+        setEditContent((item as PersonalNote).content || '');
+      }
+    }
   };
 
   const closeSlideOver = () => {
     setSlideOver({ isOpen: false, type: null, item: null });
+    setIsEditingItem(false);
+  };
+
+  const handleStartEdit = () => {
+    if (!slideOver.item) return;
+    setIsEditingItem(true);
+    if (slideOver.type === 'task') {
+      setEditContent((slideOver.item as PersonalTask).content);
+    } else {
+      setEditTitle((slideOver.item as PersonalNote).title || '');
+      setEditContent((slideOver.item as PersonalNote).content || '');
+    }
+  };
+
+  const handleSaveEdit = async () => {
+    if (!slideOver.item) return;
+
+    if (slideOver.type === 'task') {
+      const newContent = editContent.trim();
+      if (!newContent) return;
+
+      const updatedTask = { ...slideOver.item, content: newContent } as PersonalTask;
+      setSlideOver(prev => ({ ...prev, item: updatedTask }));
+      setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+      setIsEditingItem(false);
+
+      await supabase.from('personal_tasks').update({ content: newContent }).eq('id', updatedTask.id);
+    } else {
+      const newTitle = editTitle.trim();
+      const newContent = editContent.trim();
+      if (!newTitle && !newContent) return;
+
+      const updatedNote = { ...slideOver.item, title: newTitle || 'Untitled Note', content: newContent } as PersonalNote;
+      setSlideOver(prev => ({ ...prev, item: updatedNote }));
+      setNotes(prev => prev.map(n => n.id === updatedNote.id ? updatedNote : n));
+      setIsEditingItem(false);
+
+      await supabase.from('personal_notes').update({ title: newTitle || 'Untitled Note', content: newContent }).eq('id', updatedNote.id);
+    }
   };
 
   const handleAddUpdate = async (e: React.FormEvent) => {
@@ -440,9 +493,14 @@ export default function MySpaceView() {
                   </div>
                   
                   <div className="flex flex-col items-end gap-2 shrink-0">
-                    <button onClick={(e) => deleteTask(e, task.id)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-all p-1">
-                      <Trash2 size={14} />
-                    </button>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                      <button onClick={(e) => { e.stopPropagation(); openSlideOver('task', task, true); }} className="text-slate-400 hover:text-teal-500 p-1" title="Edit Action">
+                        <Edit2 size={14} />
+                      </button>
+                      <button onClick={(e) => deleteTask(e, task.id)} className="text-slate-400 hover:text-red-500 p-1" title="Delete Action">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                     {hasUpdates && (
                       <div className="flex items-center gap-1 text-[10px] font-bold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-1.5 py-0.5 rounded">
                         <MessageSquare size={10} /> {task.updates!.length}
@@ -526,12 +584,22 @@ export default function MySpaceView() {
                 onClick={() => openSlideOver('note', note)}
                 className="group relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-amber-300 dark:hover:border-amber-800/50 transition-all flex flex-col cursor-pointer"
               >
-                <button 
-                  onClick={(e) => deleteNote(e, note.id)}
-                  className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-slate-100 dark:bg-slate-700 text-slate-500 hover:text-red-500 p-1.5 rounded-full transition-all"
-                >
-                  <Trash2 size={14} />
-                </button>
+                <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); openSlideOver('note', note, true); }}
+                    className="bg-slate-100 dark:bg-slate-700 text-slate-500 hover:text-teal-500 p-1.5 rounded-full transition-all shadow-sm"
+                    title="Edit Note"
+                  >
+                    <Edit2 size={14} />
+                  </button>
+                  <button 
+                    onClick={(e) => deleteNote(e, note.id)}
+                    className="bg-slate-100 dark:bg-slate-700 text-slate-500 hover:text-red-500 p-1.5 rounded-full transition-all shadow-sm"
+                    title="Delete Note"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
                 {note.title && (
                   <h3 className="font-bold text-slate-800 dark:text-slate-100 mb-2 pr-6">{note.title}</h3>
                 )}
@@ -571,38 +639,83 @@ export default function MySpaceView() {
           </div>
 
           {/* Original Content Recap */}
-          <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0">
-            {slideOver.type === 'task' ? (
-              <div>
-                <p className="text-lg font-medium text-slate-800 dark:text-slate-100">{(slideOver.item as PersonalTask).content}</p>
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {TAGS.map(tag => {
-                    const isSelected = ((slideOver.item as PersonalTask).tags || []).includes(tag);
-                    return (
-                      <button
-                        key={tag}
-                        onClick={() => handleToggleSlideOverTag(tag)}
-                        className={`px-2 py-1 text-[10px] font-medium rounded-full transition-colors border ${
-                          isSelected 
-                            ? 'bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800/50' 
-                            : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
-                        }`}
-                      >
-                        {tag}
-                      </button>
-                    );
-                  })}
+          <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 relative group/edit">
+            {isEditingItem ? (
+              <div className="flex flex-col gap-3">
+                {slideOver.type === 'note' && (
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={e => setEditTitle(e.target.value)}
+                    placeholder="Title"
+                    className="w-full font-bold text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 border-transparent rounded-lg px-3 py-2 text-lg focus:border-amber-500 focus:ring-amber-500"
+                  />
+                )}
+                <textarea
+                  value={editContent}
+                  onChange={e => setEditContent(e.target.value)}
+                  placeholder={slideOver.type === 'task' ? "Action description..." : "Note content..."}
+                  className={`w-full bg-slate-100 dark:bg-slate-800 border-transparent rounded-lg px-3 py-2 text-sm focus:border-${slideOver.type === 'task' ? 'teal' : 'amber'}-500 focus:ring-${slideOver.type === 'task' ? 'teal' : 'amber'}-500 dark:text-slate-200 resize-y min-h-[100px]`}
+                />
+                <div className="flex gap-2 justify-end mt-2">
+                  <button 
+                    onClick={() => setIsEditingItem(false)}
+                    className="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={handleSaveEdit}
+                    className={`px-3 py-1.5 text-sm font-medium text-white rounded-md transition-colors ${slideOver.type === 'task' ? 'bg-teal-600 hover:bg-teal-700' : 'bg-amber-600 hover:bg-amber-700'}`}
+                  >
+                    Save Changes
+                  </button>
                 </div>
               </div>
             ) : (
               <div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">{(slideOver.item as PersonalNote).title || 'Untitled Note'}</h3>
-                <p className="text-slate-600 dark:text-slate-300 whitespace-pre-wrap">{(slideOver.item as PersonalNote).content}</p>
+                <button 
+                  onClick={handleStartEdit}
+                  className="absolute top-6 right-6 opacity-0 group-hover/edit:opacity-100 p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-md transition-all z-10"
+                  title="Edit"
+                >
+                  <Edit2 size={16} />
+                </button>
+                <div className="pr-8">
+                  {slideOver.type === 'task' ? (
+                    <div>
+                      <p className="text-lg font-medium text-slate-800 dark:text-slate-100">{(slideOver.item as PersonalTask).content}</p>
+                      <div className="flex flex-wrap gap-1.5 mt-3">
+                        {TAGS.map(tag => {
+                          const isSelected = ((slideOver.item as PersonalTask).tags || []).includes(tag);
+                          return (
+                            <button
+                              key={tag}
+                              onClick={() => handleToggleSlideOverTag(tag)}
+                              className={`px-2 py-1 text-[10px] font-medium rounded-full transition-colors border ${
+                                isSelected 
+                                  ? 'bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800/50' 
+                                  : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                              }`}
+                            >
+                              {tag}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">{(slideOver.item as PersonalNote).title || 'Untitled Note'}</h3>
+                      <p className="text-slate-600 dark:text-slate-300 whitespace-pre-wrap">{(slideOver.item as PersonalNote).content}</p>
+                    </div>
+                  )}
+                  <div className="text-xs text-slate-400 mt-4 flex items-center gap-1">
+                    <Clock size={12}/> Created {format(parseISO(slideOver.item.created_at), 'PPP')}
+                  </div>
+                </div>
               </div>
             )}
-            <div className="text-xs text-slate-400 mt-4 flex items-center gap-1">
-              <Clock size={12}/> Created {format(parseISO(slideOver.item.created_at), 'PPP')}
-            </div>
           </div>
 
           {/* Timeline */}
