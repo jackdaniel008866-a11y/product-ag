@@ -1,5 +1,4 @@
 import type { Initiative } from '../../types';
-import { useUsers } from '../../contexts/UserContext';
 import { differenceInDays, format } from 'date-fns';
 import { AlertCircle, Clock, Zap, Calendar } from 'lucide-react';
 import { clsx } from 'clsx';
@@ -11,10 +10,8 @@ interface InitiativeCardProps {
 }
 
 export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold }: InitiativeCardProps) {
-  const { users } = useUsers();
   const daysInStage = differenceInDays(new Date(), new Date(initiative.stageUpdatedAt));
   const isStuck = daysInStage >= stuckDaysThreshold && initiative.status !== 'Blocked' && initiative.status !== 'Deployed';
-  const owner = users[initiative.ownerId];
 
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData('initiativeId', initiative.id);
