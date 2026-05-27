@@ -60,10 +60,7 @@ export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold
 
       <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          {/* Owner Avatar */}
-          <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-semibold text-slate-600 dark:text-slate-300 border border-white dark:border-slate-600 shrink-0">
-            {owner?.initials || '??'}
-          </div>
+          {/* Owner Avatar removed from default view as per request */}
           <div className="flex space-x-1">
             {initiative.tags?.slice(0, 1).map(tag => (
               <span key={tag} className="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[60px]">{tag}</span>
