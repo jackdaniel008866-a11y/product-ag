@@ -38,12 +38,42 @@ function App() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setIsInitializing(false);
+      if (session) {
+        // Validate the session is still fresh by checking expiry
+        const expiresAt = session.expires_at; // Unix timestamp in seconds
+        const now = Math.floor(Date.now() / 1000);
+        if (expiresAt && expiresAt < now) {
+          console.warn('[Auth] Session JWT has expired. Attempting refresh...');
+          supabase.auth.refreshSession().then(({ data, error }) => {
+            if (error || !data.session) {
+              console.error('[Auth] Session refresh failed. Forcing re-login.', error);
+              supabase.auth.signOut();
+              setSession(null);
+            } else {
+              console.log('[Auth] Session refreshed successfully.');
+              setSession(data.session);
+            }
+            setIsInitializing(false);
+          });
+        } else {
+          console.log('[Auth] Valid session found for user:', session.user.email);
+          setSession(session);
+          setIsInitializing(false);
+        }
+      } else {
+        setSession(null);
+        setIsInitializing(false);
+      }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[Auth] State change:', event, session?.user?.email || 'no user');
+      if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED' && !session) {
+        console.warn('[Auth] Session lost. Redirecting to login.');
+        setSession(null);
+      } else {
+        setSession(session);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -56,13 +86,39 @@ function App() {
     // Graceful Profile Auto-sync
     const syncProfile = async () => {
       const { user } = session;
-      if (user && user.user_metadata?.full_name) {
-        // Attempt to seamlessly insert/update them into the team dictionary now that they are verified and authorized
-        await supabase.from('users').upsert({
-          id: user.id,
-          name: user.user_metadata.full_name,
-          initials: `${user.user_metadata.first_name?.[0] || ''}${user.user_metadata.last_name?.[0] || ''}`.toUpperCase()
-        }, { onConflict: 'id' });
+      if (!user) return;
+
+      const meta = user.user_metadata || {};
+      const name = meta.full_name || 
+                   meta.name || 
+                   (meta.first_name || meta.last_name ? `${meta.first_name || ''} ${meta.last_name || ''}`.trim() : null) || 
+                   user.email?.split('@')[0] || 
+                   'Unknown User';
+
+      let initials = 'U';
+      if (meta.first_name || meta.last_name) {
+        initials = `${meta.first_name?.[0] || ''}${meta.last_name?.[0] || ''}`.toUpperCase();
+      } else {
+        const parts = name.split(' ').filter(Boolean);
+        if (parts.length >= 2) {
+          initials = `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+        } else if (parts.length === 1) {
+          initials = parts[0].substring(0, 2).toUpperCase();
+        }
+      }
+
+      console.log(`[Profile Sync] Attempting to sync profile for: ${user.id} (${name})`);
+      
+      const { error } = await supabase.from('users').upsert({
+        id: user.id,
+        name: name,
+        initials: initials
+      }, { onConflict: 'id' });
+
+      if (error) {
+        console.error('[Profile Sync] Error syncing user profile:', error);
+      } else {
+        console.log('[Profile Sync] Profile synced successfully');
       }
     };
     syncProfile();
@@ -136,7 +192,31 @@ function App() {
       setInitiatives(prev => [freshInitiative, ...prev]);
     } else {
       console.error('Error saving initiative:', error);
-      alert(`Could not save initiative. Supabase Error: ${error.message}`);
+      // Detect stale session: RLS violation (42501) means the request went through as 'anon' instead of 'authenticated'
+      if (error.code === '42501') {
+        console.warn('[Auth] RLS violation detected — likely stale session. Attempting token refresh...');
+        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError || !refreshData.session) {
+          alert('Your session has expired. Please sign in again.');
+          await supabase.auth.signOut();
+          setSession(null);
+        } else {
+          // Session refreshed — retry the insert
+          console.log('[Auth] Session refreshed. Retrying save...');
+          setSession(refreshData.session);
+          const { error: retryError } = await supabase.from('initiatives').insert([freshInitiative]);
+          if (!retryError) {
+            setInitiatives(prev => [freshInitiative, ...prev]);
+            return; // Success on retry
+          }
+          console.error('Retry also failed:', retryError);
+          alert('Your session has expired. Please sign in again.');
+          await supabase.auth.signOut();
+          setSession(null);
+        }
+      } else {
+        alert(`Could not save initiative. Supabase Error: ${error.message}`);
+      }
       throw error;
     }
   };
@@ -166,6 +246,25 @@ function App() {
       ));
     } else {
       console.error('Error updating initiative:', error);
+      if (error.code === '42501') {
+        console.warn('[Auth] RLS violation on update — likely stale session.');
+        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError || !refreshData.session) {
+          alert('Your session has expired. Please sign in again.');
+          await supabase.auth.signOut();
+          setSession(null);
+        } else {
+          setSession(refreshData.session);
+          const { error: retryError } = await supabase.from('initiatives').update(payload).eq('id', id);
+          if (!retryError) {
+            setInitiatives(prev => prev.map(init => init.id === id ? { ...init, ...payload } : init));
+          } else {
+            alert('Your session has expired. Please sign in again.');
+            await supabase.auth.signOut();
+            setSession(null);
+          }
+        }
+      }
     }
   };
 
