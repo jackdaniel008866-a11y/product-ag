@@ -39,8 +39,12 @@ export default function InitiativeCard({ initiative, onClick, stuckDaysThreshold
         </div>
         {initiative.product === 'Surbo' ? (
           <span className="text-[10px] font-medium text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-1.5 rounded-full border border-teal-100 dark:border-teal-800/50">Surbo</span>
-        ) : (
+        ) : initiative.product === 'Surbo Chat' ? (
           <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1.5 rounded-full border border-blue-100 dark:border-blue-800/50">Surbo Chat</span>
+        ) : initiative.product === 'Surbo Ace' ? (
+          <span className="text-[10px] font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-1.5 rounded-full border border-purple-100 dark:border-purple-800/50">Surbo Ace</span>
+        ) : (
+          <span className="text-[10px] font-medium text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30 px-1.5 rounded-full border border-rose-100 dark:border-rose-800/50">AI Voicebot</span>
         )}
       </div>
 

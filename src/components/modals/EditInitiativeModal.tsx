@@ -80,7 +80,7 @@ export default function EditInitiativeModal({ initiative, currentUserId, current
     
     if (finalTargetDate !== existingDate) {
       if (finalTargetDate) {
-        updatedTargetDateHistory = [...updatedTargetDateHistory, { date: finalTargetDate, setAt: new Date().toISOString() }];
+        updatedTargetDateHistory = [...updatedTargetDateHistory, { date: finalTargetDate, setAt: new Date().toISOString(), changedBy: currentUserId }];
       }
 
       let sysMsg = '';

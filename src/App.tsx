@@ -12,6 +12,7 @@ import MySpaceView from './components/views/MySpaceView';
 import TeamView from './components/views/TeamView';
 import RoadmapView from './components/views/RoadmapView';
 import ClientUpdatesView from './components/views/ClientUpdatesView';
+import ActivityFeedView from './components/views/ActivityFeedView';
 import QuickAddModal from './components/modals/QuickAddModal';
 import EditInitiativeModal from './components/modals/EditInitiativeModal';
 import AuthModal from './components/auth/AuthModal';
@@ -21,7 +22,7 @@ import { supabase } from './lib/supabase';
 import type { Session } from '@supabase/supabase-js';
 import type { SalesRequest } from './types';
 
-type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights' | 'client-updates' | 'digest' | 'my-space';
+type ViewType = 'kanban' | 'roadmap' | 'list' | 'stuck' | 'product' | 'team' | 'insights' | 'client-updates' | 'digest' | 'my-space' | 'activity';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -177,6 +178,24 @@ function App() {
   };
 
   const handleSaveInitiative = async (newItem: Omit<Initiative, 'id' | 'createdAt' | 'updatedAt' | 'stageUpdatedAt'>) => {
+    // Proactively refresh session if the JWT has expired to avoid "Failed to fetch" errors
+    const { data: { session: currentSession } } = await supabase.auth.getSession();
+    if (currentSession) {
+      const expiresAt = currentSession.expires_at; // Unix timestamp in seconds
+      const now = Math.floor(Date.now() / 1000);
+      if (expiresAt && expiresAt < now + 30) { // Refresh if expiring within 30 seconds
+        console.log('[Auth] Token expiring soon or expired before save. Refreshing...');
+        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError || !refreshData.session) {
+          alert('Your session has expired. Please sign in again.');
+          await supabase.auth.signOut();
+          setSession(null);
+          return;
+        }
+        setSession(refreshData.session);
+      }
+    }
+
     const freshInitiative: Initiative = {
       ...newItem,
       id: `init-${Math.random().toString(36).substring(2, 9)}`,
@@ -184,7 +203,7 @@ function App() {
       updatedAt: new Date().toISOString(),
       stageUpdatedAt: new Date().toISOString(),
       tags: newItem.tags || [],
-      stageHistory: [{ stage: newItem.stage, enteredAt: new Date().toISOString(), exitedAt: null }]
+      stageHistory: [{ stage: newItem.stage, enteredAt: new Date().toISOString(), exitedAt: null, changedBy: session!.user.id }]
     };
     
     const { error } = await supabase.from('initiatives').insert([freshInitiative]);
@@ -192,8 +211,25 @@ function App() {
       setInitiatives(prev => [freshInitiative, ...prev]);
     } else {
       console.error('Error saving initiative:', error);
-      // Detect stale session: RLS violation (42501) means the request went through as 'anon' instead of 'authenticated'
-      if (error.code === '42501') {
+
+      // Network-level failure: fetch itself failed (project paused, offline, DNS, etc.)
+      const isNetworkError = !error.code && (
+        (error.message && error.message.includes('Failed to fetch')) ||
+        (error.message && error.message.includes('NetworkError')) ||
+        (error.message && error.message.includes('TypeError'))
+      );
+
+      if (isNetworkError) {
+        console.error('[Network] Failed to reach Supabase. Project may be paused or network is down.');
+        alert(
+          'Could not save initiative — unable to reach the database.\n\n' +
+          'Possible causes:\n' +
+          '• The Supabase project may be paused (free-tier auto-pause after inactivity). Check your Supabase Dashboard and restore it.\n' +
+          '• Your internet connection may be unstable.\n' +
+          '• If you are on a VPN or restricted network, the request may be blocked.'
+        );
+      } else if (error.code === '42501') {
+        // Detect stale session: RLS violation (42501) means the request went through as 'anon' instead of 'authenticated'
         console.warn('[Auth] RLS violation detected — likely stale session. Attempting token refresh...');
         const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
         if (refreshError || !refreshData.session) {
@@ -228,7 +264,7 @@ function App() {
     if (init && updates.stage && updates.stage !== init.stage) {
       updatedHistory = [
         ...(init.stageHistory || [{ stage: init.stage, enteredAt: init.createdAt, exitedAt: null }]).map(h => h.exitedAt ? h : { ...h, exitedAt: new Date().toISOString() }),
-        { stage: updates.stage, enteredAt: new Date().toISOString(), exitedAt: null }
+        { stage: updates.stage, enteredAt: new Date().toISOString(), exitedAt: null, changedBy: session!.user.id }
       ];
     }
     
@@ -274,7 +310,7 @@ function App() {
 
     const newHistory = [
       ...(currentInit.stageHistory || [{ stage: currentInit.stage, enteredAt: currentInit.createdAt, exitedAt: null }]).map(h => h.exitedAt ? h : { ...h, exitedAt: new Date().toISOString() }),
-      { stage: newStage, enteredAt: new Date().toISOString(), exitedAt: null }
+      { stage: newStage, enteredAt: new Date().toISOString(), exitedAt: null, changedBy: session!.user.id }
     ];
 
     const payload = { 
@@ -488,7 +524,10 @@ function App() {
               />
             )}
             {currentView === 'team' && (
-              <TeamView users={usersList} onRemoveUser={removeUser} />
+              <TeamView users={usersList} onRemoveUser={removeUser} initiatives={initiatives} />
+            )}
+            {currentView === 'activity' && (
+              <ActivityFeedView initiatives={initiatives} />
             )}
             {currentView === 'digest' && (
               <DigestView initiatives={initiatives} />

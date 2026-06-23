@@ -23,6 +23,7 @@ export interface StageTransition {
   stage: Stage;
   enteredAt: string;
   exitedAt: string | null;
+  changedBy?: string; // user ID of who triggered this transition
 }
 
 export interface DirectionScore {
@@ -42,6 +43,7 @@ export interface AppNotification {
 export interface TargetDateChange {
   date: string; // ISO date string or yyyy-mm-dd
   setAt: string; // ISO datetime
+  changedBy?: string; // user ID of who changed the date
 }
 
 export interface Initiative {
