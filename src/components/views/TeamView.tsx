@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import type { User, Initiative, Stage } from '../../types';
+import type { User, Initiative } from '../../types';
 import { DEVELOPER_TEAMS, STAGES } from '../../data/mockData';
 import { differenceInDays, format, parseISO } from 'date-fns';
 import { Users, Trash2, AlertTriangle, Clock, Zap, ChevronDown, ChevronUp, Search } from 'lucide-react';

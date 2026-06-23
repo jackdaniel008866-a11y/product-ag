@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import type { Initiative, Product } from '../../types';
 import { useUsers } from '../../contexts/UserContext';
 import { format, parseISO, differenceInHours, differenceInMinutes } from 'date-fns';
-import { Activity, ArrowRight, Calendar, MessageSquare, Search, Filter, Clock } from 'lucide-react';
+import { Activity, ArrowRight, Calendar, MessageSquare, Search, Clock } from 'lucide-react';
 
 interface ActivityFeedViewProps {
   initiatives: Initiative[];
@@ -102,7 +102,7 @@ export default function ActivityFeedView({ initiatives }: ActivityFeedViewProps)
       }
 
       // Creation event
-      const createdBy = init.stageHistory && init.stageHistory[0]?.changedBy ? Object.values(users).find(u => u.id === init.stageHistory[0].changedBy) : undefined;
+      const createdBy = (init.stageHistory && init.stageHistory.length > 0 && init.stageHistory[0]?.changedBy) ? Object.values(users).find(u => u.id === init.stageHistory![0].changedBy) : undefined;
       all.push({
         id: `${init.id}-created`,
         timestamp: init.createdAt,

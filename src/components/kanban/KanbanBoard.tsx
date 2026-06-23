@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import type { Initiative, Stage, Product, Priority } from '../../types';
+import type { Initiative, Stage } from '../../types';
 import { STAGES, DEVELOPER_TEAMS } from '../../data/mockData';
 import { useUsers } from '../../contexts/UserContext';
 import { Filter, X } from 'lucide-react';
@@ -13,7 +13,6 @@ interface KanbanBoardProps {
   stuckDaysThreshold: number;
 }
 
-const ALL_DEVELOPERS: string[] = Object.values(DEVELOPER_TEAMS).flat();
 
 export default function KanbanBoard({ initiatives, onInitiativeClick, onMoveInitiative, stuckDaysThreshold }: KanbanBoardProps) {
   const { usersList } = useUsers();
